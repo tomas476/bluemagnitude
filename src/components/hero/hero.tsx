@@ -1,15 +1,19 @@
 import { VideoBackdrop } from "@/components/hero/video-backdrop";
 import { HERO } from "@/content/site";
+import { caminho } from "@/lib/caminho";
 import { ANCORAS, ROTAS } from "@/content/rotas";
 
 export function Hero() {
   return (
     <section className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden">
       <VideoBackdrop
-        poster="/video/hero-poster-lg.webp"
-        posterEstreito="/video/hero-poster-vert.webp"
+        poster={caminho("/video/hero-poster-lg.webp")}
+        posterEstreito={caminho("/video/hero-poster-vert.webp")}
         descricao={HERO.videoAlt}
-        fontes={{ largo: "/video/hero-lg.mp4", estreito: "/video/hero-vert.mp4" }}
+        fontes={{
+          largo: caminho("/video/hero-lg.mp4"),
+          estreito: caminho("/video/hero-vert.mp4"),
+        }}
       />
 
       <div
