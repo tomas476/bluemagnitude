@@ -689,9 +689,9 @@ details[open] .acordeao__r {
      conjunto passava dos 375px do telemovel, alargava o documento e cortava o
      texto da pagina toda pela direita. */
   width: min(26rem, 66vw);
-  /* a margem de cima e de baixo e para a orbita: ela varre um circulo mais
-     alto do que o logotipo e sem folga passava por cima do texto */
-  margin: 3.25rem 1.5rem;
+  /* a elipse passa um nada para fora da caixa do logotipo, e a margem e so
+     para isso: parada, ela ja nao varre nada */
+  margin: 1.75rem 1.5rem;
 }
 
 @media (min-width: 64rem) {
@@ -761,28 +761,32 @@ details[open] .acordeao__r {
   animation-name: ma-oval;
 }
 
-/* a oval fica desenhada e roda, em vez de se desenhar e apagar. O centro e o
-   do proprio caminho da oval (medido no viewBox), nao o do logotipo. */
-.marca-animada--orbita .ma__risco--oval {
-  stroke-dasharray: none;
-  stroke-dashoffset: 0;
-  /* ⚠️ ENCOLHIDA A 78%: a oval nao esta centrada no logotipo, e ao rodar o
-     circulo que ela varre e bem mais alto do que a caixa. A 100% entrava pelo
-     paragrafo de cima. */
-  scale: 0.78;
+/* ⚠️ A ELIPSE ESTA PARADA E O TRACEJADO E QUE ANDA. `pathLength: 1000` faz o
+   perimetro contar sempre 1000, seja qual for o raio; com tracos de 20 e
+   intervalos de 20 cabem 25 pares certos, e por isso deslocar o tracejado
+   exactamente 40 fecha a volta sem salto. Animar a rotacao da forma, como
+   estava, inclinava a elipse e ela lia-se torta. */
+.ma__orbita {
+  fill: none;
+  stroke-dasharray: 20 20;
   animation-name: ma-orbita;
-  animation-duration: 16s;
+  animation-duration: 2400ms;
   animation-timing-function: linear;
-  transform-box: view-box;
-  transform-origin: 666px 220px;
+  animation-iteration-count: infinite;
 }
 
 @keyframes ma-orbita {
   from {
-    rotate: 0deg;
+    stroke-dashoffset: 0;
   }
   to {
-    rotate: 360deg;
+    stroke-dashoffset: 40;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ma__orbita {
+    animation-name: none;
   }
 }
 
@@ -1998,6 +2002,126 @@ details[open] .acordeao__r {
 .teclado__palavra {
   display: inline-block;
   white-space: nowrap;
+}
+
+/* ============================================================
+   O PEDIDO EM TRES PASSOS
+   Os discos dizem onde se esta e o traco entre eles enche.
+   ============================================================ */
+
+.passos-form {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-xs);
+  margin-bottom: var(--s-md);
+}
+
+/* ⚠️ OS DOIS TRACOS COMECAM E ACABAM NO CENTRO DOS DISCOS DAS PONTAS, nao no
+   bordo da lista: `left`/`right` a 1/6 da largura e exactamente o centro do
+   primeiro e do ultimo de tres colunas iguais. */
+.passos-form::before,
+.passos-form::after {
+  content: "";
+  position: absolute;
+  top: 1.1rem;
+  left: 16.66%;
+  height: 2px;
+  background-color: var(--color-line-strong);
+}
+
+.passos-form::before {
+  right: 16.66%;
+}
+
+.passos-form::after {
+  width: calc((100% - 33.32%) * var(--progresso, 0));
+  background-color: var(--color-accent-ink);
+  transition: width 420ms var(--ease-land);
+}
+
+.passos-form__item {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.passos-form__disco {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background-color: var(--color-plate);
+  box-shadow: inset 0 0 0 2px var(--color-line-strong);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-faint);
+  transition:
+    background-color 300ms var(--ease-land),
+    box-shadow 300ms var(--ease-land),
+    color 300ms var(--ease-land);
+}
+
+.passos-form__item[data-estado="actual"] .passos-form__disco {
+  box-shadow: inset 0 0 0 2px var(--color-brand);
+  color: var(--color-brand);
+}
+
+.passos-form__item[data-estado="feito"] .passos-form__disco {
+  background-color: var(--color-accent-ink);
+  box-shadow: none;
+  color: #fff;
+}
+
+.passos-form__rotulo {
+  font-size: var(--t-label);
+  color: var(--color-ink-faint);
+}
+
+.passos-form__item[data-estado="actual"] .passos-form__rotulo {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* o ecra de cada passo entra por opacidade, sem empurrar nada */
+.passos-form__ecra {
+  display: grid;
+  gap: var(--s-sm);
+  animation-name: passo-entra;
+  animation-duration: 320ms;
+  animation-timing-function: var(--ease-land);
+  animation-fill-mode: both;
+}
+
+@keyframes passo-entra {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* o que vai seguir para o WhatsApp, tal e qual */
+.pedido-resumo {
+  margin-top: var(--s-xs);
+  padding: var(--s-sm);
+  border-radius: var(--radius-field);
+  background-color: var(--color-plate-2);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  font-family: inherit;
+  font-size: var(--t-label);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  white-space: pre-wrap;
+  overflow-x: auto;
 }
 
 /* ============================================================

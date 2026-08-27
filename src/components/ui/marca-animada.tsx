@@ -30,6 +30,36 @@ export function MarcaAnimada({
    */
   orbita?: boolean;
 }) {
+  /* ⚠️ DUAS OVAIS, E SO UMA DELAS APARECE.
+     · Sem `orbita`: o traco a mao, que comeca em cima a esquerda, da a volta e
+       PASSA do ponto de partida sem fechar. E isso que o impede de parecer uma
+       elipse, e e o gesto da marca no resto do site.
+     · Com `orbita` (a pagina de contactos): uma elipse a serio, direita e
+       fechada, PARADA no sitio. O que anda e o tracejado dela, a correr a
+       volta sem fim. A elipse NAO roda: rodar a forma toda inclinava-a e ela
+       lia-se torta. */
+  const oval = orbita ? (
+    <ellipse
+      className="ma__orbita"
+      cx="652"
+      cy="234"
+      rx="700"
+      ry="266"
+      pathLength={1000}
+      stroke="currentColor"
+      strokeWidth="7"
+      strokeLinecap="round"
+    />
+  ) : (
+    <path
+      className="ma__risco ma__risco--oval"
+      d="M900 -30 C 480 -66, -40 30, -40 234 C -40 428, 430 505, 780 494 C 1180 482, 1372 372, 1372 214 C 1372 70, 1120 -14, 880 -26"
+      stroke="currentColor"
+      strokeWidth="7"
+      strokeLinecap="round"
+    />
+  );
+
   return (
     <div
       className={cn(
@@ -77,15 +107,7 @@ export function MarcaAnimada({
           strokeWidth="7"
           strokeLinecap="round"
         />
-        {/* a oval: comeca em cima a esquerda, da a volta e PASSA do ponto de
-            partida sem fechar. E isso que a impede de parecer uma elipse */}
-        <path
-          className="ma__risco ma__risco--oval"
-          d="M900 -30 C 480 -66, -40 30, -40 234 C -40 428, 430 505, 780 494 C 1180 482, 1372 372, 1372 214 C 1372 70, 1120 -14, 880 -26"
-          stroke="currentColor"
-          strokeWidth="7"
-          strokeLinecap="round"
-        />
+        {oval}
       </svg>
     </div>
   );
