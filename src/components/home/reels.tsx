@@ -30,6 +30,12 @@ export function Reels() {
           <h2 id="reels-t" className="title mt-[var(--s-xs)] max-w-[22ch]">
             Acompanha-nos nas redes
           </h2>
+          {/* ⚠️ A divulgacao do excerto vive aqui, uma vez, e serve os cinco
+              cartoes. Ver a nota em content/reels.ts. */}
+          <p className="lede mt-[var(--s-sm)]">
+            Aqui correm os primeiros segundos de cada reel. O completo está no
+            Instagram.
+          </p>
         </Reveal>
       </div>
 

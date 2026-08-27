@@ -34,7 +34,7 @@ function Social({
 export function SiteFooter() {
   return (
     <footer className="field-deep">
-      <div className="shell" style={{ paddingBlock: "var(--s-lg)" }}>
+      <div className="shell rodape">
         {/* o CTA substitui a seccao de formulario que saiu da homepage: uma
             accao so, e o canal que estes clientes usam mesmo */}
         <div className="flex flex-col gap-[var(--s-sm)] sm:flex-row sm:items-center sm:justify-between">
@@ -42,7 +42,9 @@ export function SiteFooter() {
             <p className="title" style={{ fontSize: "var(--t-h3)" }}>
               {EMPRESA.promessa}
             </p>
-            <p className="meta mt-[2px]">
+            {/* a promessa em telemovel fica so no botao: a linha repetia
+                o que ele ja diz e empurrava tudo para baixo */}
+            <p className="meta mt-[2px] rodape__so-largo">
               Proposta gratuita e sem compromisso.
             </p>
           </div>
@@ -100,10 +102,14 @@ export function SiteFooter() {
               </a>
             </li>
             <li className="corpo">
-              {EMPRESA.telefone}
+              <a href={`tel:${EMPRESA.telefone.replace(/\s/g, "")}`}>
+                {EMPRESA.telefone}
+              </a>
+              {/* a nota do custo da chamada e obrigatoria, fica em qualquer
+                  medida; o horario e que se resume a uma linha */}
               <span className="meta block">{EMPRESA.telefoneNota}</span>
             </li>
-            <li className="corpo">{EMPRESA.horario}</li>
+            <li className="meta">{EMPRESA.horario}</li>
           </ul>
         </div>
 

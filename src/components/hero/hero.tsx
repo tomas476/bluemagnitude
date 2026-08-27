@@ -19,13 +19,13 @@ export function Hero() {
       <div
         className="shell relative z-10 w-full"
         style={{
-          paddingBottom: "calc(var(--s-md) + var(--safe-b))",
+          paddingBottom: "calc(var(--s-sm) + var(--safe-b))",
           paddingTop: "calc(var(--s-xl) + var(--safe-t))",
         }}
       >
         <p className="credito rise [animation-delay:40ms]">{HERO.credito}</p>
 
-        <h1 className="display rise mt-[var(--s-xs)] max-w-[16ch] text-ink [animation-delay:80ms]">
+        <h1 className="display rise mt-[var(--s-xs)] max-w-[16ch] text-ink [animation-delay:80ms] lg:max-w-[24ch]">
           {HERO.titulo}{" "}
           <span className="text-ink-soft">{HERO.tituloDestaque}</span>
         </h1>

@@ -1558,6 +1558,85 @@ details[open] .acordeao__r {
   }
 }
 
+/* o que conta numa frase de resumo: peso e tinta cheia, mais um fio de
+   acento por baixo. Nada de cor diferente no texto corrido, que a esta
+   escala le-se como link partido */
+.realce {
+  font-weight: 700;
+  color: var(--field-ink, var(--color-ink));
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ============================================================
+   RODAPE
+   Em telemovel e mais curto: sai a linha que repetia o botao, o
+   ar aperta, e cada contacto passa a ter alvo de toque a serio,
+   que e onde ele estava pior (linhas de 22px).
+   ============================================================ */
+
+.rodape {
+  padding-block: var(--s-lg);
+}
+
+.rodape ul a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+@media (max-width: 39.99rem) {
+  .rodape {
+    padding-block: var(--s-md);
+  }
+
+  .rodape__so-largo {
+    display: none;
+  }
+}
+
+/* ============================================================
+   A FOTOGRAFIA DO SOBRE
+   Em ecra grande e um retrato numa coluna que fica pousada.
+   Em telemovel cola-se a faixa azul dos numeros e vai de ponta
+   a ponta, que e onde uma fotografia de obra ganha.
+   ============================================================ */
+
+.sobre__foto img {
+  border-radius: var(--radius-plate);
+  aspect-ratio: 4 / 5;
+}
+
+@media (max-width: 63.99rem) {
+  /* a seccao perde o ar em cima para a foto encostar mesmo a faixa */
+  .sobre__historia {
+    padding-top: 0;
+  }
+
+  /* de ponta a ponta: a margem da .shell e desfeita pelos dois lados */
+  .sobre__foto {
+    margin-inline: calc(max(var(--gutter), var(--safe-l), var(--safe-r)) * -1);
+  }
+
+  .sobre__foto img {
+    border-radius: 0;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* a maquina em pausa ate o Reveal a volta dizer que a frase esta no ecra */
+.teclado--ao-entrar .teclado__l,
+.teclado--ao-entrar .teclado__cursor {
+  animation-play-state: paused;
+}
+
+[data-shown="true"] .teclado--ao-entrar .teclado__l,
+[data-shown="true"] .teclado--ao-entrar .teclado__cursor {
+  animation-play-state: running;
+}
+
 /* ============================================================
    ARRANQUE DA PAGINA SOBRE
    A ilustracao (gerada a partir da referencia do Tomas, com os
@@ -1570,6 +1649,35 @@ details[open] .acordeao__r {
   isolation: isolate;
   overflow: hidden;
   background-color: var(--color-shell);
+}
+
+/* ⚠️ AS REGRAS BASE DA ILUSTRACAO VEM ANTES DAS MEDIA QUERIES, e nao e
+   arrumacao: com a mesma especificidade ganha a ultima, e escritas depois
+   eram elas a repor `position: relative` por cima do `absolute` do desktop.
+   A ilustracao caia para dentro do fluxo e empurrava o titulo para o lado. */
+.arranque__ilustra {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* as duas camadas ocupam exactamente a mesma caixa: a imagem manda, e o SVG
+   copia-lhe o recorte (`xMaxYMax slice` e o equivalente de `object-fit: cover`
+   com `object-position: right bottom`) */
+.arranque__cartoes {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right bottom;
+}
+
+.arranque__fita {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* ⚠️ 64rem e nao 60rem: e o lg do Tailwind. Com dois numeros diferentes havia
@@ -1585,14 +1693,10 @@ details[open] .acordeao__r {
     align-items: flex-start;
   }
 
-  .arranque__fundo {
+  .arranque__ilustra {
     position: absolute;
     inset: 0;
     z-index: -1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: right bottom;
   }
 }
 
@@ -1606,24 +1710,64 @@ details[open] .acordeao__r {
     flex-direction: column;
   }
 
-  .arranque__fundo {
-    display: block;
+  .arranque__ilustra {
     order: 2;
-    width: 100%;
-    height: auto;
     margin-top: var(--s-md);
   }
 }
 
+/* ⚠️ A FITA DESENHA-SE E RECOLHE PELA MESMA PONTA. O dashoffset vai de 1 a 0
+   (nasce em baixo a esquerda e sobe ate ao fim), fica desenhada um momento, e
+   volta a 1, que e a recolha pela ponta. Longhand, porque o atalho `animation`
+   repunha o delay. */
+.arranque__traco {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: fita-desenha;
+  animation-duration: 7600ms;
+  animation-timing-function: var(--ease-glide);
+  animation-iteration-count: infinite;
+  will-change: stroke-dashoffset;
+}
+
+@keyframes fita-desenha {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  40% {
+    stroke-dashoffset: 0;
+  }
+  58% {
+    stroke-dashoffset: 0;
+  }
+  98%,
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* a regra global de movimento reduzido zera a duracao e a fita ficava no
+   estado base, que e invisivel. Aqui fica desenhada e quieta. */
+@media (prefers-reduced-motion: reduce) {
+  .arranque__traco {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ⚠️ TRES EM FILA, TAMBEM NO TELEMOVEL. Sao tres numeros, e tres cabem: em
+   duas colunas ficava um sozinho na segunda linha, encostado a esquerda, a
+   parecer que faltava alguma coisa. O corpo desce em ecra estreito para o
+   "12 100 W" nao partir a meio. */
 .numeros {
   display: grid;
-  gap: var(--s-md);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-sm);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
 }
 
 @media (min-width: 60rem) {
   .numeros {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-md);
   }
 }
 
@@ -1634,6 +1778,17 @@ details[open] .acordeao__r {
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+  /* ⚠️ "12 100 W" nao parte. Partido, o "12" numa linha e o "100 W" noutra
+     desalinha a fila toda e le-se como dois numeros. */
+  white-space: nowrap;
+}
+
+/* ⚠️ ESTA REGRA VEM DEPOIS DA BASE DE PROPOSITO: escrita antes, era a base que
+   ganhava e o corpo continuava grande em ecra estreito. */
+@media (max-width: 30rem) {
+  .numeros__valor {
+    font-size: clamp(1.125rem, 0.4rem + 3.2vw, 1.75rem);
+  }
 }
 
 /* ============================================================

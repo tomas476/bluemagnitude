@@ -264,7 +264,13 @@ export type Projeto = {
   inversor: string;
   bateria: string | null;
   resumoCurto: string;
-  resumo: ReadonlyArray<string>;
+  /**
+   * ⚠️ UMA FRASE, NAO TRES PARAGRAFOS. Os originais tinham ~1000 caracteres
+   * cada, repetiam a ficha tecnica e eram quase iguais entre projetos. O que
+   * ficou e o essencial, e o que importa vai marcado com ** ** para o
+   * TextoRealcado o destacar.
+   */
+  resumo: string;
   imagem: string;
   imagemAlt: string;
 };
@@ -281,11 +287,8 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
     bateria: "Fox ESS Energy Cube 2900, 11,6 kW",
     resumoCurto:
       "Uma solução completa e robusta, projetada para garantir eficiência e sustentabilidade a longo prazo.",
-    resumo: [
-      "Concluímos uma instalação fotovoltaica de alto desempenho, equipada com 20 unidades de painéis solares Aiko de 605 W. Estes painéis foram escolhidos pela elevada eficiência e pela capacidade de gerar uma quantidade significativa de energia solar, mesmo em condições de luz variável. A gestão e a conversão da energia produzida são feitas pelo inversor Fox ESS H3-Pro 20.0, que assegura a máxima eficiência na utilização da energia captada.",
-      "A instalação inclui baterias Fox ESS Energy Cube 2900 com uma capacidade total de 11,6 kW. Estas baterias permitem o armazenamento de energia excedente, garantindo um fornecimento contínuo e estável mesmo durante períodos de menor incidência solar, como à noite ou em dias nublados. Este sistema de armazenamento é fundamental para maximizar a autonomia energética da instalação.",
-      "O projeto representa uma solução energética completa e eficiente, pensada para dar ao cliente uma fonte de energia renovável fiável, contribuindo para a redução das emissões de carbono e promovendo a independência energética a longo prazo.",
-    ],
+    resumo:
+      "Vinte painéis **Aiko de 605 W** ligados a um inversor Fox ESS H3-Pro, com **11,6 kW de bateria** a guardar o que sobra do dia. A casa fica com energia própria à noite e em dias nublados, sem depender da rede para o consumo de base.",
     imagem: caminho("/projetos/DJI_0125-scaled.jpg"),
     imagemAlt:
       "Vista aérea de um telhado com vinte painéis solares instalados em Leiria.",
@@ -301,11 +304,8 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
     bateria: "Sunwoda Monawall, 5,12 kW",
     resumoCurto:
       "Um projeto desenvolvido para fornecer uma solução de energia limpa e eficiente.",
-    resumo: [
-      "Este projeto fotovoltaico foi desenvolvido para fornecer uma solução de energia limpa e eficiente, utilizando sete painéis solares Aiko de 450 W. Foram escolhidos pela alta eficiência na captação de energia solar, garantindo produção consistente ao longo do dia. A instalação foi desenhada para maximizar a exposição ao sol, otimizando a geração mesmo em condições de luz menos favoráveis.",
-      "O sistema é gerido por um inversor híbrido Solplanet ASW4000H, que converte a energia captada para o uso diário e facilita a integração com a rede elétrica e a gestão inteligente do armazenamento. Essa flexibilidade é essencial para o sistema funcionar de forma eficiente tanto durante o dia como à noite.",
-      "Para armazenamento, o projeto inclui uma bateria Sunwoda Monawall de 5,12 kW, que acumula o excedente gerado durante o dia. Essa capacidade garante que a eletricidade esteja disponível mesmo durante a noite ou em dias nublados, reduzindo a dependência da rede e aumentando a autonomia do sistema.",
-    ],
+    resumo:
+      "Sete painéis **Aiko de 450 W** com inversor Solplanet e uma bateria **Sunwoda Monawall de 5,12 kW**. O excedente do meio do dia fica guardado e é ele que alimenta a casa ao fim da tarde, que é quando a fatura costuma pesar.",
     imagem: caminho("/projetos/Mata-Mourisca5-scaled.jpg"),
     imagemAlt:
       "Vista aérea de sete painéis solares instalados num telhado em Mata Mourisca.",
@@ -321,11 +321,8 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
     bateria: "Sunwoda Monawall, 5,12 kW",
     resumoCurto:
       "Uma solução energética integrada, focada em autonomia e eficiência.",
-    resumo: [
-      "Este projeto fotovoltaico foi concebido para oferecer uma solução de energia sustentável e eficiente, utilizando cinco painéis solares Aiko de 450 W. Foram selecionados pela elevada capacidade de conversão de energia solar, garantindo produção fiável mesmo em condições de luz variáveis.",
-      "O sistema é gerido por um inversor híbrido Solplanet ASW4000H, que converte a energia solar captada para utilização imediata. Este inversor é especialmente eficiente em sistemas híbridos, permitindo a conversão direta para o consumo doméstico e a gestão inteligente do armazenamento e do fornecimento à rede quando necessário.",
-      "Para complementar o sistema foi instalada uma bateria Sunwoda Monawall com 5,12 kW de capacidade. Armazena o excedente produzido durante o dia, permitindo o uso durante a noite ou em períodos de baixa produção solar, garantindo uma fonte de energia constante e minimizando a dependência da rede elétrica.",
-    ],
+    resumo:
+      "Cinco painéis **Aiko de 450 W**, inversor Solplanet e **5,12 kW de armazenamento**. Um sistema pequeno e fechado sobre si mesmo: produz, guarda, e devolve à noite o que não foi preciso de dia.",
     imagem: caminho("/projetos/DJI_0101-scaled.jpg"),
     imagemAlt:
       "Vista aérea de cinco painéis solares instalados num telhado em Penela.",
@@ -341,11 +338,8 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
     bateria: null,
     resumoCurto:
       "Uma solução robusta e sustentável, com energia limpa de forma eficiente.",
-    resumo: [
-      "Este projeto fotovoltaico foi concebido para oferecer uma solução de energia sustentável e eficiente, utilizando 6 painéis solares Aiko de 450 W. Escolhidos pela alta capacidade de conversão, garantem uma produção consistente ao longo do dia, maximizando o aproveitamento da luz solar mesmo em condições de luminosidade variável.",
-      "A energia gerada é gerida pelo inversor Fox ESS S-3000, que converte a corrente contínua captada pelos painéis em corrente alternada utilizável para consumo imediato. Este inversor é conhecido pela eficiência e fiabilidade, garantindo que a eletricidade produzida seja usada de forma otimizada.",
-      "Embora este projeto não inclua baterias de armazenamento, o sistema foi projetado para se integrar diretamente na rede elétrica, permitindo que a energia excedente seja enviada para a rede ou usada para reduzir o consumo em tempo real.",
-    ],
+    resumo:
+      "Seis painéis **Aiko de 450 W** com inversor Fox ESS S-3000, em autoconsumo directo. **Sem baterias**: toda a energia produzida é gasta na hora, que é a forma mais barata de baixar a fatura quando o consumo acontece de dia.",
     imagem: caminho("/projetos/Serra-Santo-Antonio2-scaled.jpg"),
     imagemAlt:
       "Vista aérea de seis painéis solares instalados na Serra de Santo António.",
@@ -361,11 +355,8 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
     bateria: null,
     resumoCurto:
       "Uma solução energética eficaz, alinhada com a redução do impacto ambiental.",
-    resumo: [
-      "Este projeto de energia solar foi implementado com seis painéis solares Aiko de 450 W, projetados para uma solução eficiente e sustentável de geração de eletricidade. Os painéis Aiko foram escolhidos pela capacidade de capturar energia solar de forma eficaz, garantindo produção estável ao longo do dia, mesmo em condições de luz variáveis.",
-      "A energia gerada é convertida para uso doméstico pelo inversor Fox ESS S-3000, que transforma a corrente contínua gerada pelos painéis em corrente alternada compatível com a rede elétrica e com os aparelhos domésticos.",
-      "Embora o sistema não inclua baterias de armazenamento, está configurado para operar em sinergia com a rede elétrica, usando a energia solar durante o dia e complementando com a rede quando necessário. Esta configuração permite uma redução significativa na dependência da rede elétrica convencional.",
-    ],
+    resumo:
+      "Seis painéis **Aiko de 450 W** e inversor Fox ESS S-3000, também em autoconsumo directo. **Sem baterias**, com a produção a entrar directamente no consumo da casa durante as horas de sol.",
     imagem: caminho("/projetos/DJI_0134-scaled.jpg"),
     imagemAlt:
       "Vista aérea de seis painéis solares instalados em Vila Nova da Barquinha.",
@@ -519,32 +510,40 @@ export const PRIVACIDADE = {
 export const SOBRE = {
   credito: "Sobre nós",
   titulo: "Fazemos circular energia positiva",
+  /**
+   * ⚠️ UM PARAGRAFO, E NAO TRES. Os tres originais diziam a mesma coisa por
+   * tres caminhos e empurravam a missao, a visao, a equipa e a
+   * sustentabilidade para fora do primeiro ecra, que e onde elas contam. O
+   * texto e o deles, condensado; nao ha facto novo aqui.
+   */
   paragrafos: [
-    "Na Blue Magnitude dedicamo-nos a oferecer soluções no setor das energias renováveis e a aumentar a eficiência energética em Portugal. A nossa missão é transformar a forma como as pessoas e as empresas consomem energia.",
-    "Com uma equipa experiente e apaixonada, combinamos conhecimento técnico com uma profunda compreensão das necessidades do mercado. Estamos comprometidos em liderar a transição energética em Portugal, proporcionando aos nossos clientes as ferramentas e o suporte necessário para reduzir a sua pegada de carbono e alcançar maior independência energética.",
-    "Acreditamos que o futuro passa pela utilização responsável e inteligente dos recursos naturais. Por isso trabalhamos para desenvolver e implementar soluções que respondem aos desafios atuais e preparam o caminho para um futuro mais verde.",
+    "Dedicamo-nos a soluções de energia renovável e a aumentar a eficiência energética em Portugal, para transformar a forma como as pessoas e as empresas consomem energia.",
   ],
   blocos: [
     {
       titulo: "Missão",
+      icone: "alvo",
       subtitulo: "Soluções energéticas",
       texto:
         "Desde a nossa fundação, trabalhamos para proporcionar soluções energéticas que respondam às necessidades atuais e contribuam para um futuro mais sustentável. Utilizamos tecnologias avançadas para garantir a máxima eficiência e economia.",
     },
     {
       titulo: "Visão",
+      icone: "olho",
       subtitulo: "Referência no setor das energias renováveis",
       texto:
         "A Blue Magnitude pretende ser uma referência no setor das energias renováveis, liderando a transição para um uso mais responsável e sustentável da energia. Acreditamos que é possível garantir o bem-estar das futuras gerações através da energia limpa.",
     },
     {
       titulo: "A nossa equipa",
+      icone: "equipa",
       subtitulo: "Profissionais altamente qualificados",
       texto:
         "Contamos com uma equipa de profissionais qualificados, incluindo engenheiros, técnicos e gestores. Com operações em Leiria, Santarém e Lisboa, estamos preparados para oferecer um serviço próximo dos nossos clientes.",
     },
     {
       titulo: "Sustentabilidade",
+      icone: "folha",
       subtitulo: "Responsabilidade ambiental e social",
       texto:
         "A sustentabilidade é um pilar fundamental para a Blue Magnitude. Implementamos práticas empresariais que promovem a eficiência energética e a responsabilidade ambiental e social.",
@@ -583,8 +582,12 @@ export const SOBRE = {
 export const ARRANQUE = {
   credito: "Sobre nós",
   titulo: "Fazemos circular energia",
+  /**
+   * ⚠️ TRES NUMEROS, NAO QUATRO. Saiu "05 instalações documentadas": em fila
+   * de tres o telemovel le-os todos de uma vez, e um "05" ao lado de
+   * "12 100 W" dizia sobretudo que ha pouca obra mostrada.
+   */
   numeros: [
-    { valor: "05", rotulo: "instalações documentadas" },
     { valor: "12 100 W", rotulo: "o maior sistema instalado" },
     { valor: "3", rotulo: "distritos onde operamos" },
     { valor: "6", rotulo: "serviços no catálogo" },

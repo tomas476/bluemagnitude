@@ -145,8 +145,13 @@ export function VideoBackdrop({
         style={{ opacity: "var(--scrim)" }}
       />
 
-      {/* 2. subida do fundo: o ultimo pixel do heroi e --color-shell cheio */}
-      <div className="absolute inset-x-0 bottom-0 h-[64%] bg-gradient-to-t from-shell via-shell/85 to-transparent" />
+      {/* 2. subida do fundo: o ultimo pixel do heroi e --color-shell cheio.
+          ⚠️ A ALTURA E O MEIO-TERMO SAO OS UNICOS NUMEROS DO BLEND QUE SE PODEM
+          MEXER SOZINHOS: esta camada nao tem espelho no CampoLuz (a contraparte
+          dela e a chapa lisa do .campo-luz). Desceu de 64% para 46% e de 85%
+          para 72% porque a lavagem comia metade do video. A camada 2b, essa,
+          continua atada ao campo-luz. */}
+      <div className="absolute inset-x-0 bottom-0 h-[46%] bg-gradient-to-t from-shell via-shell/72 to-transparent" />
 
       {/* 2b. a lavagem de saida.
           ESPELHA o gradiente que o CampoLuz pinta no topo dele, ancorado em

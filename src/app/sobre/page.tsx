@@ -5,6 +5,9 @@ import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
 import { MarcaAnimada } from "@/components/ui/marca-animada";
+import { ArranqueAnimado } from "@/components/ui/arranque-animado";
+import { Passos } from "@/components/ui/passos";
+import { TituloTeclado } from "@/components/ui/titulo-teclado";
 import { ListaLuz } from "@/components/ui/lista-luz";
 import { ARRANQUE, SOBRE, EMPRESA } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
@@ -28,14 +31,7 @@ export default function Sobre() {
             cartoes (ilustracao gerada a partir da referencia dele) e o titulo
             no canto superior esquerdo, que a imagem deixa livre. */}
         <section className="arranque section--tight" aria-labelledby="arranque-t">
-          <img
-            src={caminho("/sobre/arranque.jpg")}
-            alt=""
-            className="arranque__fundo"
-            width={2200}
-            height={1228}
-            decoding="async"
-          />
+          <ArranqueAnimado />
 
           <div className="shell w-full" style={{ paddingBlock: "var(--s-sm)" }}>
             <nav aria-label="Caminho" className="meta">
@@ -88,9 +84,9 @@ export default function Sobre() {
         </section>
 
         <CampoLuz>
-          <section className="field-shell section" aria-labelledby="historia-t">
+          <section className="sobre__historia field-shell section" aria-label="Quem somos">
             <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-              <Reveal as="figure" className="lg:sticky lg:top-24">
+              <Reveal as="figure" className="sobre__foto lg:sticky lg:top-24">
                 {/* fotografia REAL deles, da pagina de autoconsumo do site
                     actual. Nada de fotos inventadas. */}
                 <img
@@ -100,17 +96,19 @@ export default function Sobre() {
                   height={800}
                   loading="lazy"
                   decoding="async"
-                  className="w-full rounded-[var(--radius-plate)] object-cover"
-                  style={{ aspectRatio: "4 / 5" }}
+                  className="w-full object-cover"
                 />
               </Reveal>
 
               <div>
                 <Reveal>
                   <p className="credito">{SOBRE.credito}</p>
-                  <h2 id="historia-t" className="title mt-[var(--s-xs)] max-w-[22ch]">
-                    {SOBRE.titulo}
-                  </h2>
+                  <TituloTeclado
+                    as="h2"
+                    aoEntrar
+                    texto={SOBRE.titulo}
+                    className="title mt-[var(--s-xs)] max-w-[22ch]"
+                  />
                 </Reveal>
 
                 <div className="mt-[var(--s-md)] grid gap-[var(--s-sm)]">
@@ -121,15 +119,19 @@ export default function Sobre() {
                   ))}
                 </div>
 
-                <div className="mt-[var(--s-lg)] grid gap-[var(--s-sm)] sm:grid-cols-2">
-                  {SOBRE.blocos.map((bloco, i) => (
-                    <Reveal key={bloco.titulo} className="plate" delay={i * 90}>
-                      <p className="credito">{bloco.titulo}</p>
-                      <h3 className="h3 mt-[var(--s-xs)]">{bloco.subtitulo}</h3>
-                      <p className="corpo mt-[var(--s-xs)]">{bloco.texto}</p>
-                    </Reveal>
-                  ))}
-                </div>
+                {/* os quatro pilares na forma dos passos do "Como
+                    trabalhamos": regua cortada e linha que se desenha, em vez
+                    de quatro chapas empilhadas */}
+                <Passos
+                  className="mt-[var(--s-lg)]"
+                  colunas={2}
+                  passos={SOBRE.blocos.map((bloco) => ({
+                    rotulo: bloco.titulo,
+                    titulo: bloco.subtitulo,
+                    texto: bloco.texto,
+                    icone: bloco.icone,
+                  }))}
+                />
               </div>
             </div>
           </section>

@@ -74,12 +74,42 @@ export function FitaServicos() {
     (evento.currentTarget as HTMLElement).setPointerCapture(evento.pointerId);
   }
 
+  /**
+   * ⚠️ O ARRASTO PINTA-SE AQUI, NA MESMA TAREFA DO EVENTO, e nao so no rAF
+   * seguinte. O ganho sempre foi 1:1, mas esperar pelo frame punha a fita ate
+   * 16ms atras do dedo, e a 120Hz isso le-se como fita pesada.
+   *
+   * ⚠️ E LEEM-SE OS EVENTOS COALESCIDOS: em ecras rapidos o browser entrega
+   * varios movimentos num so `pointermove`. Somar o delta de cada um e o que
+   * faz um gesto rapido percorrer a distancia toda em vez de saltar do
+   * primeiro ponto para o ultimo com o meio perdido.
+   */
   function aoMover(evento: React.PointerEvent) {
     if (!aArrastar.current) return;
-    const dx = evento.clientX - ultimoX.current;
-    ultimoX.current = evento.clientX;
-    desloc.current += dx;
-    arrastou.current += Math.abs(dx);
+
+    const nativo = evento.nativeEvent;
+    const pontos =
+      typeof nativo.getCoalescedEvents === "function"
+        ? nativo.getCoalescedEvents()
+        : [];
+    const xs = pontos.length > 0 ? pontos.map((p) => p.clientX) : [evento.clientX];
+
+    for (const x of xs) {
+      const dx = x - ultimoX.current;
+      ultimoX.current = x;
+      desloc.current += dx;
+      arrastou.current += Math.abs(dx);
+    }
+
+    const pista = pistaRef.current;
+    if (pista) {
+      const m = meio.current;
+      if (m > 0) {
+        if (desloc.current <= -m) desloc.current += m;
+        if (desloc.current > 0) desloc.current -= m;
+      }
+      pista.style.transform = `translate3d(${desloc.current}px, 0, 0)`;
+    }
   }
 
   function aoLargar() {

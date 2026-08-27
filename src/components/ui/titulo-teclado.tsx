@@ -14,6 +14,11 @@ const PASSO = 45;
  * meio, e o h1 de uma pagina de servico e exactamente aquilo por que ela e
  * encontrada.
  *
+ * ⚠️ COM `aoEntrar`, A MAQUINA SO ESCREVE QUANDO A FRASE CHEGA AO ECRA. As
+ * letras nascem em pausa e o `Reveal` a volta liberta-as ao marcar
+ * `data-shown`. Sem isto, um titulo a meio da pagina ja tinha acabado de se
+ * escrever quando alguem la chegava, e o gesto perdia-se todo.
+ *
  * ⚠️ A quebra de linha e por PALAVRA: cada palavra vive num span nowrap e o
  * espaco entre palavras e texto normal, onde a linha pode partir. Com as
  * letras soltas, o browser partia a meio de uma palavra ou nao partia de todo
@@ -23,10 +28,13 @@ export function TituloTeclado({
   texto,
   className,
   as: Tag = "h1",
+  aoEntrar = false,
 }: {
   texto: string;
   className?: string;
   as?: "h1" | "h2";
+  /** espera pelo Reveal que o envolve, em vez de escrever ao carregar */
+  aoEntrar?: boolean;
 }) {
   const palavras = React.useMemo(() => texto.split(" "), [texto]);
   const total = Array.from(texto).length * PASSO;
@@ -35,7 +43,7 @@ export function TituloTeclado({
 
   return (
     <Tag
-      className={cn("teclado", className)}
+      className={cn("teclado", aoEntrar && "teclado--ao-entrar", className)}
       style={{ "--tecla-fim": `${total}ms` } as React.CSSProperties}
     >
       <span className="sr-so-leitor">{texto}</span>

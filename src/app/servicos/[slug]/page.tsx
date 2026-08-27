@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
-import { TituloTeclado } from "@/components/ui/titulo-teclado";
+import { CapaFoto } from "@/components/ui/capa-foto";
 import { ListaLuz } from "@/components/ui/lista-luz";
 import { SERVICOS, EMPRESA } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
@@ -54,53 +54,15 @@ export default async function PaginaServico({
             sistema de blend do heroi principal: tinta base, subida do fundo
             ate --color-shell cheio, e a lavagem verde espelhada do CampoLuz
             para a emenda nao existir. */}
-        <section className="relative isolate flex min-h-[62svh] flex-col justify-end overflow-hidden lg:min-h-[72svh]">
-          <div className="absolute inset-0 -z-10 overflow-hidden">
-            <img
-              src={servico.imagem}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-              fetchPriority="high"
-              decoding="async"
-            />
-            <div
-              className="absolute inset-0 bg-shell"
-              style={{ opacity: 0.22 }}
-            />
-            <div className="absolute inset-x-0 bottom-0 h-[64%] bg-gradient-to-t from-shell via-shell/85 to-transparent" />
-            <div
-              className="absolute inset-x-0 bottom-0 h-[60%]"
-              style={{
-                backgroundImage:
-                  "radial-gradient(140% 120vh at 50% 100%, rgba(132,200,133,0.10), rgba(132,200,133,0) 82%)",
-              }}
-            />
-            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(11,20,55,.55)] to-transparent" />
-            <div className="grain" />
-          </div>
-
-          <div
-            className="shell relative z-10 w-full"
-            style={{
-              paddingBottom: "calc(var(--s-lg) + var(--safe-b))",
-              paddingTop: "calc(var(--s-xl) + var(--safe-t))",
-            }}
-          >
-            <nav aria-label="Caminho" className="meta rise [animation-delay:20ms]">
-              <a href={ROTAS.home}>Início</a> ›{" "}
-              <a href={ROTAS.servicos}>Serviços</a> › {servico.nome}
-            </nav>
-
-            <p className="credito rise mt-[var(--s-xs)] [animation-delay:60ms]">
-              {servico.credito}
-            </p>
-
-            <TituloTeclado
-              texto={servico.titulo}
-              className="display rise mt-[var(--s-xs)] max-w-[18ch] [animation-delay:120ms]"
-            />
-          </div>
-        </section>
+        <CapaFoto
+          imagem={servico.imagem}
+          credito={servico.credito}
+          titulo={servico.titulo}
+          migalhas={[
+            { rotulo: "Serviços", href: ROTAS.servicos },
+            { rotulo: servico.nome },
+          ]}
+        />
 
         <CampoLuz>
           <section className="field-shell section--tight" aria-label="O serviço">
