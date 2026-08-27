@@ -98,6 +98,19 @@ Next 16.2 + React 19 + Tailwind 4, `output: "export"`, `trailingSlash: true`, `i
 
 Conta Plus. Fluxo obrigatório (memória `reference_higgsfield_mcp`): `balance`, custo com `get_cost: true`, dizer o custo, `use_unlim: false`, `jobs_wait`, `show_generation_by_ids`. Modelo `nano_banana_pro` a 2 créditos por imagem 2K, aceita referência com `role: "image_references"` (não "reference"). Upload local: `media_upload` → `curl -X PUT` → `media_confirm`. Nesta sessão gastaram-se 10 créditos (5 imagens; 2 foram descartadas por serem fotos inventadas, o Tomás quer só a reprodução de referências ou fotos reais do cliente). Saldo aprox. 64.
 
+## 6b. Ronda 4 (27 de agosto, tarde)
+
+Seis afinacoes pedidas pelo Tomas depois de rever no iPhone, todas aplicadas e verificadas a 390 e 1440 px:
+
+1. **Heroi** sem o paragrafo por baixo do titulo (`HERO.lede` fica em `site.ts`, sem consumidor) e com o bloco mais em baixo (`paddingBottom` de `calc(--s-lg + --s-md + safe)` para `calc(--s-md + safe)`).
+2. **Quem somos** sem o rotulo e sem os dois paragrafos. A `ListaLuz` subiu para o lugar deles (`mt-[var(--s-md)]`), o `credito` do `CabecalhoSeccao` passou a opcional, e o logotipo leva `marca-animada--esquerda` para alinhar com o titulo.
+3. **Reels**: fora o `CarrosselReels` do painel da imogrow, dentro o **carrossel coverflow do primeview** (`~/primeview-site/src/components/ui/carrossel.tsx` na VPS), copiado com os comentarios. Tres adaptacoes, marcadas com ⚠️ no ficheiro: caminhos ja prefixados por `caminho()` (o Pages serve em subpasta), `video` opcional porque nao ha MP4 nenhum, e a aresta do cartao a seguir `--field-line-strong` porque a faixa e escura. **A pasta `src/components/painel/` desapareceu**, e com ela o bloco "PONTE PARA O PAINEL DE COMPONENTES" do `globals.css`: nada mais lhes tocava.
+4. **Indices de servicos e projetos**: as folhas ja tinham `Reveal`, o que faltava era o fade. A `.editorial__folha` declarava um `transition` so com `transform` e `box-shadow` e, sendo regra mais tardia, substituia o da `.reveal` por inteiro. As tres transicoes passaram a viver juntas, o atraso do stagger foi para `[data-shown="true"]` (e a zero no hover), o percurso subiu para 2.5rem e o stagger para 110ms.
+5. **Paineis dos projetos**: em coluna os fechados sobem de `3.5rem` para `4.75rem` e o contentor de `clamp(22rem,56svh,30rem)` para `clamp(27rem,66svh,35rem)`. Em desktop nada muda (la o `flex-grow` distribui largura).
+6. **Processo**: em telemovel (`max-width: 39.99rem`) o passo 1 fica sem linha e as tres restantes sao `<span>` com `scaleX`, desenhadas por ordem, com pausa, e a recolher pela ordem INVERSA, em ciclo de 5,08s. As keyframes sao geradas no servidor em `home/processo.tsx` (uma por posicao, porque um `animation-delay` unico nao sabe inverter a ordem no regresso), no mesmo padrao da `ListaLuz`. Em desktop mantem-se o `border-top` nos quatro. Ha uma regra propria de `prefers-reduced-motion` a por as linhas a `scaleX(1)`, senao ficavam invisiveis.
+
+**Como se verificou** (util para a proxima vez): o Chrome headless nao chega, porque o heroi e `100svh` e as ancoras nao param onde e preciso. O truque foi um `out/_visor.html` temporario com um `<iframe>` do tamanho pedido (`?u=&w=&h=&y=`), mais dois parametros de diagnostico: `shown=1` marca todos os `.reveal` como revelados, e `t=` pausa as animacoes de um seletor num instante exacto, o que permite fotografar um frame determinado do ciclo das linhas. O ficheiro **nao ficou no repositorio** (vive em `out/`, que esta no `.gitignore`).
+
 ## 7. Estado atual e o que falta
 
 **Tudo o que o Tomás pediu nas três rondas está feito, verificado com captura CDP a 390 e 1440 px, no git, na VPS (container saudável) e no GitHub Pages (links a funcionar depois do fix do prefixo).**
