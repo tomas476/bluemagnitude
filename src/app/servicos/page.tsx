@@ -17,7 +17,6 @@ export default function Servicos() {
     nome: s.nome,
     // a coluna curta de acento: os dois primeiros ganhos do servico
     mini: s.lista.slice(0, 3).map((item) => item.titulo),
-    descricao: s.resumo,
     imagem: s.imagem,
     imagemAlt: s.imagemAlt,
     href: servicoHref(s.slug),

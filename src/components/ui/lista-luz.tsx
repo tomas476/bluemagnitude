@@ -112,10 +112,29 @@ export function ListaLuz({
   const nome = `gota-${linhas.length}-${String(passo).replace(".", "-")}`;
   const { css, total } = keyframes(linhas.length, passo);
 
+  // O ACENDER DO ICONE. Enquanto a gota esta pousada num topico, o circulo
+  // inteiro enche-se de luz, nao so o miolo. Um keyframe partilhado, com um
+  // delay por topico igual ao do proprio trajecto da gota. Os frames sem
+  // propriedades herdam o estilo base, e e isso que faz o icone apagar-se
+  // sozinho quando a gota parte.
+  const troco = ACUMULA + CAI;
+  const fimLit = (((ACUMULA + CAI * 0.5) / total) * 100).toFixed(2);
+  const posLit = (((ACUMULA + CAI * 0.5) / total) * 100 + 4).toFixed(2);
+  const cssMarca = `@keyframes ${nome}-m {
+0%, ${fimLit}% {
+  background-color: var(--color-accent);
+  color: #0b1437;
+  box-shadow: 0 0 18px 2px color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+${posLit}%, 100% {
+  box-shadow: 0 0 0 0 transparent;
+}
+}`;
+
   return (
     <>
       <style precedence="medium" href={nome}>
-        {`@keyframes ${nome} {\n${css}\n}`}
+        {`@keyframes ${nome} {\n${css}\n}\n${cssMarca}`}
       </style>
 
       <ul
@@ -137,7 +156,16 @@ export function ListaLuz({
               className="lista-luz__item"
               delay={delayBase + i * 90}
             >
-              <span className="lista-luz__marca" aria-hidden="true">
+              <span
+                className="lista-luz__marca"
+                aria-hidden="true"
+                style={{
+                  animationName: `${nome}-m`,
+                  animationDuration: `${total}ms`,
+                  animationDelay: `${i * troco}ms`,
+                  animationIterationCount: "infinite",
+                }}
+              >
                 {comIcone ? <Icone size={20} strokeWidth={1.75} /> : null}
               </span>
               <div className="lista-luz__texto">

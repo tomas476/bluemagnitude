@@ -9,11 +9,15 @@ const PASSO = 45;
  * Titulo escrito a maquina, que fica escrito no fim.
  *
  * ⚠️ O texto COMPLETO esta sempre no DOM. As letras entram por opacity, uma a
- * uma, com um animation-delay por indice. Se as letras fossem acrescentadas por
- * JavaScript, o leitor de ecra e o motor de busca apanhavam a frase a meio, e o
- * h1 de uma pagina de servico e exactamente aquilo por que ela e encontrada.
+ * uma, com um animation-delay por indice: se as letras fossem acrescentadas
+ * por JavaScript, o leitor de ecra e o motor de busca apanhavam a frase a
+ * meio, e o h1 de uma pagina de servico e exactamente aquilo por que ela e
+ * encontrada.
  *
- * O cursor e um pseudo-elemento que se apaga quando a escrita acaba.
+ * ⚠️ A quebra de linha e por PALAVRA: cada palavra vive num span nowrap e o
+ * espaco entre palavras e texto normal, onde a linha pode partir. Com as
+ * letras soltas, o browser partia a meio de uma palavra ou nao partia de todo
+ * e o titulo saia do ecra no telemovel.
  */
 export function TituloTeclado({
   texto,
@@ -24,8 +28,10 @@ export function TituloTeclado({
   className?: string;
   as?: "h1" | "h2";
 }) {
-  const letras = React.useMemo(() => Array.from(texto), [texto]);
-  const total = letras.length * PASSO;
+  const palavras = React.useMemo(() => texto.split(" "), [texto]);
+  const total = Array.from(texto).length * PASSO;
+
+  let indice = 0;
 
   return (
     <Tag
@@ -34,15 +40,26 @@ export function TituloTeclado({
     >
       <span className="sr-so-leitor">{texto}</span>
       <span aria-hidden="true">
-        {letras.map((letra, i) => (
-          <span
-            key={`${letra}-${i}`}
-            className="teclado__l"
-            style={{ animationDelay: `${i * PASSO}ms` }}
-          >
-            {letra === " " ? " " : letra}
-          </span>
-        ))}
+        {palavras.map((palavra, p) => {
+          const inicio = indice;
+          indice += Array.from(palavra).length + 1; // +1 pelo espaco
+          return (
+            <React.Fragment key={`${palavra}-${p}`}>
+              {p > 0 ? " " : null}
+              <span className="teclado__palavra">
+                {Array.from(palavra).map((letra, i) => (
+                  <span
+                    key={i}
+                    className="teclado__l"
+                    style={{ animationDelay: `${(inicio + i) * PASSO}ms` }}
+                  >
+                    {letra}
+                  </span>
+                ))}
+              </span>
+            </React.Fragment>
+          );
+        })}
         <span
           className="teclado__cursor"
           /* o blink comeca ja, o apagar so no fim: um atraso por animacao */

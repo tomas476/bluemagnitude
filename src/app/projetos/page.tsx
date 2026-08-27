@@ -20,7 +20,6 @@ export default function Projetos() {
       p.paineis,
       p.bateria ? "Com bateria" : "Sem bateria",
     ],
-    descricao: p.resumoCurto,
     imagem: p.imagem,
     imagemAlt: p.imagemAlt,
     href: projetoHref(p.slug),

@@ -88,6 +88,19 @@ const NAV_CSS = `
   display: flex; align-items: center; min-height: 3rem;
   font-size: 1.0625rem; font-weight: 600; color: var(--color-ink);
 }
+.folha__grupo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+.folha__grupo .folha__link { flex: 1; }
+.folha__seta {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.75rem; height: 2.75rem; border-radius: 999px;
+  color: var(--color-ink-soft);
+  box-shadow: inset 0 0 0 1px var(--color-line-lit);
+}
 .folha__sublink {
   display: flex; align-items: center; min-height: 2.75rem;
   padding-left: .875rem;
@@ -103,6 +116,7 @@ export function SiteNav({ pousadaSempre = false }: Props) {
   const folhaRef = React.useRef<HTMLDivElement | null>(null);
   const [pousado, setPousado] = React.useState(pousadaSempre);
   const [aberto, setAberto] = React.useState(false);
+  const [servAberto, setServAberto] = React.useState(false);
 
   // pousar por sentinela: zero listeners de scroll
   React.useEffect(() => {
@@ -246,7 +260,13 @@ export function SiteNav({ pousadaSempre = false }: Props) {
           <div className="folha__veu" onClick={() => setAberto(false)} />
           <div ref={folhaRef} className="folha__caixa">
             <div className="flex items-center justify-between">
-              <Marca variante="cor" className="h-7 w-auto" />
+              <a
+                href={ROTAS.home}
+                aria-label={`${EMPRESA.nome}, ir para a página inicial`}
+                onClick={() => setAberto(false)}
+              >
+                <Marca variante="cor" className="h-7 w-auto" />
+              </a>
               <button
                 type="button"
                 className="nav__hamburger"
@@ -273,18 +293,53 @@ export function SiteNav({ pousadaSempre = false }: Props) {
               <a className="folha__link" href={ROTAS.sobre}>
                 Sobre nós
               </a>
-              <a className="folha__link" href={ROTAS.servicos}>
-                Serviços
-              </a>
-              {SERVICOS.map((s) => (
-                <a
-                  key={s.slug}
-                  className="folha__sublink"
-                  href={servicoHref(s.slug)}
-                >
-                  {s.nome}
+
+              {/* so as coisas principais a vista: os seis servicos abrem com a
+                  seta e voltam a fechar com ela */}
+              <div className="folha__grupo">
+                <a className="folha__link" href={ROTAS.servicos}>
+                  Serviços
                 </a>
-              ))}
+                <button
+                  type="button"
+                  className="folha__seta"
+                  aria-expanded={servAberto}
+                  aria-label={servAberto ? "Esconder os serviços" : "Mostrar os serviços"}
+                  onClick={() => setServAberto((v) => !v)}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                    style={{
+                      transform: servAberto ? "rotate(180deg)" : undefined,
+                      transition: "transform 260ms var(--ease-glide)",
+                    }}
+                  >
+                    <path
+                      d="M2 5l5 5 5-5"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+              {servAberto
+                ? SERVICOS.map((s) => (
+                    <a
+                      key={s.slug}
+                      className="folha__sublink"
+                      href={servicoHref(s.slug)}
+                    >
+                      {s.nome}
+                    </a>
+                  ))
+                : null}
+
               <a className="folha__link" href={ROTAS.projetos}>
                 Projetos
               </a>

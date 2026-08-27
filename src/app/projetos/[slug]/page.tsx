@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PaginaInterior } from "@/components/ui/pagina";
 import { Reveal } from "@/components/reveal";
+import { Paineis, type ItemPainel } from "@/components/ui/paineis";
 import { PROJETOS } from "@/content/site";
 import { ROTAS, projetoHref } from "@/content/rotas";
 
@@ -33,7 +34,15 @@ export default async function PaginaProjeto({
   const projeto = PROJETOS.find((p) => p.slug === slug);
   if (!projeto) notFound();
 
-  const outros = PROJETOS.filter((p) => p.slug !== projeto.slug).slice(0, 3);
+  const outros: ItemPainel[] = PROJETOS.filter((p) => p.slug !== projeto.slug).map(
+    (p) => ({
+      id: p.slug,
+      titulo: p.local,
+      descricao: `${p.potencia.toLocaleString("pt-PT")} W · ${p.categoria}`,
+      imagem: p.imagem,
+      href: projetoHref(p.slug),
+    }),
+  );
 
   const specs = [
     { rotulo: "Localização", valor: projeto.local },
@@ -113,28 +122,9 @@ export default async function PaginaProjeto({
               Outras instalações
             </h2>
           </Reveal>
-          <div className="mt-[var(--s-md)] grid gap-[var(--s-sm)] sm:grid-cols-3">
-            {outros.map((p, i) => (
-              <Reveal as="article" key={p.slug} delay={i * 90}>
-                <a href={projetoHref(p.slug)}>
-                  <div className="overflow-hidden rounded-[var(--radius-plate)]">
-                    <img
-                      src={p.imagem}
-                      alt={p.imagemAlt}
-                      width={1280}
-                      height={720}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full object-cover"
-                      style={{ aspectRatio: "16 / 10" }}
-                    />
-                  </div>
-                  <h3 className="h3 mt-[var(--s-xs)]">{p.titulo}</h3>
-                  <p className="meta">{p.local}</p>
-                </a>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal className="mt-[var(--s-md)]">
+            <Paineis itens={outros} rotuloLista="Outras instalações" />
+          </Reveal>
         </div>
       </section>
     </PaginaInterior>

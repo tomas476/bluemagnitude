@@ -159,7 +159,7 @@ function Cartao({
           className="absolute inset-0 grid place-items-center bg-gradient-to-b from-surface-2 via-ink to-ink-deep"
         >
           <img
-            src="/marca/monograma.png"
+            src="/marca/icone.png"
             alt=""
             loading="lazy"
             decoding="async"

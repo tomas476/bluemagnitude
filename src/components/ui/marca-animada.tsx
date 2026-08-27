@@ -13,7 +13,8 @@ import { cn } from "@/lib/cn";
  *
  * Tudo em CSS: tres <path> com stroke-dashoffset e keyframes. A imperfeicao e
  * de proposito, o traco tem de ler-se como mao e nao como forma geometrica:
- * os sublinhados nao sao rectos e a oval nem fecha no ponto onde comecou.
+ * o traco e LIMPO, uma penada fluida como um motion graphic, so com a oval a
+ * nao fechar exactamente no ponto de partida para ainda se ler como gesto.
  */
 export function MarcaAnimada({
   className,
@@ -53,7 +54,7 @@ export function MarcaAnimada({
         {/* sublinhado de "Blue": nao e recto, sobe um nada no fim */}
         <path
           className="ma__risco ma__risco--um"
-          d="M452 272 C 520 282, 640 284, 796 264"
+          d="M452 268 C 560 277, 690 277, 796 266"
           stroke="currentColor"
           strokeWidth="9"
           strokeLinecap="round"
@@ -61,7 +62,7 @@ export function MarcaAnimada({
         {/* sublinhado de "Magnitude": mais longo e menos direito */}
         <path
           className="ma__risco ma__risco--dois"
-          d="M474 427 C 646 437, 1024 439, 1304 419"
+          d="M472 428 C 700 439, 1080 439, 1302 425"
           stroke="currentColor"
           strokeWidth="7"
           strokeLinecap="round"
@@ -70,7 +71,7 @@ export function MarcaAnimada({
             partida sem fechar. E isso que a impede de parecer uma elipse */}
         <path
           className="ma__risco ma__risco--oval"
-          d="M300 -46 C 30 -34, -108 140, -52 320 C -4 484, 580 566, 1050 540 C 1382 522, 1478 310, 1408 150 C 1342 4, 820 -62, 344 -24"
+          d="M900 -30 C 480 -66, -40 30, -40 234 C -40 428, 430 505, 780 494 C 1180 482, 1372 372, 1372 214 C 1372 70, 1120 -14, 880 -26"
           stroke="currentColor"
           strokeWidth="7"
           strokeLinecap="round"

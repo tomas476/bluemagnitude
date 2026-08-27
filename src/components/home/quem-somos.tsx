@@ -45,7 +45,7 @@ export function QuemSomos() {
           </Reveal>
         </div>
 
-        <Reveal as="figure" delay={120}>
+        <Reveal as="figure" delay={120} className="hidden lg:block">
           <img
             src={QUEM_SOMOS.imagem}
             alt={QUEM_SOMOS.imagemAlt}

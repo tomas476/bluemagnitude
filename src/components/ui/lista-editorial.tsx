@@ -6,7 +6,6 @@ export type LinhaEditorial = {
   nome: string;
   /** a coluna pequena de acento, duas ou tres linhas curtas */
   mini: ReadonlyArray<string>;
-  descricao: string;
   imagem: string;
   imagemAlt: string;
   href: string;
@@ -43,9 +42,8 @@ export function ListaEditorial({
               ))}
             </span>
 
-            <p className="editorial__texto">{linha.descricao}</p>
-
             <span className="editorial__foto">
+              <span className="editorial__scrim" aria-hidden="true" />
               <img
                 src={linha.imagem}
                 alt={linha.imagemAlt}

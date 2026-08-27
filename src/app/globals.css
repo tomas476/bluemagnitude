@@ -766,51 +766,54 @@ details[open] .acordeao__r {
 .ma__risco {
   stroke-dasharray: var(--traco);
   stroke-dashoffset: var(--traco);
-  animation-name: ma-desenha;
-  animation-duration: 9s;
-  animation-timing-function: linear;
+  animation-duration: 6.5s;
+  /* com peso: cada troco do desenho acelera e assenta, em vez do linear */
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
   animation-iteration-count: infinite;
   animation-fill-mode: both;
 }
 
 .ma__risco--um {
-  --traco: 400;
+  --traco: 380;
   animation-name: ma-um;
 }
 
 .ma__risco--dois {
-  --traco: 900;
+  --traco: 860;
   animation-name: ma-dois;
 }
 
 .ma__risco--oval {
-  --traco: 3600;
+  --traco: 3900;
   animation-name: ma-oval;
 }
 
 @keyframes ma-um {
   0% { stroke-dashoffset: var(--traco); }
-  5.5% { stroke-dashoffset: 0; }
-  56% { stroke-dashoffset: 0; }
-  62% { stroke-dashoffset: var(--traco); }
+  6.5% { stroke-dashoffset: 0; }
+  72.5% { stroke-dashoffset: 0; }
+  79% { stroke-dashoffset: var(--traco); }
   100% { stroke-dashoffset: var(--traco); }
 }
+
 
 @keyframes ma-dois {
-  0%, 5.5% { stroke-dashoffset: var(--traco); }
-  11% { stroke-dashoffset: 0; }
-  50% { stroke-dashoffset: 0; }
-  56% { stroke-dashoffset: var(--traco); }
+  0%, 6.5% { stroke-dashoffset: var(--traco); }
+  14% { stroke-dashoffset: 0; }
+  66% { stroke-dashoffset: 0; }
+  72.5% { stroke-dashoffset: var(--traco); }
   100% { stroke-dashoffset: var(--traco); }
 }
 
+
 @keyframes ma-oval {
-  0%, 11% { stroke-dashoffset: var(--traco); }
-  21% { stroke-dashoffset: 0; }
-  40% { stroke-dashoffset: 0; }
-  50% { stroke-dashoffset: var(--traco); }
+  0%, 14% { stroke-dashoffset: var(--traco); }
+  30% { stroke-dashoffset: 0; }
+  52% { stroke-dashoffset: 0; }
+  66% { stroke-dashoffset: var(--traco); }
   100% { stroke-dashoffset: var(--traco); }
 }
+
 
 /* Movimento reduzido: o traco fica desenhado e quieto. A informacao mantem-se,
    o movimento e que sai. */
@@ -928,8 +931,14 @@ details[open] .acordeao__r {
 
 @media (prefers-reduced-motion: reduce) {
   .lista-luz__gota { display: none; }
-  .lista-luz__marca { background-color: var(--color-accent-ink); }
-  .lista-luz--icone .lista-luz__marca { background-color: var(--color-plate); }
+  .lista-luz__marca {
+    animation: none !important;
+    background-color: var(--color-accent-ink);
+  }
+  .lista-luz--icone .lista-luz__marca {
+    animation: none !important;
+    background-color: var(--color-plate);
+  }
 }
 
 /* ============================================================
@@ -959,26 +968,23 @@ details[open] .acordeao__r {
   );
 }
 
+/* o movimento vem do JS (um rAF que soma velocidade e arrasto no mesmo
+   deslocamento); aqui fica so a forma */
+.fita {
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.fita:active {
+  cursor: grabbing;
+}
+
 .fita__pista {
   display: flex;
   width: max-content;
   gap: var(--s-sm);
   padding-inline: var(--s-sm);
-  animation-name: fita-anda;
-  animation-duration: 46s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
   will-change: transform;
-}
-
-.fita:hover .fita__pista,
-.fita:focus-within .fita__pista {
-  animation-play-state: paused;
-}
-
-@keyframes fita-anda {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
 }
 
 .fita__item {
@@ -1035,21 +1041,8 @@ details[open] .acordeao__r {
   min-height: 2rem;
 }
 
-/* Movimento reduzido: deixa de andar sozinha e passa a tira que se arrasta. */
-@media (prefers-reduced-motion: reduce) {
-  .fita {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--gutter);
-  }
-  .fita__pista {
-    animation: none;
-    width: auto;
-  }
-  .fita__item {
-    scroll-snap-align: start;
-  }
-}
+/* Movimento reduzido: o rAF nao avanca sozinho (guardado no JS) e fica so o
+   arrasto manual, que e movimento pedido pelo proprio utilizador. */
 
 /* ============================================================
    PAINEIS EXPANSIVEIS
@@ -1358,12 +1351,12 @@ details[open] .acordeao__r {
   .editorial__link {
     /* minmax(0, ...) em todas as colunas de texto: e o 0 que impede o nome de
        invadir a coluna do lado quando a palavra e comprida */
+    /* sem coluna de descricao: indice, nome, topicos, fotografia */
     grid-template-columns:
       2.5rem
-      minmax(0, 1.5fr)
-      minmax(8.5rem, 10rem)
-      minmax(0, 1fr)
-      minmax(20rem, 30rem);
+      minmax(0, 1.4fr)
+      minmax(9rem, 11rem)
+      minmax(22rem, 34rem);
     align-items: start;
     gap: var(--s-md);
     min-height: 19rem;
@@ -1425,18 +1418,26 @@ details[open] .acordeao__r {
   color: var(--color-accent-ink);
 }
 
-.editorial__texto {
-  font-size: var(--t-label);
-  line-height: 1.55;
-  color: var(--color-ink-soft);
-  max-width: 34ch;
-  padding-right: var(--s-sm);
-}
-
 .editorial__foto {
+  position: relative;
   display: block;
   overflow: hidden;
   border-radius: 0;
+}
+
+/* a subida de tinta que faz o titulo destacar quando assenta na fotografia */
+.editorial__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 55, 0.78),
+    rgba(11, 20, 55, 0.3) 45%,
+    transparent 70%
+  );
+  opacity: 0;
 }
 
 .editorial__foto img {
@@ -1451,11 +1452,63 @@ details[open] .acordeao__r {
   transform: scale(1.05);
 }
 
+/* ============================================================
+   EM TELEMOVEL O INDICE E OUTRA COISA: uma fotografia por item,
+   de ponta a ponta, com o titulo pousado sobre uma subida de
+   tinta. Sem indice, sem topicos, sem folhas empilhadas.
+   ============================================================ */
 @media (max-width: 59.99rem) {
-  .editorial__foto {
-    /* em telemovel a fotografia sangra ate aos dois bordos do ecra */
-    margin-left: calc(var(--ed-pad) * -1);
+  .editorial__folha {
+    box-shadow: none;
+    background: none;
     border-radius: 0;
+  }
+
+  .editorial__folha + .editorial__folha {
+    margin-top: var(--s-sm);
+  }
+
+  .editorial__folha:hover,
+  .editorial__folha:focus-within {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .editorial__link {
+    position: relative;
+    display: block;
+    padding: 0;
+  }
+
+  .editorial__indice,
+  .editorial__mini {
+    display: none;
+  }
+
+  .editorial__foto {
+    margin: 0;
+  }
+
+  .editorial__foto img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .editorial__scrim {
+    opacity: 1;
+  }
+
+  .editorial__nome {
+    position: absolute;
+    left: var(--ed-pad);
+    right: var(--ed-pad);
+    bottom: var(--s-sm);
+    z-index: 2;
+    color: #fff;
+    font-size: clamp(1.5rem, 6.4vw, 2rem);
+    text-shadow: 0 2px 14px rgba(11, 20, 55, 0.6);
   }
 }
 
@@ -1611,48 +1664,45 @@ details[open] .acordeao__r {
    Cada linha e uma accao: escrever, WhatsApp, ligar, abrir mapa.
    ============================================================ */
 
+/* linhas simples com icone, sem mini-cards: o icone num circulo e a
+   informacao a frente */
 .contacto__linha {
-  display: grid;
-  grid-template-columns: 6.5rem 1fr auto;
+  display: flex;
   align-items: center;
   gap: var(--s-sm);
-  min-height: 3.5rem;
-  padding: var(--s-sm);
-  border-radius: var(--radius-plate);
-  background-color: var(--color-plate);
-  box-shadow: inset 0 0 0 1px var(--color-line);
-  transition:
-    box-shadow 300ms var(--ease-glide),
-    transform 300ms var(--ease-glide);
+  min-height: 3rem;
 }
 
-.contacto__linha:hover {
-  transform: translate3d(0, -1px, 0);
-  box-shadow:
-    inset 0 0 0 1px var(--color-line-strong),
-    0 6px 18px rgba(11, 20, 55, 0.08);
-}
-
-.contacto__rotulo {
-  font-size: var(--t-label);
-  font-weight: 600;
+.contacto__icone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
   color: var(--color-brand);
+  background-color: var(--color-plate);
+  box-shadow: inset 0 0 0 1px var(--color-line-lit);
+  transition:
+    background-color 300ms var(--ease-glide),
+    color 300ms var(--ease-glide);
+}
+
+.contacto__linha:hover .contacto__icone {
+  background-color: var(--color-brand);
+  color: var(--color-on-brand);
 }
 
 .contacto__valor {
+  display: block;
   font-size: var(--t-body);
   font-weight: 600;
   line-height: 1.35;
-  min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.contacto__seta {
-  color: var(--color-ink-faint);
-  transition: transform 300ms var(--ease-glide);
-}
-
-.contacto__linha:hover .contacto__seta {
-  transform: translate3d(2px, -2px, 0);
-  color: var(--color-brand);
+/* a palavra nao parte a meio; a linha parte no espaco entre palavras */
+.teclado__palavra {
+  display: inline-block;
+  white-space: nowrap;
 }

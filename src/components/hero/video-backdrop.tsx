@@ -113,9 +113,16 @@ export function VideoBackdrop({
       />
 
       {mostrarVideo ? (
+        /* ⚠️ opacity 0 ate ao onPlaying: um <video> pausado no iOS desenha o
+           botao de play DO SISTEMA por cima. Invisivel, nao desenha nada, e o
+           poster fica a respirar ate o play() vingar. */
         <video
           ref={guardarRef}
-          className="absolute inset-0 h-full w-full object-cover"
+          className={
+            aTocar
+              ? "absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-500"
+              : "absolute inset-0 h-full w-full object-cover opacity-0"
+          }
           style={{ objectPosition }}
           src={fonte ?? undefined}
           poster={posterActivo}
