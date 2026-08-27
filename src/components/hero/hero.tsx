@@ -19,7 +19,7 @@ export function Hero() {
       <div
         className="shell relative z-10 w-full"
         style={{
-          paddingBottom: "calc(var(--s-lg) + var(--s-md) + var(--safe-b))",
+          paddingBottom: "calc(var(--s-md) + var(--safe-b))",
           paddingTop: "calc(var(--s-xl) + var(--safe-t))",
         }}
       >
@@ -29,10 +29,6 @@ export function Hero() {
           {HERO.titulo}{" "}
           <span className="text-ink-soft">{HERO.tituloDestaque}</span>
         </h1>
-
-        <p className="lede rise mt-[var(--s-sm)] max-w-[46ch] [animation-delay:180ms]">
-          {HERO.lede}
-        </p>
 
         <div className="rise mt-[var(--s-md)] flex flex-wrap gap-3 [animation-delay:280ms] sm:gap-4">
           <a className="btn flex-1 sm:flex-none" href={ROTAS.contacto}>

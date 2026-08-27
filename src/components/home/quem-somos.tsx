@@ -15,25 +15,16 @@ export function QuemSomos() {
       <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
           <Reveal className="mb-[var(--s-md)] block">
-            <MarcaAnimada />
+            <MarcaAnimada className="marca-animada--esquerda" />
           </Reveal>
 
           <CabecalhoSeccao
-            credito={QUEM_SOMOS.credito}
             titulo={QUEM_SOMOS.titulo}
             tituloId="quem-somos-t"
           />
 
-          <div className="mt-[var(--s-lg)] grid gap-[var(--s-sm)]">
-            {QUEM_SOMOS.paragrafos.map((p, i) => (
-              <Reveal as="p" key={i} className="corpo" delay={i * 90}>
-                {p}
-              </Reveal>
-            ))}
-          </div>
-
           <ListaLuz
-            className="mt-[var(--s-lg)]"
+            className="mt-[var(--s-md)]"
             itens={QUEM_SOMOS.pilares}
             delayBase={180}
           />

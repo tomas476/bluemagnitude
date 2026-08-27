@@ -655,68 +655,6 @@ details[open] .acordeao__r {
 }
 
 /* ============================================================
-   PONTE PARA O PAINEL DE COMPONENTES
-   O CarrosselReels e o Particulas vieram do painel da imogrow e
-   assumem os tokens da casa desse kit. Aqui esses nomes sao
-   mapeados para a paleta da Blue Magnitude, sem tocar no
-   componente. O carrossel vive numa faixa escura, que e a
-   superficie para que foi desenhado.
-   ============================================================ */
-
-@theme {
-  --color-ink-deep: #0b1437;
-  --color-surface: #131f4a;
-  --color-surface-2: #1a2758;
-  --color-bone: #e8edf9;
-  --color-muted-deep: #a9b4d4;
-  --color-brass: #84c885;
-  --color-hairline-strong: #38477a;
-
-  --radius-card: 16px;
-  --radius-pill: 999px;
-
-  --text-2xs: 0.6875rem;
-  --text-fluid-lg: clamp(1.0625rem, 1rem + 0.4vw, 1.375rem);
-  --tracking-eyebrow: 0.08em;
-
-  --shadow-lift: 0 10px 30px rgba(3, 8, 26, 0.35);
-  --shadow-cinema: 0 22px 60px rgba(3, 8, 26, 0.5);
-
-  --z-index-modal: 70;
-}
-
-:root {
-  /* triplos RGB, para o rgb(var(--c-x)/alpha) que o componente usa */
-  --c-bone: 232 237 249;
-  --c-brass: 132 200 133;
-}
-
-.z-modal {
-  z-index: 70;
-}
-
-.px-gutter {
-  padding-inline: max(var(--gutter), var(--safe-l), var(--safe-r));
-}
-
-.scroll-px-gutter {
-  scroll-padding-inline: max(var(--gutter), var(--safe-l), var(--safe-r));
-}
-
-.safe-bottom {
-  padding-bottom: max(var(--safe-b), 0px);
-}
-
-.hairline {
-  border: 1px solid var(--color-hairline-strong);
-}
-
-.link {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-/* ============================================================
    O GESTO DA MARCA
    O logotipo com traco desenhado a mao por cima, em ciclo.
    O logotipo em si e do cliente e nao se toca; isto e so a
@@ -730,6 +668,13 @@ details[open] .acordeao__r {
   /* margem para a oval nao encostar ao que estiver a volta */
   margin: 1.25rem 1.75rem;
   color: var(--color-accent-ink);
+}
+
+/* No Quem somos o logotipo abre a seccao e o titulo vem logo por baixo: com a
+   margem lateral da base ele ficava 1.75rem para dentro do titulo. A oval
+   transborda ~0.6rem para a esquerda, que cabe na goteira da .shell. */
+.marca-animada--esquerda {
+  margin-left: 0;
 }
 
 .marca-animada--media {
@@ -1062,7 +1007,7 @@ details[open] .acordeao__r {
   width: 100%;
   /* em coluna a altura e menor: o painel activo nao precisa de meio ecra para
      mostrar um titulo e duas linhas */
-  height: clamp(22rem, 56svh, 30rem);
+  height: clamp(27rem, 66svh, 35rem);
   overflow: hidden;
   border-radius: var(--radius-plate);
 }
@@ -1095,7 +1040,9 @@ details[open] .acordeao__r {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 3.5rem;
+  /* em coluna e este piso que da corpo aos paineis fechados: a 3.5rem eram
+     tiras onde o titulo nao respirava. O contentor subiu com ele. */
+  min-height: 4.75rem;
   min-width: 0;
   flex: 1 1 0%;
   opacity: 0;
@@ -1316,11 +1263,34 @@ details[open] .acordeao__r {
   }
 }
 
-/* a folha debaixo do rato levanta-se da pilha */
+/* ⚠️ AS TRES TRANSICOES VIVEM NA MESMA DECLARACAO, e nao e arrumacao: esta
+   regra e mais tardia do que a .reveal, e um `transition` so com transform e
+   box-shadow substituia a da .reveal por inteiro. A opacidade ficava sem
+   transicao e a folha saltava de invisivel para visivel num frame, que era
+   exactamente a queixa de "nao aparece nada ao fazer scroll". */
 .editorial__folha {
   transition:
-    transform 400ms var(--ease-glide),
+    transform 700ms var(--ease-land),
+    opacity 700ms var(--ease-land),
     box-shadow 400ms var(--ease-glide);
+}
+
+/* o atraso do stagger conta no estado de CHEGADA: e de la que o browser le as
+   propriedades da transicao. */
+.editorial__folha[data-shown="true"] {
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* mas nao no rato: levantar a folha nao espera pela vez dela. */
+.editorial__folha:hover,
+.editorial__folha:focus-within {
+  transition-delay: 0ms;
+  transition-duration: 400ms;
+}
+
+/* uma folha de ponta a ponta a 1.25rem move-se de menos para se notar */
+.reveal.editorial__folha:not([data-shown="true"]) {
+  transform: translate3d(0, 2.5rem, 0);
 }
 
 /* a folha debaixo do rato destaca-se da pilha: sobe, cresce um nada e a
@@ -1712,4 +1682,65 @@ details[open] .acordeao__r {
 .teclado__palavra {
   display: inline-block;
   white-space: nowrap;
+}
+
+/* ============================================================
+   OS PASSOS DO PROCESSO
+   Em ecra grande os quatro passos ficam lado a lado e as quatro
+   linhas leem-se como uma regua cortada em quatro: e o desenho,
+   e fica como esta. EM TELEMOVEL empilham, e ai uma linha a
+   abrir o passo 1 lia-se como o fim da seccao anterior. La ficam
+   tres, entre os passos, e desenham-se em ciclo.
+   ============================================================ */
+
+.passo__corpo {
+  padding-top: var(--s-sm);
+  border-top: 2px solid var(--color-line-strong);
+}
+
+/* fora do telemovel o <span> nao existe para o olho */
+.passo__linha {
+  display: none;
+}
+
+@media (max-width: 39.99rem) {
+  .passo {
+    position: relative;
+  }
+
+  /* a linha e do passo, nao do corpo: e ela que faz a ligacao ao anterior */
+  .passo__corpo {
+    border-top: 0;
+    padding-top: calc(var(--s-sm) + 2px);
+  }
+
+  /* o passo 1 nao liga a nada, logo nao tem linha nem o espaco dela */
+  .passo:first-child .passo__corpo {
+    padding-top: 0;
+  }
+
+  /* ⚠️ UM <span> ESTICADO POR scaleX, e nao um border a crescer: um border
+     animado repinta a caixa a cada frame, e este corre no compositor. E uma
+     barra de 2px esticada e uma linha RECTA por construcao. */
+  .passo__linha {
+    display: block;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-line-strong);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    will-change: transform;
+  }
+}
+
+/* ⚠️ A REGRA GLOBAL DE MOVIMENTO REDUZIDO poe animation-duration a 0.01ms, e
+   sem fill-mode a linha voltava ao scaleX(0) do estado base: tres linhas
+   invisiveis. Aqui ficam desenhadas e quietas, que e o que elas sao. */
+@media (prefers-reduced-motion: reduce) {
+  .passo__linha {
+    transform: scaleX(1);
+  }
 }

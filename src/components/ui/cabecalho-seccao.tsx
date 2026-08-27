@@ -2,7 +2,8 @@ import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/cn";
 
 type Props = {
-  credito: string;
+  /** o rotulo pequeno por cima do titulo. Sem ele, o titulo abre a seccao. */
+  credito?: string;
   titulo: string;
   tituloId?: string;
   lede?: string;
@@ -23,7 +24,7 @@ export function CabecalhoSeccao({
 
   return (
     <Reveal className={className}>
-      <p className="credito">{credito}</p>
+      {credito ? <p className="credito">{credito}</p> : null}
       <Titulo
         id={tituloId}
         className={cn(
