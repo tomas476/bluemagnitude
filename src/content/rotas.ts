@@ -1,10 +1,12 @@
+import { caminho } from "@/lib/caminho";
+
 export const ROTAS = {
-  home: "/",
-  sobre: "/sobre/",
-  servicos: "/servicos/",
-  projetos: "/projetos/",
-  contacto: "/contacto/",
-  privacidade: "/privacidade/",
+  home: caminho("/"),
+  sobre: caminho("/sobre/"),
+  servicos: caminho("/servicos/"),
+  projetos: caminho("/projetos/"),
+  contacto: caminho("/contacto/"),
+  privacidade: caminho("/privacidade/"),
 } as const;
 
 export const ANCORAS = {
@@ -17,5 +19,5 @@ export const ANCORAS = {
   perguntas: "#perguntas",
 } as const;
 
-export const servicoHref = (slug: string) => `/servicos/${slug}/`;
-export const projetoHref = (slug: string) => `/projetos/${slug}/`;
+export const servicoHref = (slug: string) => caminho(`/servicos/${slug}/`);
+export const projetoHref = (slug: string) => caminho(`/projetos/${slug}/`);

@@ -1,3 +1,5 @@
+import { caminho } from "@/lib/caminho";
+
 /**
  * Contrato de conteúdo da Blue Magnitude.
  *
@@ -50,7 +52,7 @@ export const QUEM_SOMOS = {
     "Engenheiros, técnicos e gestores no mesmo projeto",
     "Rigorosos padrões de qualidade e segurança",
   ],
-  imagem: "/projetos/paineis-solares2.jpg",
+  imagem: caminho("/projetos/paineis-solares2.jpg"),
   imagemAlt: "Painéis solares instalados num telhado, vistos de baixo.",
 } as const;
 
@@ -79,7 +81,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "Sistemas de autoconsumo",
     intro:
       "O autoconsumo com painéis solares fotovoltaicos permite que produzas e consumas parte da tua própria energia. Este método aproveita a energia solar para gerar eletricidade limpa, sustentável e gratuita. Quando dimensionado de acordo com o perfil de consumo, o sistema oferece maior eficiência. Havendo excedente de produção, a energia extra pode ser injetada na rede elétrica ou vendida mediante contrato com um comercializador.",
-    imagem: "/projetos/telhado1.jpg",
+    imagem: caminho("/projetos/telhado1.jpg"),
     imagemAlt: "Painéis solares montados no telhado de uma moradia.",
     listaTitulo: "O que ganhas",
     lista: [
@@ -107,7 +109,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "Sistemas de autoconsumo com baterias",
     intro:
       "Os sistemas de autoconsumo com baterias permitem armazenar a energia solar excedente produzida durante o dia para ser utilizada quando a produção solar é baixa ou inexistente. Isso garante maior independência energética e uma redução significativa na fatura elétrica. A Blue Magnitude oferece soluções personalizadas que incluem a instalação de painéis solares, baterias de alta capacidade e sistemas de gestão de energia, otimizando o uso e o armazenamento da eletricidade gerada.",
-    imagem: "/projetos/ECS-banner.jpg",
+    imagem: caminho("/projetos/ECS-banner.jpg"),
     imagemAlt: "Bateria de armazenamento de energia instalada numa parede.",
     listaTitulo: "O que ganhas",
     lista: [
@@ -127,7 +129,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "AVAC e climatização",
     intro:
       "A Blue Magnitude oferece soluções completas de AVAC e climatização para garantir o conforto e a eficiência energética dos teus espaços. Os nossos serviços incluem desenho personalizado, instalação de equipamentos modernos, manutenção preventiva e otimização de sistemas existentes. Com uma equipa qualificada, proporcionamos ambientes agradáveis e eficientes, adaptados às tuas necessidades, seja para residências ou instalações comerciais.",
-    imagem: "/projetos/ar-condicionado.jpg",
+    imagem: caminho("/projetos/ar-condicionado.jpg"),
     imagemAlt: "Unidade de ar condicionado instalada numa parede interior.",
     listaTitulo: "Vantagens de instalar um sistema AVAC",
     lista: [
@@ -153,7 +155,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "Manter os sistemas solares em perfeito estado",
     intro:
       "Manter os teus sistemas de energia solar e climatização em perfeito estado é essencial para garantir a sua eficiência e durabilidade. Na Blue Magnitude oferecemos serviços completos de manutenção, incluindo inspeção, limpeza, testes de performance e substituição de componentes desgastados. A nossa equipa técnica assegura que os teus sistemas operem com máxima eficiência, prolongando a vida útil e otimizando a produção de energia.",
-    imagem: "/projetos/solar-panels-2048x1365.jpg",
+    imagem: caminho("/projetos/solar-panels-2048x1365.jpg"),
     imagemAlt: "Fila de painéis solares limpos ao sol.",
     listaTitulo: "Benefícios",
     lista: [
@@ -173,7 +175,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "Sistemas off-grid",
     intro:
       "Para locais remotos ou com acesso limitado à rede elétrica, os sistemas off-grid da Blue Magnitude oferecem total independência energética. Utilizando painéis solares e baterias, estes sistemas garantem uma fonte de energia fiável e contínua, ideal para áreas rurais, montanhas, ilhas e outros locais isolados.",
-    imagem: "/projetos/off-grid4-1.jpg",
+    imagem: caminho("/projetos/off-grid4-1.jpg"),
     imagemAlt: "Painéis solares isolados numa zona rural.",
     listaTitulo: "Vantagens",
     lista: [
@@ -224,7 +226,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     titulo: "Consultoria de sistemas fotovoltaicos",
     intro:
       "A transição para as energias renováveis nunca foi tão importante, e a energia solar está na vanguarda desta mudança. A nossa consultoria em sistemas fotovoltaicos guia a tua empresa em cada etapa do processo, garantindo uma transição eficiente, económica e sustentável para a energia solar.",
-    imagem: "/projetos/projetar.jpg",
+    imagem: caminho("/projetos/projetar.jpg"),
     imagemAlt: "Projeto técnico de instalação fotovoltaica sobre uma mesa.",
     listaTitulo: "O que fazemos",
     lista: [
@@ -284,7 +286,7 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
       "A instalação inclui baterias Fox ESS Energy Cube 2900 com uma capacidade total de 11,6 kW. Estas baterias permitem o armazenamento de energia excedente, garantindo um fornecimento contínuo e estável mesmo durante períodos de menor incidência solar, como à noite ou em dias nublados. Este sistema de armazenamento é fundamental para maximizar a autonomia energética da instalação.",
       "O projeto representa uma solução energética completa e eficiente, pensada para dar ao cliente uma fonte de energia renovável fiável, contribuindo para a redução das emissões de carbono e promovendo a independência energética a longo prazo.",
     ],
-    imagem: "/projetos/DJI_0125-scaled.jpg",
+    imagem: caminho("/projetos/DJI_0125-scaled.jpg"),
     imagemAlt:
       "Vista aérea de um telhado com vinte painéis solares instalados em Leiria.",
   },
@@ -304,7 +306,7 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
       "O sistema é gerido por um inversor híbrido Solplanet ASW4000H, que converte a energia captada para o uso diário e facilita a integração com a rede elétrica e a gestão inteligente do armazenamento. Essa flexibilidade é essencial para o sistema funcionar de forma eficiente tanto durante o dia como à noite.",
       "Para armazenamento, o projeto inclui uma bateria Sunwoda Monawall de 5,12 kW, que acumula o excedente gerado durante o dia. Essa capacidade garante que a eletricidade esteja disponível mesmo durante a noite ou em dias nublados, reduzindo a dependência da rede e aumentando a autonomia do sistema.",
     ],
-    imagem: "/projetos/Mata-Mourisca5-scaled.jpg",
+    imagem: caminho("/projetos/Mata-Mourisca5-scaled.jpg"),
     imagemAlt:
       "Vista aérea de sete painéis solares instalados num telhado em Mata Mourisca.",
   },
@@ -324,7 +326,7 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
       "O sistema é gerido por um inversor híbrido Solplanet ASW4000H, que converte a energia solar captada para utilização imediata. Este inversor é especialmente eficiente em sistemas híbridos, permitindo a conversão direta para o consumo doméstico e a gestão inteligente do armazenamento e do fornecimento à rede quando necessário.",
       "Para complementar o sistema foi instalada uma bateria Sunwoda Monawall com 5,12 kW de capacidade. Armazena o excedente produzido durante o dia, permitindo o uso durante a noite ou em períodos de baixa produção solar, garantindo uma fonte de energia constante e minimizando a dependência da rede elétrica.",
     ],
-    imagem: "/projetos/DJI_0101-scaled.jpg",
+    imagem: caminho("/projetos/DJI_0101-scaled.jpg"),
     imagemAlt:
       "Vista aérea de cinco painéis solares instalados num telhado em Penela.",
   },
@@ -344,7 +346,7 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
       "A energia gerada é gerida pelo inversor Fox ESS S-3000, que converte a corrente contínua captada pelos painéis em corrente alternada utilizável para consumo imediato. Este inversor é conhecido pela eficiência e fiabilidade, garantindo que a eletricidade produzida seja usada de forma otimizada.",
       "Embora este projeto não inclua baterias de armazenamento, o sistema foi projetado para se integrar diretamente na rede elétrica, permitindo que a energia excedente seja enviada para a rede ou usada para reduzir o consumo em tempo real.",
     ],
-    imagem: "/projetos/Serra-Santo-Antonio2-scaled.jpg",
+    imagem: caminho("/projetos/Serra-Santo-Antonio2-scaled.jpg"),
     imagemAlt:
       "Vista aérea de seis painéis solares instalados na Serra de Santo António.",
   },
@@ -364,7 +366,7 @@ export const PROJETOS: ReadonlyArray<Projeto> = [
       "A energia gerada é convertida para uso doméstico pelo inversor Fox ESS S-3000, que transforma a corrente contínua gerada pelos painéis em corrente alternada compatível com a rede elétrica e com os aparelhos domésticos.",
       "Embora o sistema não inclua baterias de armazenamento, está configurado para operar em sinergia com a rede elétrica, usando a energia solar durante o dia e complementando com a rede quando necessário. Esta configuração permite uma redução significativa na dependência da rede elétrica convencional.",
     ],
-    imagem: "/projetos/DJI_0134-scaled.jpg",
+    imagem: caminho("/projetos/DJI_0134-scaled.jpg"),
     imagemAlt:
       "Vista aérea de seis painéis solares instalados em Vila Nova da Barquinha.",
   },
@@ -571,8 +573,8 @@ export const SOBRE = {
     ],
   },
   imagens: [
-    { src: "/projetos/paineis-solares5-scaled.jpg", alt: "Painéis solares ao sol." },
-    { src: "/projetos/instalacao-autoconsumo.jpg", alt: "Instalação de autoconsumo em curso." },
+    { src: caminho("/projetos/paineis-solares5-scaled.jpg"), alt: "Painéis solares ao sol." },
+    { src: caminho("/projetos/instalacao-autoconsumo.jpg"), alt: "Instalação de autoconsumo em curso." },
   ],
 } as const;
 

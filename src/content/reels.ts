@@ -1,5 +1,6 @@
 import type { ItemRail } from "@/components/painel/ui/CarrosselReels";
 import { EMPRESA } from "@/content/site";
+import { caminho } from "@/lib/caminho";
 
 /**
  * Os cinco reels do Instagram da Blue Magnitude, na ordem de curadoria do
@@ -23,7 +24,7 @@ const SHORTCODES = [
 
 export const REELS: ReadonlyArray<ItemRail> = SHORTCODES.map((codigo) => ({
   id: codigo,
-  poster: `/reels/${codigo}.webp`,
+  poster: caminho(`/reels/${codigo}.webp`),
   posterAlt: `Reel de Instagram da ${EMPRESA.nome}`,
   eyebrow: "Instagram · Reel",
   titulo: EMPRESA.instagramHandle,

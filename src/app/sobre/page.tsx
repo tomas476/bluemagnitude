@@ -8,6 +8,7 @@ import { MarcaAnimada } from "@/components/ui/marca-animada";
 import { ListaLuz } from "@/components/ui/lista-luz";
 import { ARRANQUE, SOBRE, EMPRESA } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
+import { caminho } from "@/lib/caminho";
 
 export const metadata: Metadata = {
   title: "Sobre nós",
@@ -28,7 +29,7 @@ export default function Sobre() {
             no canto superior esquerdo, que a imagem deixa livre. */}
         <section className="arranque section--tight" aria-labelledby="arranque-t">
           <img
-            src="/sobre/arranque.jpg"
+            src={caminho("/sobre/arranque.jpg")}
             alt=""
             className="arranque__fundo"
             width={2200}
@@ -93,7 +94,7 @@ export default function Sobre() {
                 {/* fotografia REAL deles, da pagina de autoconsumo do site
                     actual. Nada de fotos inventadas. */}
                 <img
-                  src="/projetos/instalacao-autoconsumo.jpg"
+                  src={caminho("/projetos/instalacao-autoconsumo.jpg")}
                   alt="Instalação de autoconsumo feita pela Blue Magnitude."
                   width={570}
                   height={800}
