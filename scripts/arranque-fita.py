@@ -138,8 +138,20 @@ for i in range(len(cx) - 1):
         f" {x2:.1f} {y2:.1f}"
     )
 
+# a cor sai do miolo da fita, longe das bordas, para nao apanhar a mistura com
+# o fundo. O token --color-accent da casa e parecido mas nao e o mesmo, e aqui
+# o que conta e coincidir com a ilustracao
+miolo = ndimage.binary_erosion(verde, np.ones((9, 9), bool))
+cor = np.median(a[miolo], axis=0).astype(int)
+
 json.dump(
-    {"largura": w, "altura": h, "d": d, "espessura": round(float(esp), 1)},
+    {
+        "largura": w,
+        "altura": h,
+        "d": d,
+        "espessura": round(float(esp), 1),
+        "cor": "#%02x%02x%02x" % tuple(cor),
+    },
     open(CAMINHO, "w"),
     indent=2,
 )
