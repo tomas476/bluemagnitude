@@ -21,13 +21,14 @@ export function MarcaAnimada({
   tamanho = "grande",
 }: {
   className?: string;
-  tamanho?: "grande" | "pequena";
+  tamanho?: "grande" | "media" | "pequena";
 }) {
   return (
     <div
       className={cn(
         "marca-animada",
         tamanho === "pequena" && "marca-animada--pequena",
+        tamanho === "media" && "marca-animada--media",
         className,
       )}
     >

@@ -20,11 +20,8 @@ export function Reels() {
             Instagram
           </p>
           <h2 id="reels-t" className="title mt-[var(--s-xs)] max-w-[22ch]">
-            O que ando a montar por aí
+            Acompanha-nos nas redes
           </h2>
-          <p className="lede mt-[var(--s-sm)]">
-            Instalações a acontecer, filmadas no dia.
-          </p>
         </Reveal>
       </div>
 

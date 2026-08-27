@@ -79,8 +79,13 @@ export default function Contacto() {
                   <p className="lede mt-[var(--s-sm)]">{CONTACTO.lede}</p>
                 </Reveal>
 
-                <Reveal className="justify-self-start lg:justify-self-end" delay={140}>
-                  <MarcaAnimada tamanho="pequena" />
+                {/* ao centro do espaco a direita do titulo, num ponto acima
+                    do pequeno */}
+                <Reveal
+                  className="justify-self-start lg:justify-self-center lg:-translate-x-12"
+                  delay={140}
+                >
+                  <MarcaAnimada tamanho="media" />
                 </Reveal>
               </div>
 

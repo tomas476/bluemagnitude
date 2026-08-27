@@ -5,6 +5,7 @@ import { Reveal } from "@/components/reveal";
 import { Paineis, type ItemPainel } from "@/components/ui/paineis";
 import { PROJETOS } from "@/content/site";
 import { ROTAS, projetoHref } from "@/content/rotas";
+import { caminho } from "@/lib/caminho";
 
 export function generateStaticParams() {
   return PROJETOS.map((p) => ({ slug: p.slug }));
@@ -39,7 +40,7 @@ export default async function PaginaProjeto({
       id: p.slug,
       titulo: p.local,
       descricao: `${p.potencia.toLocaleString("pt-PT")} W · ${p.categoria}`,
-      imagem: p.imagem,
+      imagem: caminho(p.imagem),
       href: projetoHref(p.slug),
     }),
   );

@@ -3,13 +3,14 @@ import { CabecalhoSeccao } from "@/components/ui/cabecalho-seccao";
 import { Paineis, type ItemPainel } from "@/components/ui/paineis";
 import { PROJETOS } from "@/content/site";
 import { ANCORAS, ROTAS, projetoHref } from "@/content/rotas";
+import { caminho } from "@/lib/caminho";
 
 export function Projetos() {
   const itens: ItemPainel[] = PROJETOS.map((p) => ({
     id: p.slug,
     titulo: p.local,
     descricao: `${p.potencia.toLocaleString("pt-PT")} W · ${p.categoria}`,
-    imagem: p.imagem,
+    imagem: caminho(p.imagem),
     href: projetoHref(p.slug),
   }));
 
