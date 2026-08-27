@@ -123,6 +123,22 @@ Seis afinacoes pedidas pelo Tomas depois de rever no iPhone, todas aplicadas e v
 
 ⚠️ **Duas armadilhas que morderam nesta ronda, ambas de cascata**: uma regra base escrita DEPOIS de uma media query ganha-lhe (aconteceu com `.numeros__valor` e com `.arranque__ilustra`, que atirou a ilustracao para dentro do fluxo em desktop). E cortar `site.ts` por `index()` de uma string que existe em dois blocos apaga o que esta pelo meio (o `QUEM_SOMOS.paragrafos` comeca igual ao do `SOBRE`).
 
+## 6d. Ronda 6 (27 de agosto, noite)
+
+1. **A fita verde estava fora do sitio e por cima dos cartoes**, e eram dois defeitos com causas diferentes:
+   - **A caixa.** A `.arranque__ilustra` nao tinha altura: vinha da `<img>`, que pedia `height: 100%` a caixa. Referencia circular. O Chrome resolvia-a como `auto` e ficava bem; o Safari do iPhone resolvia-a de outra maneira e a caixa do SVG deixava de ser a caixa da imagem, o que desalinha a fita E a poe por cima dos cartoes ao mesmo tempo. Agora a caixa tem `aspect-ratio: 2200 / 1227`, as duas camadas sao absolutas com `inset: 0`, e a ordem e por `z-index` e nao pela ordem do DOM. Medido no browser: as duas caixas dao exactamente o mesmo rectangulo.
+   - **O traco.** A spline de alisamento estava com folga de 6 000 000 e a curva, lisa, tinha **56 px de desvio mediano** face a fita pintada. Passou para 5 000: desvio mediano **5,5 px** e sobreposicao com a fita original de **85,7%** (era 21,8%). ⚠️ **Este numero mede-se, nao se ve**: ha um bloco no fim desta nota com o metodo.
+2. **A fotografia do Sobre** desvanece no fim (`mask-image` linear ate transparente) e o bloco de texto sobe (`margin-top` negativo) para o rotulo e o titulo assentarem nela, como no heroi. So em telemovel.
+3. **Fora o paragrafo** por baixo de "Fazemos circular energia positiva" (`SOBRE.paragrafos` saiu do `site.ts`), e os blocos "A nossa equipa" e "Sustentabilidade" passaram a uma linha cada. Missao e Visao ficaram como estavam.
+4. **Rodape**: os icones do Instagram e do Facebook passaram para a direita do logotipo, na mesma linha, nas duas medidas. Em ecra grande a informacao divide-se em tres colunas (marca | morada e email | telefone e horario). Em telemovel o ar apertou e os alvos de toque passaram de 2,75rem para 2,5rem.
+
+**Como se mede se a fita esta no sitio** (para nao voltar a discutir a olho):
+```
+# renderiza so o SVG a 2200x1227 num HTML minimo e compara as mascaras verdes
+IoU = (verde_original & verde_novo & ~cartao) / (verde_original | verde_novo & ~cartao)
+```
+Abaixo de ~80% de sobreposicao, ou acima de ~10 px de desvio vertical mediano, a fita saiu do lugar e nota-se.
+
 ## 7. Estado atual e o que falta
 
 **Tudo o que o Tomás pediu nas três rondas está feito, verificado com captura CDP a 390 e 1440 px, no git, na VPS (container saudável) e no GitHub Pages (links a funcionar depois do fix do prefixo).**

@@ -1581,10 +1581,57 @@ details[open] .acordeao__r {
   padding-block: var(--s-lg);
 }
 
+/* ⚠️ 2.5rem e nao 2.75rem: o alvo de toque continua confortavel e o rodape
+   perde uma linha de altura por cada contacto, que era o que o Tomas via
+   como "footer enorme". */
 .rodape ul a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem;
+  min-height: 2.5rem;
+}
+
+.rodape__base {
+  margin-top: var(--s-md);
+  padding-top: var(--s-md);
+  display: grid;
+  gap: var(--s-sm);
+}
+
+/* o logotipo a esquerda, os dois discos encostados a direita da mesma linha */
+.rodape__marca {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-sm);
+}
+
+.rodape__coluna {
+  display: grid;
+  align-content: start;
+  gap: 0;
+}
+
+.rodape__legal {
+  margin-top: var(--s-sm);
+  padding-top: var(--s-sm);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-sm);
+}
+
+@media (min-width: 48rem) {
+  .rodape__base {
+    grid-template-columns: auto 1fr 1fr;
+    align-items: start;
+    gap: var(--s-lg);
+  }
+
+  /* em ecra grande os discos nao se afastam do logotipo: ficam ao lado dele */
+  .rodape__marca {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 39.99rem) {
@@ -1623,6 +1670,19 @@ details[open] .acordeao__r {
   .sobre__foto img {
     border-radius: 0;
     aspect-ratio: 16 / 9;
+    /* ⚠️ O FIM DA FOTOGRAFIA DISSOLVE-SE NO FUNDO. A seccao nao pinta fundo
+       (regra da casa), portanto o que aparece por baixo e a lavagem do
+       CampoLuz e a emenda nao se ve. E o mesmo gesto do heroi, feito com
+       mascara em vez de seis camadas, porque aqui nao ha texto por cima da
+       parte cheia da foto. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  /* e o titulo assenta nessa parte esbatida, como na landing */
+  .sobre__texto {
+    position: relative;
+    margin-top: calc(var(--s-lg) * -1);
   }
 }
 
@@ -1655,28 +1715,45 @@ details[open] .acordeao__r {
    arrumacao: com a mesma especificidade ganha a ultima, e escritas depois
    eram elas a repor `position: relative` por cima do `absolute` do desktop.
    A ilustracao caia para dentro do fluxo e empurrava o titulo para o lado. */
+
+/* ⚠️⚠️ A CAIXA TEM ALTURA PROPRIA, E ISTO E O CERNE DA COISA.
+   Antes a altura da caixa vinha da <img>, e a <img> pedia `height: 100%` a
+   caixa: uma referencia circular. O Chrome resolvia-a como `auto` e ficava
+   bem; o Safari do iPhone resolvia-a de outra maneira, a caixa do SVG deixava
+   de ser a caixa da imagem, e o resultado eram as DUAS queixas de uma vez: a
+   fita noutro sitio E por cima dos cartoes, porque o recorte (`cover` na
+   imagem, `slice` no SVG) passava a ser calculado sobre caixas diferentes.
+   Com `aspect-ratio` a caixa e definida pela proporcao da ilustracao em
+   qualquer motor, e as duas camadas assentam uma na outra. */
 .arranque__ilustra {
   position: relative;
   display: block;
   width: 100%;
+  aspect-ratio: 2200 / 1227;
 }
 
-/* as duas camadas ocupam exactamente a mesma caixa: a imagem manda, e o SVG
-   copia-lhe o recorte (`xMaxYMax slice` e o equivalente de `object-fit: cover`
-   com `object-position: right bottom`) */
-.arranque__cartoes {
+/* as duas camadas ocupam exactamente a mesma caixa: as duas absolutas, com o
+   mesmo recorte (`xMaxYMax slice` no SVG e o equivalente de `object-fit:
+   cover` com `object-position: right bottom` na imagem) */
+.arranque__cartoes,
+.arranque__fita {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* ⚠️ A ORDEM E POR z-index E NAO PELA ORDEM DO DOM: os cartoes tapam a fita,
+   sempre, que e o que a ilustracao faz. */
+.arranque__cartoes {
+  z-index: 1;
   object-fit: cover;
   object-position: right bottom;
 }
 
 .arranque__fita {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -1696,6 +1773,8 @@ details[open] .acordeao__r {
   .arranque__ilustra {
     position: absolute;
     inset: 0;
+    /* aqui a largura e a altura ja vem do `inset`; a proporcao sai do caminho */
+    aspect-ratio: auto;
     z-index: -1;
   }
 }

@@ -103,8 +103,14 @@ ys = np.array([p[1] for p in pontos])
 # ficarem fora do que se ve.
 from scipy import interpolate
 
-(tck, _u) = interpolate.splprep([xs, ys], s=6_000_000, k=3)
-t = np.linspace(0, 1, 26)
+# ⚠️ A FOLGA E PEQUENA (5 000), e ja foi 6 000 000. Com folga larga a curva
+# ficava lisa mas ANDAVA: 56 px de desvio mediano em 1227 de altura, ou seja
+# a fita deixava de passar por onde estava pintada e o Tomas viu logo. Com
+# 5 000 o desvio mediano cai para ~6 px e a curva continua sem tremer. O
+# numero nao se muda a olho: ha uma medida de sobreposicao com o JPG original
+# descrita no CONTEXTO, e e ela que manda.
+(tck, _u) = interpolate.splprep([xs, ys], s=5_000, k=3)
+t = np.linspace(0, 1, 60)
 cx, cy = interpolate.splev(t, tck)
 
 # prolongamento recto para fora da moldura, na direccao de cada ponta

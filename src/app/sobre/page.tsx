@@ -100,7 +100,7 @@ export default function Sobre() {
                 />
               </Reveal>
 
-              <div>
+              <div className="sobre__texto">
                 <Reveal>
                   <p className="credito">{SOBRE.credito}</p>
                   <TituloTeclado
@@ -111,19 +111,11 @@ export default function Sobre() {
                   />
                 </Reveal>
 
-                <div className="mt-[var(--s-md)] grid gap-[var(--s-sm)]">
-                  {SOBRE.paragrafos.map((p, i) => (
-                    <Reveal as="p" key={i} className="corpo" delay={i * 90}>
-                      {p}
-                    </Reveal>
-                  ))}
-                </div>
-
                 {/* os quatro pilares na forma dos passos do "Como
                     trabalhamos": regua cortada e linha que se desenha, em vez
                     de quatro chapas empilhadas */}
                 <Passos
-                  className="mt-[var(--s-lg)]"
+                  className="mt-[var(--s-md)]"
                   colunas={2}
                   passos={SOBRE.blocos.map((bloco) => ({
                     rotulo: bloco.titulo,

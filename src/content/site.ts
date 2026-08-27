@@ -510,15 +510,6 @@ export const PRIVACIDADE = {
 export const SOBRE = {
   credito: "Sobre nós",
   titulo: "Fazemos circular energia positiva",
-  /**
-   * ⚠️ UM PARAGRAFO, E NAO TRES. Os tres originais diziam a mesma coisa por
-   * tres caminhos e empurravam a missao, a visao, a equipa e a
-   * sustentabilidade para fora do primeiro ecra, que e onde elas contam. O
-   * texto e o deles, condensado; nao ha facto novo aqui.
-   */
-  paragrafos: [
-    "Dedicamo-nos a soluções de energia renovável e a aumentar a eficiência energética em Portugal, para transformar a forma como as pessoas e as empresas consomem energia.",
-  ],
   blocos: [
     {
       titulo: "Missão",
@@ -539,14 +530,14 @@ export const SOBRE = {
       icone: "equipa",
       subtitulo: "Profissionais altamente qualificados",
       texto:
-        "Contamos com uma equipa de profissionais qualificados, incluindo engenheiros, técnicos e gestores. Com operações em Leiria, Santarém e Lisboa, estamos preparados para oferecer um serviço próximo dos nossos clientes.",
+        "Engenheiros, técnicos e gestores no mesmo projeto, com operações em Leiria, Santarém e Lisboa.",
     },
     {
       titulo: "Sustentabilidade",
       icone: "folha",
       subtitulo: "Responsabilidade ambiental e social",
       texto:
-        "A sustentabilidade é um pilar fundamental para a Blue Magnitude. Implementamos práticas empresariais que promovem a eficiência energética e a responsabilidade ambiental e social.",
+        "Práticas que promovem a eficiência energética e a responsabilidade ambiental e social.",
     },
   ],
   qualidade: {

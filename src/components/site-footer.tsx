@@ -58,13 +58,17 @@ export function SiteFooter() {
           </a>
         </div>
 
+        {/* ⚠️ TRES COLUNAS EM ECRA GRANDE: a marca, a morada com o email, e o
+            telefone com o horario. Antes eram duas e a coluna da direita era
+            uma lista de quatro linhas que empurrava o rodape para baixo. */}
         <div
-          className="mt-[var(--s-md)] grid gap-[var(--s-md)] pt-[var(--s-md)] sm:grid-cols-[1.2fr_1fr]"
+          className="rodape__base"
           style={{ borderTop: "1px solid var(--field-line)" }}
         >
-          <div>
+          {/* os icones ficam a DIREITA do logotipo, na mesma linha */}
+          <div className="rodape__marca">
             <Marca variante="branco" className="h-10 w-auto" />
-            <div className="mt-[var(--s-sm)] flex gap-[var(--s-xs)]">
+            <div className="flex gap-[var(--s-xs)]">
               <Social href={EMPRESA.instagram} rotulo="Instagram">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
@@ -85,7 +89,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <ul className="grid gap-[var(--s-xs)] self-start">
+          <ul className="rodape__coluna">
             <li>
               <a
                 className="corpo"
@@ -101,12 +105,15 @@ export function SiteFooter() {
                 {EMPRESA.email}
               </a>
             </li>
+          </ul>
+
+          <ul className="rodape__coluna">
             <li className="corpo">
               <a href={`tel:${EMPRESA.telefone.replace(/\s/g, "")}`}>
                 {EMPRESA.telefone}
               </a>
               {/* a nota do custo da chamada e obrigatoria, fica em qualquer
-                  medida; o horario e que se resume a uma linha */}
+                  medida */}
               <span className="meta block">{EMPRESA.telefoneNota}</span>
             </li>
             <li className="meta">{EMPRESA.horario}</li>
@@ -114,13 +121,13 @@ export function SiteFooter() {
         </div>
 
         <div
-          className="mt-[var(--s-md)] flex flex-wrap items-center justify-between gap-[var(--s-sm)] pt-[var(--s-sm)]"
+          className="rodape__legal"
           style={{ borderTop: "1px solid var(--field-line)" }}
         >
           <p className="meta">
             © {ANO} {EMPRESA.nome}
           </p>
-          <div className="flex flex-wrap gap-[var(--s-md)]">
+          <div className="flex flex-wrap gap-[var(--s-sm)]">
             <a className="meta" href={ROTAS.privacidade}>
               Política de privacidade
             </a>
