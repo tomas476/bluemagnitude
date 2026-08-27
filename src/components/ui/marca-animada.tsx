@@ -19,9 +19,16 @@ import { cn } from "@/lib/cn";
 export function MarcaAnimada({
   className,
   tamanho = "grande",
+  orbita = false,
 }: {
   className?: string;
-  tamanho?: "grande" | "media" | "pequena";
+  tamanho?: "grande" | "media" | "pequena" | "enorme";
+  /**
+   * Nos contactos a oval nao se desenha e apaga: fica desenhada e ANDA A
+   * VOLTA do logotipo, devagar, sem parar. Os dois sublinhados continuam a
+   * fazer o gesto normal.
+   */
+  orbita?: boolean;
 }) {
   return (
     <div
@@ -29,6 +36,8 @@ export function MarcaAnimada({
         "marca-animada",
         tamanho === "pequena" && "marca-animada--pequena",
         tamanho === "media" && "marca-animada--media",
+        tamanho === "enorme" && "marca-animada--enorme",
+        orbita && "marca-animada--orbita",
         className,
       )}
     >

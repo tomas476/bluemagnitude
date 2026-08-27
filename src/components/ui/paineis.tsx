@@ -129,16 +129,31 @@ export function Paineis({
                 aria-selected={eActivo}
                 tabIndex={eActivo ? 0 : -1}
                 className="paineis__botao"
-                style={
-                  item.imagem
-                    ? ({ backgroundImage: `url("${item.imagem}")` } as React.CSSProperties)
-                    : undefined
-                }
                 onClick={() => setActivo(i)}
                 onMouseEnter={() => setActivo(i)}
                 onFocus={() => setActivo(i)}
                 onKeyDown={(evento) => aoTeclar(evento, i)}
               >
+                {/* ⚠️ UMA <img> COM object-fit: cover, E NAO UM background-image.
+                    Com background-image e `background-size: auto 120%` (a
+                    receita do interactive-selector original), num painel
+                    fechado de telemovel, que e largo e baixo, a largura
+                    calculada pela altura ficava menor do que o painel e o
+                    browser REPETIA a fotografia de lado: cada projecto
+                    aparecia com a mesma foto tres vezes. Com `cover` a
+                    fotografia enche o espaco sem nunca esticar: no maximo
+                    amplia e corta. */}
+                {item.imagem ? (
+                  <img
+                    className="paineis__foto"
+                    src={item.imagem}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
+                ) : null}
+
                 <span className="paineis__tinta" aria-hidden="true" />
 
                 <span className="paineis__rotulo">

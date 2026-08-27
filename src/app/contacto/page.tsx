@@ -85,7 +85,7 @@ export default function Contacto() {
                   className="justify-self-start lg:justify-self-center lg:-translate-x-12"
                   delay={140}
                 >
-                  <MarcaAnimada tamanho="media" />
+                  <MarcaAnimada tamanho="enorme" orbita />
                 </Reveal>
               </div>
 

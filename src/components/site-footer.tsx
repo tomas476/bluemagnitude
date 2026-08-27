@@ -33,17 +33,16 @@ function Social({
 
 export function SiteFooter() {
   return (
-    <footer className="field-deep">
-      <div className="shell rodape">
-        {/* o CTA substitui a seccao de formulario que saiu da homepage: uma
-            accao so, e o canal que estes clientes usam mesmo */}
-        <div className="flex flex-col gap-[var(--s-sm)] sm:flex-row sm:items-center sm:justify-between">
+    <>
+      {/* ⚠️ O CTA NAO E RODAPE. Estava dentro da chapa escura, colado a ela, e
+          lia-se como o principio do rodape em vez do fim da pagina. Aqui fica
+          na cor do que vem por cima dele, e o escuro so comeca depois. */}
+      <section className="field-shell rodape__cta" aria-label="Falar connosco">
+        <div className="shell flex flex-col gap-[var(--s-sm)] sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="title" style={{ fontSize: "var(--t-h3)" }}>
               {EMPRESA.promessa}
             </p>
-            {/* a promessa em telemovel fica so no botao: a linha repetia
-                o que ele ja diz e empurrava tudo para baixo */}
             <p className="meta mt-[2px] rodape__so-largo">
               Proposta gratuita e sem compromisso.
             </p>
@@ -57,17 +56,17 @@ export function SiteFooter() {
             Falar por WhatsApp
           </a>
         </div>
+      </section>
 
-        {/* ⚠️ TRES COLUNAS EM ECRA GRANDE: a marca, a morada com o email, e o
-            telefone com o horario. Antes eram duas e a coluna da direita era
-            uma lista de quatro linhas que empurrava o rodape para baixo. */}
-        <div
-          className="rodape__base"
-          style={{ borderTop: "1px solid var(--field-line)" }}
-        >
-          {/* os icones ficam a DIREITA do logotipo, na mesma linha */}
+      <footer className="field-deep">
+        <div className="shell rodape">
+
+        {/* ⚠️ UM BOTAO EM VEZ DA LISTA DE CONTACTOS. A morada, o email, o
+            telefone e o horario ocupavam metade do rodape e repetiam a pagina
+            de contactos, que e onde eles vivem com mapa e formulario. */}
+        <div className="rodape__base">
           <div className="rodape__marca">
-            <Marca variante="branco" className="h-10 w-auto" />
+            <Marca variante="branco" className="h-9 w-auto" />
             <div className="flex gap-[var(--s-xs)]">
               <Social href={EMPRESA.instagram} rotulo="Instagram">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -89,35 +88,9 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <ul className="rodape__coluna">
-            <li>
-              <a
-                className="corpo"
-                href={EMPRESA.maps}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {EMPRESA.morada}
-              </a>
-            </li>
-            <li>
-              <a className="corpo" href={`mailto:${EMPRESA.email}`}>
-                {EMPRESA.email}
-              </a>
-            </li>
-          </ul>
-
-          <ul className="rodape__coluna">
-            <li className="corpo">
-              <a href={`tel:${EMPRESA.telefone.replace(/\s/g, "")}`}>
-                {EMPRESA.telefone}
-              </a>
-              {/* a nota do custo da chamada e obrigatoria, fica em qualquer
-                  medida */}
-              <span className="meta block">{EMPRESA.telefoneNota}</span>
-            </li>
-            <li className="meta">{EMPRESA.horario}</li>
-          </ul>
+          <a className="btn btn--contorno rodape__contactos" href={ROTAS.contacto}>
+            Contactos
+          </a>
         </div>
 
         <div
@@ -141,7 +114,8 @@ export function SiteFooter() {
             </a>
           </div>
         </div>
-      </div>
-    </footer>
+        </div>
+      </footer>
+    </>
   );
 }

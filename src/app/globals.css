@@ -681,6 +681,26 @@ details[open] .acordeao__r {
   margin-left: 0;
 }
 
+/* ⚠️ A ORBITA PRECISA DE MAIS MARGEM DO QUE O DESENHO PARADO: a oval nao e
+   centrada no logotipo, e ao rodar varre um circulo mais largo do que a
+   caixa dele. Sem esta folga passava por cima do que estivesse ao lado. */
+.marca-animada--enorme {
+  /* ⚠️ A CONTA TEM DE INCLUIR A MARGEM: a 78vw mais 3rem de cada lado o
+     conjunto passava dos 375px do telemovel, alargava o documento e cortava o
+     texto da pagina toda pela direita. */
+  width: min(26rem, 66vw);
+  /* a margem de cima e de baixo e para a orbita: ela varre um circulo mais
+     alto do que o logotipo e sem folga passava por cima do texto */
+  margin: 3.25rem 1.5rem;
+}
+
+@media (min-width: 64rem) {
+  .marca-animada--enorme {
+    width: min(26rem, 38vw);
+    margin: 2.5rem 3rem;
+  }
+}
+
 .marca-animada--media {
   width: min(16.5rem, 66vw);
 }
@@ -739,6 +759,31 @@ details[open] .acordeao__r {
 .ma__risco--oval {
   --traco: 3900;
   animation-name: ma-oval;
+}
+
+/* a oval fica desenhada e roda, em vez de se desenhar e apagar. O centro e o
+   do proprio caminho da oval (medido no viewBox), nao o do logotipo. */
+.marca-animada--orbita .ma__risco--oval {
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  /* ⚠️ ENCOLHIDA A 78%: a oval nao esta centrada no logotipo, e ao rodar o
+     circulo que ela varre e bem mais alto do que a caixa. A 100% entrava pelo
+     paragrafo de cima. */
+  scale: 0.78;
+  animation-name: ma-orbita;
+  animation-duration: 16s;
+  animation-timing-function: linear;
+  transform-box: view-box;
+  transform-origin: 666px 220px;
+}
+
+@keyframes ma-orbita {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
 }
 
 @keyframes ma-um {
@@ -1093,22 +1138,41 @@ details[open] .acordeao__r {
   padding: var(--s-sm);
   text-align: left;
   cursor: pointer;
-  background-color: var(--color-deep);
+  /* o degrade da marca e o que se ve nos paineis sem fotografia */
   background-image: linear-gradient(
     150deg,
     color-mix(in srgb, var(--color-brand) 55%, var(--color-deep)),
     var(--color-deep) 70%
   );
-  background-size: auto 120%;
-  background-position: center;
+  background-color: var(--color-deep);
+  overflow: hidden;
   box-shadow: inset 0 0 0 1px var(--color-line-deep);
-  transition:
-    background-size 700ms var(--ease-glide),
-    box-shadow 400ms var(--ease-glide);
+  transition: box-shadow 400ms var(--ease-glide);
+}
+
+/* ⚠️ A FOTOGRAFIA E UMA <img> COM object-fit: cover. Era um background-image
+   com `background-size: auto 120%`, e num painel fechado de telemovel, largo
+   e baixo, a largura calculada a partir da altura ficava menor do que o
+   painel: o browser repetia a fotografia de lado e cada projecto aparecia com
+   a mesma foto tres vezes. Com `cover` ela enche o espaco sem nunca esticar,
+   no maximo amplia e corta. */
+.paineis__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* fechado mostra-a um pouco ampliada; ao abrir, assenta. E o gesto do
+     original, agora feito no transform e nao no tamanho do fundo */
+  transform: scale(1.12);
+  transition: transform 700ms var(--ease-glide);
+}
+
+.paineis__celula[data-activo="true"] .paineis__foto {
+  transform: scale(1);
 }
 
 .paineis__celula[data-activo="true"] .paineis__botao {
-  background-size: auto 100%;
   box-shadow:
     inset 0 0 0 1px var(--color-line-deep),
     inset 0 2px 0 0 var(--color-accent);
@@ -1593,24 +1657,31 @@ details[open] .acordeao__r {
    que e onde ele estava pior (linhas de 22px).
    ============================================================ */
 
-.rodape {
+/* a faixa do CTA, ja fora da chapa escura, com o ar contado */
+.rodape__cta {
   padding-block: var(--s-lg);
+}
+
+/* ⚠️ O RODAPE E CURTO POR DECISAO: marca, redes, um botao de contactos e a
+   linha legal. A morada, o email, o telefone e o horario vivem na pagina de
+   contactos, com mapa e formulario, e nao precisam de ser repetidos aqui. */
+.rodape {
+  padding-block: var(--s-md);
 }
 
 /* ⚠️ 2.5rem e nao 2.75rem: o alvo de toque continua confortavel e o rodape
    perde uma linha de altura por cada contacto, que era o que o Tomas via
    como "footer enorme". */
-.rodape ul a {
-  display: inline-flex;
+.rodape__base {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  min-height: 2.5rem;
+  justify-content: space-between;
+  gap: var(--s-sm);
 }
 
-.rodape__base {
-  margin-top: var(--s-md);
-  padding-top: var(--s-md);
-  display: grid;
-  gap: var(--s-sm);
+.rodape__contactos {
+  flex: none;
 }
 
 /* o logotipo a esquerda, os dois discos encostados a direita da mesma linha */
@@ -1619,12 +1690,6 @@ details[open] .acordeao__r {
   align-items: center;
   justify-content: space-between;
   gap: var(--s-sm);
-}
-
-.rodape__coluna {
-  display: grid;
-  align-content: start;
-  gap: 0;
 }
 
 .rodape__legal {
@@ -1638,25 +1703,26 @@ details[open] .acordeao__r {
 }
 
 @media (min-width: 48rem) {
-  .rodape__base {
-    grid-template-columns: auto 1fr 1fr;
-    align-items: start;
-    gap: var(--s-lg);
-  }
-
   /* em ecra grande os discos nao se afastam do logotipo: ficam ao lado dele */
   .rodape__marca {
     justify-content: flex-start;
+    gap: var(--s-md);
   }
 }
 
 @media (max-width: 39.99rem) {
-  .rodape {
+  .rodape,
+  .rodape__cta {
     padding-block: var(--s-md);
   }
 
   .rodape__so-largo {
     display: none;
+  }
+
+  /* o botao ocupa a linha toda, que e o alvo mais confortavel do polegar */
+  .rodape__contactos {
+    width: 100%;
   }
 }
 
