@@ -575,3 +575,16 @@ export const SOBRE = {
     { src: "/projetos/instalacao-autoconsumo.jpg", alt: "Instalação de autoconsumo em curso." },
   ],
 } as const;
+
+/** O arranque da pagina Sobre: o claim deles como titulo, e numeros
+    verificaveis. Nada de historia inventada. */
+export const ARRANQUE = {
+  credito: "Sobre nós",
+  titulo: "Fazemos circular energia",
+  numeros: [
+    { valor: "05", rotulo: "instalações documentadas" },
+    { valor: "12 100 W", rotulo: "o maior sistema instalado" },
+    { valor: "3", rotulo: "distritos onde operamos" },
+    { valor: "6", rotulo: "serviços no catálogo" },
+  ],
+} as const;

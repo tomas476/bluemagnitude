@@ -1,5 +1,7 @@
 import { Reveal } from "@/components/reveal";
 import { CabecalhoSeccao } from "@/components/ui/cabecalho-seccao";
+import { MarcaAnimada } from "@/components/ui/marca-animada";
+import { ListaLuz } from "@/components/ui/lista-luz";
 import { QUEM_SOMOS, EMPRESA } from "@/content/site";
 import { ANCORAS, ROTAS } from "@/content/rotas";
 
@@ -12,6 +14,10 @@ export function QuemSomos() {
     >
       <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
+          <Reveal className="mb-[var(--s-md)] block">
+            <MarcaAnimada />
+          </Reveal>
+
           <CabecalhoSeccao
             credito={QUEM_SOMOS.credito}
             titulo={QUEM_SOMOS.titulo}
@@ -26,31 +32,11 @@ export function QuemSomos() {
             ))}
           </div>
 
-          <Reveal className="mt-[var(--s-md)]" delay={180}>
-            <ul className="grid gap-[var(--s-xs)]">
-              {QUEM_SOMOS.pilares.map((pilar) => (
-                <li key={pilar} className="flex items-start gap-[var(--s-xs)]">
-                  <svg
-                    className="mt-1 flex-none"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M2.5 8.5l3.5 3.5 7.5-8"
-                      stroke="var(--color-accent-ink)"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span className="corpo">{pilar}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+          <ListaLuz
+            className="mt-[var(--s-lg)]"
+            itens={QUEM_SOMOS.pilares}
+            delayBase={180}
+          />
 
           <Reveal className="mt-[var(--s-md)]" delay={240}>
             <a className="btn-quiet" href={ROTAS.sobre}>

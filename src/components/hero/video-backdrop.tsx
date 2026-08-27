@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { prefersLightweight } from "@/lib/lightweight";
+import { movimentoReduzido, prefersLightweight } from "@/lib/lightweight";
 
 type Props = {
   poster: string;
@@ -16,8 +16,17 @@ type Props = {
  *
  * O <video> nasce visivel e no HTML servido, que e a unica forma de o Safari o
  * arrancar sozinho. muted, defaultMuted e setAttribute("muted") entram no
- * callback do ref ANTES de tudo. Se o sistema recusar o autoplay, fica o poster
- * a respirar em vez de um rectangulo parado.
+ * callback do ref ANTES de tudo.
+ *
+ * ⚠️ O QUE ACONTECE QUANDO O SISTEMA RECUSA
+ * Num iPhone em poupanca de bateria o Safari recusa o autoplay e desenha o SEU
+ * botao de play por cima do video. Um rectangulo parado com um controlo do
+ * sistema ao meio e pior do que uma fotografia, por isso quando o play() e
+ * recusado o <video> e DESMONTADO e fica so o poster a respirar.
+ *
+ * Antes de desistir tenta-se outra vez em dois momentos que costumam
+ * desbloquear: o primeiro toque no documento e o regresso do separador a
+ * visivel. Uma vez cada, sem listeners pendurados.
  *
  * A fonte e escolhida em JS com matchMedia e vai como src unico: o atributo
  * media dentro de <video> ja nao e honrado, so o <picture> o respeita.
@@ -31,52 +40,94 @@ export function VideoBackdrop({
 }: Props) {
   const [fonte, setFonte] = React.useState<string | null>(null);
   const [aTocar, setATocar] = React.useState(false);
+  const [desistiu, setDesistiu] = React.useState(false);
   const [posterActivo, setPosterActivo] = React.useState(poster);
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  const tentativas = React.useRef(0);
 
   React.useEffect(() => {
     const estreito = window.matchMedia("(max-width: 768px)").matches;
     setPosterActivo(estreito ? posterEstreito : poster);
-    if (prefersLightweight()) return;
+    if (prefersLightweight() || movimentoReduzido()) return;
     setFonte(estreito ? fontes.estreito : fontes.largo);
   }, [fontes.estreito, fontes.largo, poster, posterEstreito]);
 
-  const guardarRef = React.useCallback((elemento: HTMLVideoElement | null) => {
+  const tentar = React.useCallback(() => {
+    const elemento = videoRef.current;
     if (!elemento) return;
-    elemento.muted = true;
-    elemento.defaultMuted = true;
-    elemento.setAttribute("muted", "");
     const promessa = elemento.play();
-    if (promessa && typeof promessa.catch === "function") {
-      promessa.catch(() => {
-        /* o sistema recusou: fica o poster */
-      });
-    }
+    if (!promessa || typeof promessa.catch !== "function") return;
+    promessa.catch(() => {
+      tentativas.current += 1;
+      // duas recusas seguidas: o sistema nao vai deixar. Fica o poster.
+      if (tentativas.current >= 3) setDesistiu(true);
+    });
   }, []);
+
+  const guardarRef = React.useCallback(
+    (elemento: HTMLVideoElement | null) => {
+      videoRef.current = elemento;
+      if (!elemento) return;
+      elemento.muted = true;
+      elemento.defaultMuted = true;
+      elemento.setAttribute("muted", "");
+      tentar();
+    },
+    [tentar],
+  );
+
+  React.useEffect(() => {
+    if (!fonte || aTocar || desistiu) return;
+
+    const aoTocarNoEcra = () => tentar();
+    const aoVoltar = () => {
+      if (document.visibilityState === "visible") tentar();
+    };
+
+    document.addEventListener("touchstart", aoTocarNoEcra, { once: true, passive: true });
+    document.addEventListener("click", aoTocarNoEcra, { once: true });
+    document.addEventListener("visibilitychange", aoVoltar);
+
+    return () => {
+      document.removeEventListener("touchstart", aoTocarNoEcra);
+      document.removeEventListener("click", aoTocarNoEcra);
+      document.removeEventListener("visibilitychange", aoVoltar);
+    };
+  }, [fonte, aTocar, desistiu, tentar]);
+
+  const mostrarVideo = Boolean(fonte) && !desistiu;
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
       <img
         src={posterActivo}
         alt={descricao}
-        className={aTocar ? "absolute inset-0 h-full w-full object-cover opacity-0" : "hero-respira absolute inset-0 h-full w-full object-cover"}
+        className={
+          aTocar
+            ? "absolute inset-0 h-full w-full object-cover opacity-0"
+            : "hero-respira absolute inset-0 h-full w-full object-cover"
+        }
         style={{ objectPosition }}
         fetchPriority="high"
         decoding="async"
       />
 
-      {fonte ? (
+      {mostrarVideo ? (
         <video
           ref={guardarRef}
           className="absolute inset-0 h-full w-full object-cover"
           style={{ objectPosition }}
-          src={fonte}
+          src={fonte ?? undefined}
           poster={posterActivo}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
+          disablePictureInPicture
+          controls={false}
           aria-hidden="true"
+          tabIndex={-1}
           onPlaying={() => setATocar(true)}
         />
       ) : null}

@@ -9,7 +9,6 @@ import { Projetos } from "@/components/home/projetos";
 import { Processo } from "@/components/home/processo";
 import { Reels } from "@/components/home/reels";
 import { Perguntas } from "@/components/home/perguntas";
-import { Falar } from "@/components/home/falar";
 
 export default function Home() {
   return (
@@ -21,12 +20,11 @@ export default function Home() {
         <Hero />
         <CampoLuz>
           <QuemSomos />
+          <Reels />
           <Servicos />
           <Projetos />
           <Processo />
-          <Reels />
           <Perguntas />
-          <Falar />
         </CampoLuz>
       </main>
       {/* o rodape fica fora: e chapa opaca, e uma lavagem por baixo de opaco

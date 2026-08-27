@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PaginaInterior } from "@/components/ui/pagina";
 import { Reveal } from "@/components/reveal";
-import { SERVICOS } from "@/content/site";
+import { TituloTeclado } from "@/components/ui/titulo-teclado";
+import { ListaLuz } from "@/components/ui/lista-luz";
+import { SERVICOS, EMPRESA } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
 
 export function generateStaticParams() {
@@ -33,10 +35,15 @@ export default async function PaginaServico({
   const servico = SERVICOS.find((s) => s.slug === slug);
   if (!servico) notFound();
 
+  const mensagem = encodeURIComponent(
+    `Olá, queria uma proposta para ${servico.nome.toLowerCase()}.`,
+  );
+
   return (
     <PaginaInterior
       credito={servico.credito}
       titulo={servico.titulo}
+      tituloTeclado
       migalhas={[
         { rotulo: "Serviços", href: ROTAS.servicos },
         { rotulo: servico.nome },
@@ -44,10 +51,10 @@ export default async function PaginaServico({
     >
       <section className="field-shell section" aria-label="O serviço">
         <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          <Reveal as="p" className="corpo">
+          <Reveal as="p" className="corpo" delay={200}>
             {servico.intro}
           </Reveal>
-          <Reveal as="figure" delay={120}>
+          <Reveal as="figure" delay={300}>
             <img
               src={servico.imagem}
               alt={servico.imagemAlt}
@@ -62,23 +69,19 @@ export default async function PaginaServico({
         </div>
       </section>
 
-      <section className="field-shell section--tight" aria-labelledby="lista-t">
+      <section className="field-shell section--tight" aria-labelledby="ganhos-t">
         <div className="shell">
           <Reveal>
-            <h2 id="lista-t" className="title max-w-[24ch]">
+            <h2 id="ganhos-t" className="title max-w-[24ch]">
               {servico.listaTitulo}
             </h2>
           </Reveal>
-          <ul className="mt-[var(--s-md)] grid gap-[var(--s-sm)] sm:grid-cols-2 lg:grid-cols-3">
-            {servico.lista.map((item, i) => (
-              <Reveal as="li" key={item.titulo} className="card" delay={i * 90}>
-                <h3 className="h3">{item.titulo}</h3>
-                {item.texto ? (
-                  <p className="corpo mt-[var(--s-xs)]">{item.texto}</p>
-                ) : null}
-              </Reveal>
-            ))}
-          </ul>
+          <ListaLuz
+            className="mt-[var(--s-md)]"
+            itens={servico.lista}
+            variante="icone"
+            delayBase={90}
+          />
         </div>
       </section>
 
@@ -97,10 +100,7 @@ export default async function PaginaServico({
                     className="pt-[var(--s-sm)]"
                     style={{ borderTop: "2px solid var(--color-line-strong)" }}
                   >
-                    <span className="figure" style={{ fontSize: "var(--t-label)" }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="h3 mt-[var(--s-xs)]">{item.titulo}</h3>
+                    <h3 className="h3">{item.titulo}</h3>
                     {item.texto ? (
                       <p className="corpo mt-[var(--s-xs)]">{item.texto}</p>
                     ) : null}
@@ -120,9 +120,19 @@ export default async function PaginaServico({
               Dizes-nos o que precisas, fazemos as contas e apresentamos os
               números antes de haver qualquer decisão.
             </p>
-            <a className="btn mt-[var(--s-md)]" href={ROTAS.contacto}>
-              Falar connosco
-            </a>
+            <div className="mt-[var(--s-md)] flex flex-wrap gap-[var(--s-sm)]">
+              <a
+                className="btn"
+                href={`https://wa.me/${EMPRESA.whatsapp}?text=${mensagem}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Falar por WhatsApp
+              </a>
+              <a className="btn btn--contorno" href={ROTAS.contacto}>
+                Preencher o formulário
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>

@@ -15,6 +15,10 @@ type Props = {
   delay?: number;
   as?: Tag;
   repetir?: boolean;
+  /** so para as = "details": o grupo exclusivo nativo do HTML */
+  nome?: string;
+  /** so para as = "details": estado controlado */
+  aberto?: boolean;
 };
 
 /**
@@ -39,6 +43,8 @@ export function Reveal({
   delay,
   as = "div",
   repetir = false,
+  nome,
+  aberto,
 }: Props) {
   const ref = React.useRef<HTMLElement | null>(null);
   const [shown, setShown] = React.useState(false);
@@ -88,6 +94,8 @@ export function Reveal({
       ref={ref}
       className={cn(armed && "reveal", className)}
       data-shown={shown ? "true" : undefined}
+      name={nome}
+      open={aberto}
       style={
         delay
           ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties)

@@ -1,8 +1,12 @@
 import { Marca } from "@/components/marca";
-import { EMPRESA, SERVICOS } from "@/content/site";
-import { ROTAS, servicoHref } from "@/content/rotas";
+import { EMPRESA } from "@/content/site";
+import { ROTAS } from "@/content/rotas";
 
 const ANO = 2026;
+
+const MENSAGEM = encodeURIComponent(
+  "Olá, vi o vosso site e queria pedir uma proposta.",
+);
 
 function Social({
   href,
@@ -30,15 +34,35 @@ function Social({
 export function SiteFooter() {
   return (
     <footer className="field-deep">
-      <div className="shell section--tight">
-        <div className="grid gap-[var(--s-lg)] sm:grid-cols-[1.2fr_1fr_1fr]">
+      <div className="shell" style={{ paddingBlock: "var(--s-lg)" }}>
+        {/* o CTA substitui a seccao de formulario que saiu da homepage: uma
+            accao so, e o canal que estes clientes usam mesmo */}
+        <div className="flex flex-col gap-[var(--s-sm)] sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <Marca variante="branco" className="h-12 w-auto" />
-            <p className="corpo mt-[var(--s-sm)] max-w-[44ch]">
-              {EMPRESA.promessa}. Instalação de sistemas fotovoltaicos,
-              manutenção, monitorização e consultoria em {EMPRESA.zonas}.
+            <p className="title" style={{ fontSize: "var(--t-h3)" }}>
+              {EMPRESA.promessa}
             </p>
-            <div className="mt-[var(--s-md)] flex gap-[var(--s-xs)]">
+            <p className="meta mt-[2px]">
+              Proposta gratuita e sem compromisso.
+            </p>
+          </div>
+          <a
+            className="btn"
+            href={`https://wa.me/${EMPRESA.whatsapp}?text=${MENSAGEM}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Falar por WhatsApp
+          </a>
+        </div>
+
+        <div
+          className="mt-[var(--s-md)] grid gap-[var(--s-md)] pt-[var(--s-md)] sm:grid-cols-[1.2fr_1fr]"
+          style={{ borderTop: "1px solid var(--field-line)" }}
+        >
+          <div>
+            <Marca variante="branco" className="h-10 w-auto" />
+            <div className="mt-[var(--s-sm)] flex gap-[var(--s-xs)]">
               <Social href={EMPRESA.instagram} rotulo="Instagram">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
@@ -59,71 +83,36 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Rodapé">
-            <p className="label">Site</p>
-            <ul className="mt-[var(--s-sm)] grid gap-[var(--s-xs)]">
-              <li>
-                <a className="corpo" href={ROTAS.sobre}>
-                  Sobre nós
-                </a>
-              </li>
-              {SERVICOS.map((s) => (
-                <li key={s.slug}>
-                  <a className="corpo" href={servicoHref(s.slug)}>
-                    {s.nome}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a className="corpo" href={ROTAS.projetos}>
-                  Projetos
-                </a>
-              </li>
-              <li>
-                <a className="corpo" href={ROTAS.contacto}>
-                  Contactos
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-          <div>
-            <p className="label">Falar connosco</p>
-            <ul className="mt-[var(--s-sm)] grid gap-[var(--s-sm)]">
-              <li>
-                <a
-                  className="corpo"
-                  href={EMPRESA.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {EMPRESA.morada}
-                </a>
-              </li>
-              <li>
-                <a className="corpo" href={`mailto:${EMPRESA.email}`}>
-                  {EMPRESA.email}
-                </a>
-              </li>
-              <li>
-                <a className="corpo" href={`tel:${EMPRESA.telefone.replace(/\s/g, "")}`}>
-                  {EMPRESA.telefone}
-                </a>
-                <span className="meta block">{EMPRESA.telefoneNota}</span>
-              </li>
-              <li>
-                <span className="corpo">{EMPRESA.horario}</span>
-              </li>
-            </ul>
-          </div>
+          <ul className="grid gap-[var(--s-xs)] self-start">
+            <li>
+              <a
+                className="corpo"
+                href={EMPRESA.maps}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {EMPRESA.morada}
+              </a>
+            </li>
+            <li>
+              <a className="corpo" href={`mailto:${EMPRESA.email}`}>
+                {EMPRESA.email}
+              </a>
+            </li>
+            <li className="corpo">
+              {EMPRESA.telefone}
+              <span className="meta block">{EMPRESA.telefoneNota}</span>
+            </li>
+            <li className="corpo">{EMPRESA.horario}</li>
+          </ul>
         </div>
 
         <div
-          className="mt-[var(--s-lg)] flex flex-wrap items-center justify-between gap-[var(--s-sm)] pt-[var(--s-md)]"
+          className="mt-[var(--s-md)] flex flex-wrap items-center justify-between gap-[var(--s-sm)] pt-[var(--s-sm)]"
           style={{ borderTop: "1px solid var(--field-line)" }}
         >
           <p className="meta">
-            © {ANO} {EMPRESA.nome}. Todos os direitos reservados.
+            © {ANO} {EMPRESA.nome}
           </p>
           <div className="flex flex-wrap gap-[var(--s-md)]">
             <a className="meta" href={ROTAS.privacidade}>

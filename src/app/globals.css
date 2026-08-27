@@ -715,3 +715,944 @@ details[open] .acordeao__r {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* ============================================================
+   O GESTO DA MARCA
+   O logotipo com traco desenhado a mao por cima, em ciclo.
+   O logotipo em si e do cliente e nao se toca; isto e so a
+   camada de traco.
+   ============================================================ */
+
+.marca-animada {
+  position: relative;
+  display: inline-block;
+  width: min(20rem, 72vw);
+  /* margem para a oval nao encostar ao que estiver a volta */
+  margin: 1.25rem 1.75rem;
+  color: var(--color-accent-ink);
+}
+
+.marca-animada--pequena {
+  width: min(12rem, 60vw);
+}
+
+.marca-animada__logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* O SVG assenta exactamente sobre o PNG, mesma caixa e mesmo viewBox. O que
+   sai fora (a oval) sai por overflow, e nao por esticar a caixa: esticar
+   deformava tambem os sublinhados. */
+.marca-animada__traco {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* O ciclo inteiro dura 9s. Cada risco desenha-se na sua janela e desfaz-se na
+   ordem inversa no fim, com uma pausa de respiro pelo meio.
+      0.0s  comeca "Blue"
+      0.5s  comeca "Magnitude"
+      1.0s  comeca a oval
+      1.9s  esta tudo desenhado
+      3.3s  fim do respiro, comeca a desfazer pela ordem inversa
+      5.4s  vazio
+      9.0s  recomeca                                                   */
+.ma__risco {
+  stroke-dasharray: var(--traco);
+  stroke-dashoffset: var(--traco);
+  animation-name: ma-desenha;
+  animation-duration: 9s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+.ma__risco--um {
+  --traco: 400;
+  animation-name: ma-um;
+}
+
+.ma__risco--dois {
+  --traco: 900;
+  animation-name: ma-dois;
+}
+
+.ma__risco--oval {
+  --traco: 3600;
+  animation-name: ma-oval;
+}
+
+@keyframes ma-um {
+  0% { stroke-dashoffset: var(--traco); }
+  5.5% { stroke-dashoffset: 0; }
+  56% { stroke-dashoffset: 0; }
+  62% { stroke-dashoffset: var(--traco); }
+  100% { stroke-dashoffset: var(--traco); }
+}
+
+@keyframes ma-dois {
+  0%, 5.5% { stroke-dashoffset: var(--traco); }
+  11% { stroke-dashoffset: 0; }
+  50% { stroke-dashoffset: 0; }
+  56% { stroke-dashoffset: var(--traco); }
+  100% { stroke-dashoffset: var(--traco); }
+}
+
+@keyframes ma-oval {
+  0%, 11% { stroke-dashoffset: var(--traco); }
+  21% { stroke-dashoffset: 0; }
+  40% { stroke-dashoffset: 0; }
+  50% { stroke-dashoffset: var(--traco); }
+  100% { stroke-dashoffset: var(--traco); }
+}
+
+/* Movimento reduzido: o traco fica desenhado e quieto. A informacao mantem-se,
+   o movimento e que sai. */
+@media (prefers-reduced-motion: reduce) {
+  .ma__risco {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ============================================================
+   LISTA COM GOTA DE LUZ
+   Substitui os certos verdes. A luz acumula no ponto e cai para
+   o seguinte; a queda e mais rapida do que a acumulacao, e e
+   essa diferenca que a faz ler como gota.
+   ============================================================ */
+
+.lista-luz {
+  --passo: 3.5rem;
+  --centro: 5px;
+  position: relative;
+  display: grid;
+  padding-left: 1.75rem;
+}
+
+.lista-luz--icone {
+  --centro: 1.375rem;
+  padding-left: 4rem;
+}
+
+/* a linha que liga topico a topico, do centro do primeiro ao centro do ultimo */
+.lista-luz::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--centro) - 0.5px);
+  top: calc(var(--passo) / 2);
+  height: calc(100% - var(--passo));
+  width: 1px;
+  background-color: var(--field-line-lit, var(--color-line-lit));
+}
+
+/* ⚠️ altura FIXA por topico: e ela que faz a gota aterrar no centro do
+   proximo, com uma linha de texto ou com duas */
+.lista-luz__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: var(--passo);
+  height: var(--passo);
+}
+
+.lista-luz__marca {
+  position: absolute;
+  left: calc(var(--centro) * -1 - 1.75rem + var(--centro));
+  display: grid;
+  place-items: center;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--field-line-strong, var(--color-line-strong));
+}
+
+.lista-luz--icone .lista-luz__marca {
+  left: -4rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--color-accent-ink);
+  background-color: var(--color-plate);
+  box-shadow: inset 0 0 0 1px var(--field-line-lit, var(--color-line-lit));
+}
+
+.field-deep .lista-luz--icone .lista-luz__marca {
+  color: var(--color-accent);
+  background-color: #131f4a;
+  box-shadow: inset 0 0 0 1px var(--color-line-deep);
+}
+
+.lista-luz__texto {
+  min-width: 0;
+}
+
+.lista-luz__titulo {
+  font-size: var(--t-body);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--field-ink, var(--color-ink));
+}
+
+/* A GOTA. O keyframe e gerado no componente, porque as percentagens dependem
+   do numero de topicos e isso nao se calcula em CSS. Aqui fica so a aparencia.
+   Arranca no centro do primeiro topico. */
+.lista-luz__gota {
+  position: absolute;
+  left: calc(var(--centro) - 4.5px);
+  top: calc(var(--passo) / 2 - 4.5px);
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-accent) 0%,
+    color-mix(in srgb, var(--color-accent) 45%, transparent) 55%,
+    transparent 74%
+  );
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  transform-origin: 50% 20%;
+  opacity: 0;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.35, 1);
+  animation-iteration-count: infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lista-luz__gota { display: none; }
+  .lista-luz__marca { background-color: var(--color-accent-ink); }
+  .lista-luz--icone .lista-luz__marca { background-color: var(--color-plate); }
+}
+
+/* ============================================================
+   FITA DE SERVICOS
+   Marquee sem JavaScript: a lista aparece duas vezes e o
+   conjunto anda -50%.
+   ============================================================ */
+
+.fita {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* as pontas esbatem-se, senao os cartoes parecem cortados a faca */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.fita__pista {
+  display: flex;
+  width: max-content;
+  gap: var(--s-sm);
+  padding-inline: var(--s-sm);
+  animation-name: fita-anda;
+  animation-duration: 46s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.fita:hover .fita__pista,
+.fita:focus-within .fita__pista {
+  animation-play-state: paused;
+}
+
+@keyframes fita-anda {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.fita__item {
+  flex: none;
+  width: clamp(15rem, 62vw, 21rem);
+}
+
+.fita__cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xs);
+}
+
+.fita__moldura {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-plate);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+}
+
+.fita__foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 700ms var(--ease-glide);
+}
+
+.fita__cartao:hover .fita__foto {
+  transform: scale(1.04);
+}
+
+/* o titulo assenta sobre a fotografia, com uma subida de tinta por baixo para
+   nao depender do que calhar estar na foto */
+.fita__titulo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--s-md) var(--s-sm) var(--s-sm);
+  font-size: var(--t-h3);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 55, 0.86),
+    rgba(11, 20, 55, 0.55) 55%,
+    transparent
+  );
+}
+
+.fita__accao {
+  min-height: 2rem;
+}
+
+/* Movimento reduzido: deixa de andar sozinha e passa a tira que se arrasta. */
+@media (prefers-reduced-motion: reduce) {
+  .fita {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+  }
+  .fita__pista {
+    animation: none;
+    width: auto;
+  }
+  .fita__item {
+    scroll-snap-align: start;
+  }
+}
+
+/* ============================================================
+   PAINEIS EXPANSIVEIS
+   A geometria do interactive-selector: o activo cresce para
+   flex 7 contra 1 dos outros. Em ecra pequeno o eixo vira,
+   porque uma fila de seis paineis a 390px nao e legivel.
+   ============================================================ */
+
+.paineis {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  /* em coluna a altura e menor: o painel activo nao precisa de meio ecra para
+     mostrar um titulo e duas linhas */
+  height: clamp(22rem, 56svh, 30rem);
+  overflow: hidden;
+  border-radius: var(--radius-plate);
+}
+
+@media (min-width: 48rem) {
+  .paineis {
+    flex-direction: row;
+    height: clamp(24rem, 62svh, 34rem);
+  }
+}
+
+/* sem fotografia nao ha nada para ver no espaco vazio: o painel encolhe e o
+   rotulo sobe para o meio */
+.paineis--icone {
+  height: clamp(17rem, 42svh, 23rem);
+}
+
+@media (min-width: 48rem) {
+  .paineis--icone {
+    height: clamp(19rem, 48svh, 26rem);
+  }
+}
+
+.paineis--icone .paineis__botao {
+  justify-content: center;
+}
+
+.paineis__celula {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 3.5rem;
+  min-width: 0;
+  flex: 1 1 0%;
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    flex-grow 700ms var(--ease-glide),
+    opacity 700ms var(--ease-land),
+    transform 700ms var(--ease-land);
+  will-change: flex-grow;
+}
+
+@media (min-width: 48rem) {
+  .paineis__celula {
+    transform: translate3d(-40px, 0, 0);
+  }
+}
+
+.paineis__celula[data-entrou="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.paineis__celula[data-activo="true"] {
+  flex-grow: 7;
+  z-index: 2;
+}
+
+.paineis__botao {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  padding: var(--s-sm);
+  text-align: left;
+  cursor: pointer;
+  background-color: var(--color-deep);
+  background-image: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-brand) 55%, var(--color-deep)),
+    var(--color-deep) 70%
+  );
+  background-size: auto 120%;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px var(--color-line-deep);
+  transition:
+    background-size 700ms var(--ease-glide),
+    box-shadow 400ms var(--ease-glide);
+}
+
+.paineis__celula[data-activo="true"] .paineis__botao {
+  background-size: auto 100%;
+  box-shadow:
+    inset 0 0 0 1px var(--color-line-deep),
+    inset 0 2px 0 0 var(--color-accent);
+}
+
+/* subida de tinta, para o rotulo nao depender do que calhar na fotografia */
+.paineis__tinta {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 55, 0.9),
+    rgba(11, 20, 55, 0.45) 45%,
+    rgba(11, 20, 55, 0.15) 100%
+  );
+  transition: opacity 700ms var(--ease-glide);
+}
+
+.paineis__rotulo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-on-deep);
+}
+
+.paineis__icone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  color: var(--color-accent);
+  background-color: rgba(11, 20, 55, 0.7);
+  box-shadow: inset 0 0 0 1px var(--color-line-deep);
+}
+
+.paineis__texto {
+  display: grid;
+  min-width: 0;
+}
+
+.paineis__titulo {
+  font-size: var(--t-h3);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* em coluna o titulo pode partir: ha largura de sobra e cortar com reticencias
+   era esconder informacao sem necessidade. Em fila e que nao cabe. */
+@media (min-width: 48rem) {
+  .paineis__titulo {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.paineis__sub {
+  font-size: var(--t-label);
+  color: var(--color-on-deep-soft);
+  line-height: 1.35;
+  opacity: 0;
+  transform: translate3d(18px, 0, 0);
+  transition:
+    opacity 700ms var(--ease-glide),
+    transform 700ms var(--ease-glide);
+}
+
+.paineis__celula[data-activo="true"] .paineis__sub {
+  opacity: 1;
+  transform: none;
+}
+
+/* nos paineis fechados o titulo em vertical, para nao ficar uma tira muda.
+   so em ecra largo: em coluna o titulo cabe sempre na horizontal */
+@media (min-width: 48rem) {
+  .paineis__celula[data-activo="false"] .paineis__titulo {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    max-height: 14rem;
+    font-size: var(--t-label);
+    letter-spacing: 0.02em;
+  }
+  .paineis__celula[data-activo="false"] .paineis__rotulo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* quando ha botao, o rotulo abre espaco para ele. Sem isto o texto passa por
+   baixo do botao e fica ilegivel no telemovel. */
+.paineis__celula:has(.paineis__ligacao)[data-activo="true"] .paineis__rotulo {
+  padding-right: 10.5rem;
+}
+
+.paineis__ligacao {
+  position: absolute;
+  right: var(--s-sm);
+  bottom: var(--s-sm);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: 1.25rem;
+  border-radius: 999px;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--color-deep);
+  background-color: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-glide);
+}
+
+.paineis__celula[data-activo="true"] .paineis__ligacao {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paineis__celula {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   INDICE EDITORIAL
+   Folhas empilhadas, como na referencia: cada linha e uma folha
+   branca que se sobrepoe a anterior, com o nome em display, a
+   coluna curta de acento, a descricao e a fotografia encostada
+   ao bordo direito da folha.
+   ============================================================ */
+
+.editorial {
+  display: grid;
+  /* a margem lateral vive DENTRO da folha: a folha vai de ponta a ponta */
+  --ed-pad: max(var(--gutter), var(--safe-l), var(--safe-r));
+}
+
+.editorial__folha {
+  position: relative;
+  /* ponta a ponta: sem raio, a folha morre nos dois bordos do ecra */
+  border-radius: 0;
+  background-color: var(--color-plate);
+  /* a sombra atira para CIMA: e ela que desenha a folha a cobrir a anterior */
+  box-shadow:
+    0 -26px 44px -28px rgba(11, 20, 55, 0.35),
+    inset 0 0 0 1px var(--color-line),
+    0 2px 6px rgba(11, 20, 55, 0.05);
+}
+
+/* a sobreposicao: cada folha tapa MESMO o pe da anterior, como papel
+   empilhado. E a assinatura da referencia. */
+.editorial__folha + .editorial__folha {
+  margin-top: -3rem;
+}
+
+@media (min-width: 60rem) {
+  .editorial__folha + .editorial__folha {
+    margin-top: -5.5rem;
+  }
+}
+
+/* a folha debaixo do rato levanta-se da pilha */
+.editorial__folha {
+  transition:
+    transform 400ms var(--ease-glide),
+    box-shadow 400ms var(--ease-glide);
+}
+
+/* a folha debaixo do rato destaca-se da pilha: sobe, cresce um nada e a
+   sombra afunda. scale pequeno de proposito, acima de 1.02 lia-se como zoom */
+.editorial__folha:hover,
+.editorial__folha:focus-within {
+  transform: translate3d(0, -10px, 0) scale(1.012);
+  z-index: 3;
+  box-shadow:
+    0 -34px 54px -26px rgba(11, 20, 55, 0.5),
+    inset 0 0 0 1px var(--color-line-lit),
+    0 24px 52px rgba(11, 20, 55, 0.18);
+}
+
+.editorial__link {
+  display: grid;
+  gap: var(--s-sm);
+  /* ⚠️ o conteudo vive na faixa de CIMA da folha: e a folha seguinte que tapa
+     o pe. O padding de baixo e maior do que a sobreposicao, para nada do que
+     interessa ficar escondido. */
+  padding: var(--s-md) 0 calc(3rem + var(--s-md)) var(--ed-pad);
+  overflow: hidden;
+  border-radius: inherit;
+  transition: background-color 400ms var(--ease-glide);
+}
+
+.editorial__link:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 8%, var(--color-plate));
+}
+
+@media (min-width: 60rem) {
+  .editorial__link {
+    /* minmax(0, ...) em todas as colunas de texto: e o 0 que impede o nome de
+       invadir a coluna do lado quando a palavra e comprida */
+    grid-template-columns:
+      2.5rem
+      minmax(0, 1.5fr)
+      minmax(8.5rem, 10rem)
+      minmax(0, 1fr)
+      minmax(20rem, 30rem);
+    align-items: start;
+    gap: var(--s-md);
+    min-height: 19rem;
+    padding-block: var(--s-md) calc(5.5rem + var(--s-md));
+  }
+
+  /* o texto centra-se na faixa VISIVEL (a altura da folha menos a parte que a
+     seguinte tapa), nao na folha inteira */
+  .editorial__indice,
+  .editorial__nome,
+  .editorial__mini,
+  .editorial__texto {
+    align-self: center;
+    min-height: 0;
+  }
+
+  /* a fotografia ocupa a folha INTEIRA em altura, do topo ao pe, com o pe a
+     desaparecer por baixo da folha seguinte, como na referencia */
+  .editorial__foto {
+    align-self: stretch;
+    margin-block: calc(var(--s-md) * -1) calc((5.5rem + var(--s-md)) * -1);
+  }
+
+  .editorial__foto img {
+    height: 100%;
+    aspect-ratio: auto;
+    min-height: 19rem;
+  }
+}
+
+.editorial__indice {
+  font-size: var(--t-label);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-faint);
+}
+
+.editorial__nome {
+  font-family: var(--font-display);
+  /* o teto e o que cabe: "climatização" e uma palavra so, nao parte, e acima
+     disto invadia a coluna do lado */
+  font-size: clamp(1.75rem, 1.1rem + 1.9vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  min-width: 0;
+  color: var(--color-ink);
+}
+
+/* a coluna curta de acento, como as tres linhas vermelhas da referencia */
+.editorial__mini {
+  display: grid;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-accent-ink);
+}
+
+.editorial__texto {
+  font-size: var(--t-label);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 34ch;
+  padding-right: var(--s-sm);
+}
+
+.editorial__foto {
+  display: block;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.editorial__foto img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 700ms var(--ease-glide);
+}
+
+.editorial__link:hover .editorial__foto img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 59.99rem) {
+  .editorial__foto {
+    /* em telemovel a fotografia sangra ate aos dois bordos do ecra */
+    margin-left: calc(var(--ed-pad) * -1);
+    border-radius: 0;
+  }
+}
+
+.display--gigante {
+  font-size: clamp(3rem, 1.6rem + 9vw, 7.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+/* ============================================================
+   TITULO TECLADO
+   O texto completo esta no DOM; as letras so entram por opacity.
+   ============================================================ */
+
+.sr-so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.teclado__l {
+  opacity: 0;
+  animation-name: tecla;
+  animation-duration: 1ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes tecla {
+  to {
+    opacity: 1;
+  }
+}
+
+.teclado__cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.82em;
+  margin-left: 0.06em;
+  vertical-align: baseline;
+  background-color: var(--color-accent-ink);
+  animation-name: cursor-pisca, cursor-apaga;
+  animation-duration: 620ms, 1ms;
+  animation-timing-function: steps(1), linear;
+  animation-iteration-count: infinite, 1;
+  animation-fill-mode: none, forwards;
+}
+
+@keyframes cursor-pisca {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes cursor-apaga {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teclado__l {
+    opacity: 1;
+    animation: none;
+  }
+  .teclado__cursor {
+    display: none;
+  }
+}
+
+/* ============================================================
+   ARRANQUE DA PAGINA SOBRE
+   A ilustracao (gerada a partir da referencia do Tomas, com os
+   cartoes e a fita verde ja pintados) e o fundo; o titulo vive
+   no canto superior esquerdo, que a imagem deixa vazio.
+   ============================================================ */
+
+.arranque {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--color-shell);
+}
+
+/* ⚠️ 64rem e nao 60rem: e o lg do Tailwind. Com dois numeros diferentes havia
+   uma janela de 64px em que a imagem ja era absoluta e o conteudo ainda era o
+   de telemovel, um por cima do outro. */
+@media (min-width: 64rem) {
+  .arranque {
+    /* a altura acompanha a proporcao da ilustracao (2200x1228): assim a imagem
+       entra inteira, sem corte, e os cartoes ficam onde foram desenhados,
+       abaixo da zona do titulo */
+    min-height: min(50rem, 56vw);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .arranque__fundo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right bottom;
+  }
+}
+
+/* em telemovel a ilustracao entra no fluxo, por baixo do texto: por cima
+   tapava os cartoes que sao a graca dela */
+@media (max-width: 63.99rem) {
+  /* primeiro o titulo, depois a ilustracao: no DOM a imagem vem antes (para o
+     absoluto de desktop), por isso em coluna troca-se a ordem */
+  .arranque {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .arranque__fundo {
+    display: block;
+    order: 2;
+    width: 100%;
+    height: auto;
+    margin-top: var(--s-md);
+  }
+}
+
+.numeros {
+  display: grid;
+  gap: var(--s-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 60rem) {
+  .numeros {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.numeros__valor {
+  font-family: var(--font-display);
+  font-size: var(--t-num);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   LINHAS DE CONTACTO
+   Cada linha e uma accao: escrever, WhatsApp, ligar, abrir mapa.
+   ============================================================ */
+
+.contacto__linha {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr auto;
+  align-items: center;
+  gap: var(--s-sm);
+  min-height: 3.5rem;
+  padding: var(--s-sm);
+  border-radius: var(--radius-plate);
+  background-color: var(--color-plate);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  transition:
+    box-shadow 300ms var(--ease-glide),
+    transform 300ms var(--ease-glide);
+}
+
+.contacto__linha:hover {
+  transform: translate3d(0, -1px, 0);
+  box-shadow:
+    inset 0 0 0 1px var(--color-line-strong),
+    0 6px 18px rgba(11, 20, 55, 0.08);
+}
+
+.contacto__rotulo {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--color-brand);
+}
+
+.contacto__valor {
+  font-size: var(--t-body);
+  font-weight: 600;
+  line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.contacto__seta {
+  color: var(--color-ink-faint);
+  transition: transform 300ms var(--ease-glide);
+}
+
+.contacto__linha:hover .contacto__seta {
+  transform: translate3d(2px, -2px, 0);
+  color: var(--color-brand);
+}

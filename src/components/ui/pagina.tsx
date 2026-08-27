@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
+import { TituloTeclado } from "@/components/ui/titulo-teclado";
 import { ROTAS } from "@/content/rotas";
 
 type Migalha = { rotulo: string; href?: string };
@@ -14,12 +15,18 @@ export function PaginaInterior({
   titulo,
   lede,
   migalhas = [],
+  tituloTeclado = false,
+  gigante = false,
   children,
 }: {
   credito: string;
   titulo: string;
   lede?: string;
   migalhas?: ReadonlyArray<Migalha>;
+  /** o titulo escreve-se a maquina ao entrar (paginas de servico) */
+  tituloTeclado?: boolean;
+  /** o titulo em corpo de cartaz, para os indices editoriais */
+  gigante?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -45,7 +52,22 @@ export function PaginaInterior({
 
               <Reveal className="mt-[var(--s-sm)]">
                 <p className="credito">{credito}</p>
-                <h1 className="display mt-[var(--s-xs)] max-w-[20ch]">{titulo}</h1>
+                {tituloTeclado ? (
+                  <TituloTeclado
+                    texto={titulo}
+                    className="display mt-[var(--s-xs)] max-w-[20ch]"
+                  />
+                ) : (
+                  <h1
+                    className={
+                      gigante
+                        ? "display display--gigante mt-[var(--s-xs)]"
+                        : "display mt-[var(--s-xs)] max-w-[20ch]"
+                    }
+                  >
+                    {titulo}
+                  </h1>
+                )}
                 {lede ? <p className="lede mt-[var(--s-sm)]">{lede}</p> : null}
               </Reveal>
             </div>
