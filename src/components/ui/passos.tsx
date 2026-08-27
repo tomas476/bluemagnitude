@@ -105,7 +105,7 @@ export function Passos({
           const Icone = passo.icone ? ICONES[passo.icone] : undefined;
 
           return (
-            <Reveal as="li" key={passo.titulo} className="passo" delay={i * 90}>
+            <Reveal as="li" key={passo.titulo} className="passo" delay={i * 55}>
               {i > 0 ? (
                 <span
                   className="passo__linha"

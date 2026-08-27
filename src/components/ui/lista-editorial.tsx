@@ -30,7 +30,7 @@ export function ListaEditorial({
   return (
     <ul className="editorial">
       {linhas.map((linha, i) => (
-        <Reveal as="li" key={linha.id} className="editorial__folha" delay={i * 110}>
+        <Reveal as="li" key={linha.id} className="editorial__folha" delay={i * 60}>
           <a href={linha.href} className="editorial__link" aria-label={`${linha.nome}: ${accao}`}>
             <span className="editorial__indice">{linha.indice}</span>
 

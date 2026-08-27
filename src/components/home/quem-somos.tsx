@@ -26,7 +26,7 @@ export function QuemSomos() {
           <ListaLuz
             className="mt-[var(--s-md)]"
             itens={QUEM_SOMOS.pilares}
-            delayBase={180}
+            delayBase={110}
           />
 
           <Reveal className="mt-[var(--s-md)]" delay={240}>

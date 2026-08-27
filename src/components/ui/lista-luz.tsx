@@ -154,7 +154,7 @@ ${posLit}%, 100% {
               as="li"
               key={linha.titulo}
               className="lista-luz__item"
-              delay={delayBase + i * 90}
+              delay={delayBase + i * 55}
             >
               <span
                 className="lista-luz__marca"

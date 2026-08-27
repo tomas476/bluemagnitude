@@ -8,7 +8,7 @@ import { CapaFoto } from "@/components/ui/capa-foto";
 import { Reveal } from "@/components/reveal";
 import { TextoRealcado } from "@/components/ui/texto-realcado";
 import { Paineis, type ItemPainel } from "@/components/ui/paineis";
-import { PROJETOS, EMPRESA } from "@/content/site";
+import { PROJETOS } from "@/content/site";
 import { ROTAS, projetoHref } from "@/content/rotas";
 
 export function generateStaticParams() {
@@ -59,10 +59,6 @@ export default async function PaginaProjeto({
     { rotulo: "Bateria", valor: projeto.bateria ?? "Sem armazenamento" },
   ];
 
-  const mensagem = encodeURIComponent(
-    `Olá, vi a instalação de ${projeto.local} no site e queria uma proposta para algo parecido.`,
-  );
-
   return (
     <>
       {/* a barra nasce transparente sobre a capa e pousa quando ela acaba,
@@ -105,7 +101,7 @@ export default async function PaginaProjeto({
 
               <dl className="mt-[var(--s-md)] grid gap-[var(--s-md)] sm:grid-cols-2 lg:grid-cols-3">
                 {ficha.map((linha, i) => (
-                  <Reveal key={linha.rotulo} delay={i * 70}>
+                  <Reveal key={linha.rotulo} delay={i * 45}>
                     <div
                       className="pt-[var(--s-sm)]"
                       style={{ borderTop: "2px solid var(--color-line-strong)" }}
@@ -132,32 +128,6 @@ export default async function PaginaProjeto({
             </div>
           </section>
 
-          <section className="field-deep section" aria-label="Pedir proposta">
-            <div className="shell">
-              <Reveal>
-                <h2 className="title max-w-[22ch]">
-                  Queres um sistema como este?
-                </h2>
-                <p className="lede mt-[var(--s-sm)]">
-                  Dizes-nos o consumo e o telhado que tens, fazemos as contas e
-                  apresentamos os números antes de haver qualquer decisão.
-                </p>
-                <div className="mt-[var(--s-md)] flex flex-wrap gap-[var(--s-sm)]">
-                  <a
-                    className="btn"
-                    href={`https://wa.me/${EMPRESA.whatsapp}?text=${mensagem}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Falar por WhatsApp
-                  </a>
-                  <a className="btn btn--contorno" href={ROTAS.contacto}>
-                    Preencher o formulário
-                  </a>
-                </div>
-              </Reveal>
-            </div>
-          </section>
         </CampoLuz>
       </main>
 

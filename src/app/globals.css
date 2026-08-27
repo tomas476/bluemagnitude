@@ -569,13 +569,17 @@ details[open] .acordeao__r {
   animation-fill-mode: both;
 }
 
-/* reveal ao scroll, para todo o resto */
+/* reveal ao scroll, para todo o resto.
+   ⚠️ NASCE, NAO SOBE DEVAGAR. Antes era 800ms de translacao vertical, e a
+   800ms uma pagina inteira a fazer isto le-se como site lento e nao como
+   entrada. Agora e 420ms, com um salto muito curto e uma escala a abrir do
+   centro para as pontas: a peca aparece, nao se arrasta. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 1.25rem, 0);
+  transform: translate3d(0, 0.5rem, 0) scale(0.985);
   transition:
-    opacity 800ms var(--ease-land),
-    transform 800ms var(--ease-land);
+    opacity 420ms var(--ease-land),
+    transform 420ms var(--ease-land);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -917,11 +921,21 @@ details[open] .acordeao__r {
   );
 }
 
-/* o movimento vem do JS (um rAF que soma velocidade e arrasto no mesmo
-   deslocamento); aqui fica so a forma */
+/* ⚠️ A CAIXA E UM SCROLL HORIZONTAL A SERIO. O dedo arrasta o scroll nativo,
+   com a inercia do sistema; o JS so soma ao scrollLeft para o andamento
+   automatico. Nada de `touch-action: pan-y` a disputar o gesto com o browser.
+   `overscroll-behavior-x: contain` impede que o fim da fita puxe a navegacao
+   por gesto do iOS. */
 .fita {
-  touch-action: pan-y;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   cursor: grab;
+}
+
+.fita::-webkit-scrollbar {
+  display: none;
 }
 
 .fita:active {
@@ -933,7 +947,6 @@ details[open] .acordeao__r {
   width: max-content;
   gap: var(--s-sm);
   padding-inline: var(--s-sm);
-  will-change: transform;
 }
 
 .fita__item {
@@ -1049,8 +1062,8 @@ details[open] .acordeao__r {
   transform: translate3d(0, 24px, 0);
   transition:
     flex-grow 700ms var(--ease-glide),
-    opacity 700ms var(--ease-land),
-    transform 700ms var(--ease-land);
+    opacity 460ms var(--ease-land),
+    transform 460ms var(--ease-land);
   will-change: flex-grow;
 }
 
@@ -1270,8 +1283,8 @@ details[open] .acordeao__r {
    exactamente a queixa de "nao aparece nada ao fazer scroll". */
 .editorial__folha {
   transition:
-    transform 700ms var(--ease-land),
-    opacity 700ms var(--ease-land),
+    transform 460ms var(--ease-land),
+    opacity 460ms var(--ease-land),
     box-shadow 400ms var(--ease-glide);
 }
 
@@ -1288,9 +1301,12 @@ details[open] .acordeao__r {
   transition-duration: 400ms;
 }
 
-/* uma folha de ponta a ponta a 1.25rem move-se de menos para se notar */
+/* ⚠️ A FOLHA NASCE DO CENTRO. Uma folha de ponta a ponta a subir 2.5rem
+   demorava a chegar e parecia a pagina a carregar; a abrir da escala, com o
+   ponto de origem no meio dela, le-se como a folha a assentar na pilha. */
 .reveal.editorial__folha:not([data-shown="true"]) {
-  transform: translate3d(0, 2.5rem, 0);
+  transform: translate3d(0, 0.75rem, 0) scale(0.965);
+  transform-origin: 50% 50%;
 }
 
 /* a folha debaixo do rato destaca-se da pilha: sobe, cresce um nada e a
@@ -1916,6 +1932,74 @@ details[open] .acordeao__r {
 .teclado__palavra {
   display: inline-block;
   white-space: nowrap;
+}
+
+/* ============================================================
+   A SETA DESENHADA A MAO
+   Vem do site da imogrow, com a mesma cadencia: desenha em
+   0,6s, fica cerca de dois segundos, apaga, rebobina escondida
+   e recomeca. A ponta arranca depois da curva.
+   ============================================================ */
+
+.seta-mao {
+  display: block;
+  width: 3.75rem;
+  color: var(--color-accent-ink);
+}
+
+.seta-mao svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.seta-mao path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation-name: desenha-seta;
+  animation-duration: 3400ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* a ponta so arranca quando a curva ja chegou ao fim */
+.seta-mao path:nth-child(2) {
+  animation-delay: 620ms;
+}
+
+@keyframes desenha-seta {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+  18% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  78% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  90% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  91% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seta-mao path {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
 }
 
 /* ============================================================

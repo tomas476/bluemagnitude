@@ -74,7 +74,7 @@ export default function Sobre() {
             </Reveal>
             <div className="numeros mt-[var(--s-lg)]">
               {ARRANQUE.numeros.map((n, i) => (
-                <Reveal key={n.rotulo} delay={i * 90} className="text-center">
+                <Reveal key={n.rotulo} delay={i * 55} className="text-center">
                   <p className="numeros__valor">{n.valor}</p>
                   <p className="meta mt-[var(--s-xs)]">{n.rotulo}</p>
                 </Reveal>

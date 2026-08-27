@@ -79,10 +79,12 @@ export function Paineis({
   const [entrou, setEntrou] = React.useState<number[]>([]);
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
-  // entrada escalonada, 180ms entre paineis, igual ao original
+  // entrada escalonada. ⚠️ 100ms e nao os 180ms do original: com seis paineis
+  // o ultimo entrava a mais de um segundo do primeiro, e a espera lia-se como
+  // o site a arrastar-se.
   React.useEffect(() => {
     const relogios = itens.map((_, i) =>
-      setTimeout(() => setEntrou((antes) => [...antes, i]), 180 * i),
+      setTimeout(() => setEntrou((antes) => [...antes, i]), 100 * i),
     );
     return () => relogios.forEach(clearTimeout);
   }, [itens]);

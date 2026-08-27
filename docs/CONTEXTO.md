@@ -139,6 +139,15 @@ IoU = (verde_original & verde_novo & ~cartao) / (verde_original | verde_novo & ~
 ```
 Abaixo de ~80% de sobreposicao, ou acima de ~10 px de desvio vertical mediano, a fita saiu do lugar e nota-se.
 
+## 6e. Ronda 7 (27 de agosto, fim da noite)
+
+1. **CTA duplicado**: as paginas de servico e as fichas de projeto acabavam num CTA escuro de WhatsApp e o rodape logo a seguir repetia-o. Saiu o da pagina, ficou o do rodape.
+2. **A entrada ao scroll nasce, nao se arrasta**: a `.reveal` passou de 800ms com 1.25rem de translacao para **420ms** com meio rem e uma escala a abrir do centro (`scale(.985)`); as folhas dos indices abrem de `scale(.965)` em 460ms. Todos os escalonamentos encurtaram (110 a 90ms passaram a 60 a 45ms; os paineis de 180 para 100ms).
+3. **A fita dos servicos passou a SCROLL NATIVO** (`overflow-x: auto` com tres copias da lista, `scrollLeft` somado por rAF). Duas tentativas de ler `pointermove` e escrever `transform` falharam em iOS, e falham sempre: com `touch-action: pan-y` o browser retem os eventos enquanto decide de quem e o gesto e pode mandar `pointercancel` a meio. Com scroll nativo o dedo arrasta o scroller, com a inercia do sistema. O rato continua a arrastar, escrevendo no `scrollLeft`.
+4. **Seta desenhada** no fim do lede do "Como trabalhamos", a apontar para os passos. E a mesma do site da imogrow (`imogrow-static/paginas.css`), com o mesmo ciclo de 3,4s: desenha em 0,6s, fica ~2s, apaga, rebobina escondida e recomeca. `pathLength={100}` nos dois tracos para a ponta poder arrancar por atraso.
+5. **A ilustracao do Sobre foi refeita de raiz** (`scripts/arranque-fita.py`), depois de tres defeitos seguidos: buracos na fita entre cartoes, lascas verdes agarradas as arestas, e um rastro cinzento a flutuar quando a fita recolhia. **A formulacao que aguentou: a chapa de cada cartao e o CASCO CONVEXO do que nele e mesmo chapa** (claro como o corpo, ou escuro como a chapa azul; a fita fica de fora por ser cinzento-medio). Os cartoes sao quadrilateros, e o casco convexo do miolo e exactamente o quadrilatero. Todas as outras formulacoes tropecavam no mesmo sitio: junto ao bordo, fita, sombra da fita e sombra do cartao misturam-se e nenhum limiar as separa.
+6. **Os cartoes ficaram sem sombra**, por decisao do Tomas. A sombra do JPG esta pousada POR CIMA da fita; separada dela ficava com falhas e com abas, e sem a fita por baixo aparecia como um borrao. Tentou-se opaca e semitransparente com a cor desmisturada do fundo; em ambas o defeito sobrevivia nalgum sitio.
+
 ## 7. Estado atual e o que falta
 
 **Tudo o que o Tomás pediu nas três rondas está feito, verificado com captura CDP a 390 e 1440 px, no git, na VPS (container saudável) e no GitHub Pages (links a funcionar depois do fix do prefixo).**

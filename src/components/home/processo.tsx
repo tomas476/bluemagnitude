@@ -1,5 +1,6 @@
 import { CabecalhoSeccao } from "@/components/ui/cabecalho-seccao";
 import { Passos } from "@/components/ui/passos";
+import { SetaMao } from "@/components/ui/seta-mao";
 import { PROCESSO } from "@/content/site";
 import { ANCORAS } from "@/content/rotas";
 
@@ -19,8 +20,11 @@ export function Processo() {
           lede={PROCESSO.lede}
         />
 
+        {/* a seta acaba a frase e aponta para os passos, como no imogrow */}
+        <SetaMao className="mt-[var(--s-sm)] ml-[var(--s-md)]" />
+
         <Passos
-          className="mt-[calc(var(--s-lg)+var(--s-sm))]"
+          className="mt-[var(--s-sm)]"
           passos={PROCESSO.passos.map((passo, i) => ({
             ...passo,
             rotulo: `Passo ${i + 1}`,

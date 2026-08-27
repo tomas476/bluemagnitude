@@ -7,7 +7,7 @@ import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
 import { CapaFoto } from "@/components/ui/capa-foto";
 import { ListaLuz } from "@/components/ui/lista-luz";
-import { SERVICOS, EMPRESA } from "@/content/site";
+import { SERVICOS } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
 
 export function generateStaticParams() {
@@ -37,10 +37,6 @@ export default async function PaginaServico({
   const { slug } = await params;
   const servico = SERVICOS.find((s) => s.slug === slug);
   if (!servico) notFound();
-
-  const mensagem = encodeURIComponent(
-    `Olá, queria uma proposta para ${servico.nome.toLowerCase()}.`,
-  );
 
   return (
     <>
@@ -111,30 +107,6 @@ export default async function PaginaServico({
             </section>
           ) : null}
 
-          <section className="field-deep section" aria-label="Pedir proposta">
-            <div className="shell">
-              <Reveal>
-                <h2 className="title max-w-[22ch]">Pede a tua proposta gratuita</h2>
-                <p className="lede mt-[var(--s-sm)]">
-                  Dizes-nos o que precisas, fazemos as contas e apresentamos os
-                  números antes de haver qualquer decisão.
-                </p>
-                <div className="mt-[var(--s-md)] flex flex-wrap gap-[var(--s-sm)]">
-                  <a
-                    className="btn"
-                    href={`https://wa.me/${EMPRESA.whatsapp}?text=${mensagem}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Falar por WhatsApp
-                  </a>
-                  <a className="btn btn--contorno" href={ROTAS.contacto}>
-                    Preencher o formulário
-                  </a>
-                </div>
-              </Reveal>
-            </div>
-          </section>
         </CampoLuz>
       </main>
 
