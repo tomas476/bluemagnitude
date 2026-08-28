@@ -9,7 +9,7 @@ import { ArranqueAnimado } from "@/components/ui/arranque-animado";
 import { Passos } from "@/components/ui/passos";
 import { TituloTeclado } from "@/components/ui/titulo-teclado";
 import { ListaLuz } from "@/components/ui/lista-luz";
-import { ARRANQUE, SOBRE, EMPRESA } from "@/content/site";
+import { ARRANQUE, SOBRE } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
 import { caminho } from "@/lib/caminho";
 
@@ -143,19 +143,6 @@ export default function Sobre() {
               </div>
 
               <ListaLuz itens={SOBRE.qualidade.itens} variante="icone" />
-            </div>
-          </section>
-
-          <section className="field-shell section--tight" aria-label="Falar connosco">
-            <div className="shell">
-              <Reveal>
-                <p className="corpo">
-                  Operações em {EMPRESA.zonas}. Sede na {EMPRESA.morada}.
-                </p>
-                <a className="btn mt-[var(--s-sm)]" href={ROTAS.contacto}>
-                  Pedir proposta
-                </a>
-              </Reveal>
             </div>
           </section>
         </CampoLuz>
