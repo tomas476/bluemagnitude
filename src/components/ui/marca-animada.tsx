@@ -39,16 +39,20 @@ export function MarcaAnimada({
        volta sem fim. A elipse NAO roda: rodar a forma toda inclinava-a e ela
        lia-se torta. */
   const oval = orbita ? (
-    <ellipse
+    /* ⚠️ RECTANGULO E NAO ELIPSE. A elipse, para caber o logotipo inteiro,
+       tinha de ser larga ao ponto de lhe passar por cima nos flancos: um
+       logotipo e uma caixa, e o contorno que lhe assenta e uma caixa. */
+    <rect
       className="ma__orbita"
-      cx="652"
-      cy="234"
-      rx="700"
-      ry="266"
+      x="-24"
+      y="-52"
+      width="1353"
+      height="573"
+      rx="48"
       pathLength={1000}
       stroke="currentColor"
       strokeWidth="7"
-      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   ) : (
     <path

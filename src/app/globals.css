@@ -761,7 +761,7 @@ details[open] .acordeao__r {
   animation-name: ma-oval;
 }
 
-/* ⚠️ A ELIPSE ESTA PARADA E O TRACEJADO E QUE ANDA. `pathLength: 1000` faz o
+/* ⚠️ O CONTORNO ESTA PARADO E O TRACEJADO E QUE ANDA. `pathLength: 1000` faz o
    perimetro contar sempre 1000, seja qual for o raio; com tracos de 20 e
    intervalos de 20 cabem 25 pares certos, e por isso deslocar o tracejado
    exactamente 40 fecha a volta sem salto. Animar a rotacao da forma, como
@@ -1676,16 +1676,18 @@ details[open] .acordeao__r {
 /* ⚠️ 2.5rem e nao 2.75rem: o alvo de toque continua confortavel e o rodape
    perde uma linha de altura por cada contacto, que era o que o Tomas via
    como "footer enorme". */
+/* ⚠️ TUDO NUMA LINHA, TAMBEM NO TELEMOVEL: o logotipo e os dois discos a
+   esquerda, e o botao a ocupar o resto do espaco a direita. Estava por baixo
+   e gastava uma linha inteira do rodape so para isso. */
 .rodape__base {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--s-sm);
 }
 
 .rodape__contactos {
-  flex: none;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 /* o logotipo a esquerda, os dois discos encostados a direita da mesma linha */
@@ -1724,9 +1726,14 @@ details[open] .acordeao__r {
     display: none;
   }
 
-  /* o botao ocupa a linha toda, que e o alvo mais confortavel do polegar */
-  .rodape__contactos {
-    width: 100%;
+  /* em ecra estreito o logotipo encolhe para o botao ter espaco a serio */
+  .rodape__marca {
+    gap: var(--s-xs);
+  }
+
+  .rodape__marca img,
+  .rodape__marca svg.marca {
+    height: 2rem;
   }
 }
 
@@ -1878,6 +1885,16 @@ details[open] .acordeao__r {
   .arranque__ilustra {
     order: 2;
     margin-top: var(--s-md);
+  }
+
+  /* ⚠️ CRESCE SO A CAMADA DOS CARTOES, e nao a caixa toda. Estreitar a caixa
+     ampliava os dois planos, mas com recorte ancorado a direita: o primeiro
+     cartao ficava cortado ao meio. Ampliar so os cartoes, a partir do centro,
+     da-lhes corpo sem tocar na fita, e como eles estao repartidos a volta do
+     centro continuam todos por cima dela. 1.12 e o limite: acima disso o
+     cartao da esquerda comeca a sair pelo bordo. */
+  .arranque__cartoes {
+    transform: scale(1.12);
   }
 }
 

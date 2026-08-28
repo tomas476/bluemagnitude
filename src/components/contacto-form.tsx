@@ -179,6 +179,12 @@ export function ContactoForm() {
 
   return (
     <form onSubmit={submeter} noValidate>
+      {/* ⚠️ O FORMULARIO PRECISA DE DIZER O QUE E antes de perguntar o
+          servico: comecava logo em "Serviço" e "Distrito" e nao se percebia o
+          que estava a ser pedido. */}
+      <p className="credito">Em três passos</p>
+      <h2 className="h3 mt-[2px] mb-[var(--s-sm)]">Pede o teu orçamento</h2>
+
       {/* a barra: os discos dizem onde se esta, e o traco entre eles enche */}
       <ol
         className="passos-form"

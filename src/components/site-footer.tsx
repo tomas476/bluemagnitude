@@ -4,10 +4,6 @@ import { ROTAS } from "@/content/rotas";
 
 const ANO = 2026;
 
-const MENSAGEM = encodeURIComponent(
-  "Olá, vi o vosso site e queria pedir uma proposta.",
-);
-
 function Social({
   href,
   rotulo,
@@ -47,13 +43,13 @@ export function SiteFooter() {
               Proposta gratuita e sem compromisso.
             </p>
           </div>
-          <a
-            className="btn"
-            href={`https://wa.me/${EMPRESA.whatsapp}?text=${MENSAGEM}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Falar por WhatsApp
+          {/* ⚠️ LEVA AO FORMULARIO, NAO AO WHATSAPP. O botao aqui abria a
+              conversa com uma frase generica, e a pagina de contactos tem o
+              pedido em tres passos, que chega ao WhatsApp ja com o servico, o
+              distrito e o contacto escritos. Um pedido preenchido vale mais do
+              que um "ola" solto. */}
+          <a className="btn" href={ROTAS.contacto}>
+            Pedir proposta
           </a>
         </div>
       </section>

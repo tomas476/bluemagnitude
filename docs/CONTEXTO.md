@@ -162,6 +162,14 @@ Abaixo de ~80% de sobreposicao, ou acima de ~10 px de desvio vertical mediano, a
 
 ⚠️ Uma nota de sintaxe que custou tempo: um `{condicao ? (<elemento/>) : (<elemento/>)}` escrito DENTRO de um `<svg>` em .tsx fez o parser tratar o bloco como objecto literal ("An object member cannot be declared optional"). Resolveu-se calculando o elemento numa constante antes do `return`, que ate se le melhor.
 
+## 6h. Ronda 10 (28 de agosto)
+
+1. **O CTA por cima do rodape passou a "Pedir proposta"** e leva a `/contacto/`, em todas as paginas (e um so componente). Abria a conversa de WhatsApp com uma frase generica; agora entra pelo formulario de tres passos e chega ao WhatsApp com o servico, o distrito e o contacto ja escritos.
+2. **O formulario ganhou titulo** ("Em tres passos" / "Pede o teu orcamento"): comecava directamente em "Servico" e nao se percebia o que estava a ser pedido.
+3. **O contorno animado do logotipo passou de elipse a RECTANGULO** (cantos a 48). A elipse, para caber o logotipo inteiro, tinha de ser larga ao ponto de lhe passar por cima nos flancos. A animacao e a mesma: a forma esta parada e o tracejado corre.
+4. **No rodape o botao "Contactos" foi para a direita dos discos das redes**, na mesma linha, a ocupar o espaco livre. Em ecra estreito o logotipo encolhe para 2rem para lhe dar espaco.
+5. **Os cartoes da ilustracao do Sobre crescem 12% em telemovel.** ⚠️ A primeira tentativa foi estreitar a caixa (menos largura relativa amplia os dois planos pelo mesmo factor), mas o recorte esta ancorado a direita e o primeiro cartao ficava cortado ao meio. O que resulta e ampliar SO a camada dos cartoes, a partir do centro: a fita fica onde esta e os cartoes, repartidos a volta do centro, continuam todos por cima dela. 1.12 e o tecto: acima disso o cartao da esquerda sai pelo bordo.
+
 ## 7. Estado atual e o que falta
 
 **Tudo o que o Tomás pediu nas três rondas está feito, verificado com captura CDP a 390 e 1440 px, no git, na VPS (container saudável) e no GitHub Pages (links a funcionar depois do fix do prefixo).**
