@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
-import { MarcaAnimada } from "@/components/ui/marca-animada";
+import { MarcaNasce } from "@/components/ui/marca-nasce";
 import { ArranqueAnimado } from "@/components/ui/arranque-animado";
 import { Passos } from "@/components/ui/passos";
 import { TituloTeclado } from "@/components/ui/titulo-teclado";
@@ -132,7 +132,7 @@ export default function Sobre() {
             <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div>
                 <Reveal>
-                  <MarcaAnimada tamanho="pequena" />
+                  <MarcaNasce tamanho="pequena" />
                 </Reveal>
                 <Reveal className="mt-[var(--s-sm)]" delay={90}>
                   <p className="credito">Qualidade e segurança</p>

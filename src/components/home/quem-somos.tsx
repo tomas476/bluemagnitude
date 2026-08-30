@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/reveal";
 import { CabecalhoSeccao } from "@/components/ui/cabecalho-seccao";
-import { MarcaAnimada } from "@/components/ui/marca-animada";
+import { MarcaNasce } from "@/components/ui/marca-nasce";
 import { ListaLuz } from "@/components/ui/lista-luz";
 import { QUEM_SOMOS, EMPRESA } from "@/content/site";
 import { ANCORAS, ROTAS } from "@/content/rotas";
@@ -15,7 +15,7 @@ export function QuemSomos() {
       <div className="shell grid gap-[var(--s-lg)] lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
           <Reveal className="mb-[var(--s-md)] block">
-            <MarcaAnimada className="marca-animada--esquerda" />
+            <MarcaNasce />
           </Reveal>
 
           <CabecalhoSeccao

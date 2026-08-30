@@ -6,7 +6,6 @@ import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
 import { ContactoForm } from "@/components/contacto-form";
-import { MarcaAnimada } from "@/components/ui/marca-animada";
 import { CONTACTO, EMPRESA } from "@/content/site";
 import { ROTAS } from "@/content/rotas";
 
@@ -67,30 +66,25 @@ export default function Contacto() {
                 <a href={ROTAS.home}>Início</a> › Contacto
               </nav>
 
-              {/* cabecalho: titulo a esquerda, o gesto da marca a direita, por
-                  cima do formulario. Em telemovel o logotipo desce para baixo
-                  do titulo e da frase, antes do cartao do formulario. */}
-              <div className="mt-[var(--s-sm)] grid gap-[var(--s-md)] lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-                <Reveal>
-                  <p className="credito">{CONTACTO.credito}</p>
-                  <h1 className="display mt-[var(--s-xs)] max-w-[18ch]">
-                    {CONTACTO.titulo}
-                  </h1>
-                  <p className="lede mt-[var(--s-sm)]">{CONTACTO.lede}</p>
+              {/* So o titulo. A frase pequena saiu (CONTACTO.lede fica no
+                  site.ts sem consumidor) e o formulario subiu para debaixo
+                  dele: quem chega aqui vem para pedir, nao para ler. */}
+              <Reveal className="mt-[var(--s-sm)] block">
+                <p className="credito">{CONTACTO.credito}</p>
+                <h1 className="display mt-[var(--s-xs)] max-w-[18ch]">
+                  {CONTACTO.titulo}
+                </h1>
+              </Reveal>
+
+              {/* ⚠️ A ORDEM DO DOM E A DO TELEMOVEL: formulario primeiro,
+                  linhas de contacto depois. Em desktop o `order` volta a
+                  poe-las a esquerda e o formulario a direita. */}
+              <div className="mt-[var(--s-md)] grid gap-[var(--s-lg)] lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+                <Reveal className="plate lg:order-2">
+                  <ContactoForm />
                 </Reveal>
 
-                {/* ao centro do espaco a direita do titulo, num ponto acima
-                    do pequeno */}
-                <Reveal
-                  className="justify-self-start lg:justify-self-center lg:-translate-x-12"
-                  delay={140}
-                >
-                  <MarcaAnimada tamanho="enorme" orbita />
-                </Reveal>
-              </div>
-
-              <div className="mt-[var(--s-lg)] grid gap-[var(--s-lg)] lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-                <div>
+                <div className="lg:order-1">
                   <ul className="grid gap-[var(--s-sm)]">
                     {LINHAS.map((linha, i) => {
                       const Icone = linha.Icone;
@@ -121,10 +115,6 @@ export default function Contacto() {
                     <p className="meta">Operações em {EMPRESA.zonas}.</p>
                   </Reveal>
                 </div>
-
-                <Reveal className="plate" delay={90}>
-                  <ContactoForm />
-                </Reveal>
               </div>
             </div>
           </section>

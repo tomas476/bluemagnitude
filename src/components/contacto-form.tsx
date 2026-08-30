@@ -181,9 +181,10 @@ export function ContactoForm() {
     <form onSubmit={submeter} noValidate>
       {/* ⚠️ O FORMULARIO PRECISA DE DIZER O QUE E antes de perguntar o
           servico: comecava logo em "Serviço" e "Distrito" e nao se percebia o
-          que estava a ser pedido. */}
-      <p className="credito">Em três passos</p>
-      <h2 className="h3 mt-[2px] mb-[var(--s-sm)]">Pede o teu orçamento</h2>
+          que estava a ser pedido. O titulo saiu quando o formulario subiu para
+          debaixo do <h1> "Pede a tua proposta gratuita": eram duas frases
+          quase iguais, uma por baixo da outra. */}
+      <p className="credito mb-[var(--s-sm)]">Em três passos</p>
 
       {/* a barra: os discos dizem onde se esta, e o traco entre eles enche */}
       <ol

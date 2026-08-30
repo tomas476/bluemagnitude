@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Marca } from "@/components/marca";
 import { EMPRESA, SERVICOS } from "@/content/site";
-import { ANCORAS, ROTAS, servicoHref } from "@/content/rotas";
+import { ROTAS, servicoHref } from "@/content/rotas";
 import { cn } from "@/lib/cn";
 
 const NAV_CSS = `
@@ -348,9 +348,14 @@ export function SiteNav({ pousadaSempre = false }: Props) {
               </a>
             </nav>
 
+            {/* ⚠️ ISTO APONTAVA PARA `/#falar` E NAO FAZIA NADA: nao ha nenhum
+                elemento com esse id em lado nenhum, o formulario vive em
+                /contacto/. Leva ao mesmo sitio que o CTA de desktop, e fecha a
+                folha como o link do logotipo aqui em cima. */}
             <a
               className={cn("btn mt-[var(--s-md)] w-full")}
-              href={`${ROTAS.home}${ANCORAS.contacto}`}
+              href={ROTAS.contacto}
+              onClick={() => setAberto(false)}
             >
               Pedir proposta
             </a>

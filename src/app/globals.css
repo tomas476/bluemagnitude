@@ -659,171 +659,24 @@ details[open] .acordeao__r {
 }
 
 /* ============================================================
-   O GESTO DA MARCA
-   O logotipo com traco desenhado a mao por cima, em ciclo.
-   O logotipo em si e do cliente e nao se toca; isto e so a
-   camada de traco.
+   A MARCA A NASCER
+   Substitui o gesto antigo (o logotipo com os sublinhados e o
+   contorno a correr). Agora e so o icone deles: os paineis
+   ficam postos e o sol nasce atras, em WebP animado com alfa.
    ============================================================ */
 
-.marca-animada {
-  position: relative;
-  display: inline-block;
-  width: min(20rem, 72vw);
-  /* margem para a oval nao encostar ao que estiver a volta */
-  margin: 1.25rem 1.75rem;
-  color: var(--color-accent-ink);
+.marca-nasce {
+  display: block;
+  width: 9rem;
 }
 
-/* No Quem somos o logotipo abre a seccao e o titulo vem logo por baixo: com a
-   margem lateral da base ele ficava 1.75rem para dentro do titulo. A oval
-   transborda ~0.6rem para a esquerda, que cabe na goteira da .shell. */
-.marca-animada--esquerda {
-  margin-left: 0;
-}
+.marca-nasce--media { width: 8rem; }
+.marca-nasce--pequena { width: 7rem; }
 
-/* ⚠️ A ORBITA PRECISA DE MAIS MARGEM DO QUE O DESENHO PARADO: a oval nao e
-   centrada no logotipo, e ao rodar varre um circulo mais largo do que a
-   caixa dele. Sem esta folga passava por cima do que estivesse ao lado. */
-.marca-animada--enorme {
-  /* ⚠️ A CONTA TEM DE INCLUIR A MARGEM: a 78vw mais 3rem de cada lado o
-     conjunto passava dos 375px do telemovel, alargava o documento e cortava o
-     texto da pagina toda pela direita. */
-  width: min(26rem, 66vw);
-  /* a elipse passa um nada para fora da caixa do logotipo, e a margem e so
-     para isso: parada, ela ja nao varre nada */
-  margin: 1.75rem 1.5rem;
-}
-
-@media (min-width: 64rem) {
-  .marca-animada--enorme {
-    width: min(26rem, 38vw);
-    margin: 2.5rem 3rem;
-  }
-}
-
-.marca-animada--media {
-  width: min(16.5rem, 66vw);
-}
-
-.marca-animada--pequena {
-  width: min(12rem, 60vw);
-}
-
-.marca-animada__logo {
+.marca-nasce img {
   display: block;
   width: 100%;
   height: auto;
-}
-
-/* O SVG assenta exactamente sobre o PNG, mesma caixa e mesmo viewBox. O que
-   sai fora (a oval) sai por overflow, e nao por esticar a caixa: esticar
-   deformava tambem os sublinhados. */
-.marca-animada__traco {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-
-/* O ciclo inteiro dura 9s. Cada risco desenha-se na sua janela e desfaz-se na
-   ordem inversa no fim, com uma pausa de respiro pelo meio.
-      0.0s  comeca "Blue"
-      0.5s  comeca "Magnitude"
-      1.0s  comeca a oval
-      1.9s  esta tudo desenhado
-      3.3s  fim do respiro, comeca a desfazer pela ordem inversa
-      5.4s  vazio
-      9.0s  recomeca                                                   */
-.ma__risco {
-  stroke-dasharray: var(--traco);
-  stroke-dashoffset: var(--traco);
-  animation-duration: 6.5s;
-  /* com peso: cada troco do desenho acelera e assenta, em vez do linear */
-  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
-  animation-iteration-count: infinite;
-  animation-fill-mode: both;
-}
-
-.ma__risco--um {
-  --traco: 380;
-  animation-name: ma-um;
-}
-
-.ma__risco--dois {
-  --traco: 860;
-  animation-name: ma-dois;
-}
-
-.ma__risco--oval {
-  --traco: 3900;
-  animation-name: ma-oval;
-}
-
-/* ⚠️ O CONTORNO ESTA PARADO E O TRACEJADO E QUE ANDA. `pathLength: 1000` faz o
-   perimetro contar sempre 1000, seja qual for o raio; com tracos de 20 e
-   intervalos de 20 cabem 25 pares certos, e por isso deslocar o tracejado
-   exactamente 40 fecha a volta sem salto. Animar a rotacao da forma, como
-   estava, inclinava a elipse e ela lia-se torta. */
-.ma__orbita {
-  fill: none;
-  stroke-dasharray: 20 20;
-  animation-name: ma-orbita;
-  animation-duration: 2400ms;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes ma-orbita {
-  from {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: 40;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ma__orbita {
-    animation-name: none;
-  }
-}
-
-@keyframes ma-um {
-  0% { stroke-dashoffset: var(--traco); }
-  6.5% { stroke-dashoffset: 0; }
-  72.5% { stroke-dashoffset: 0; }
-  79% { stroke-dashoffset: var(--traco); }
-  100% { stroke-dashoffset: var(--traco); }
-}
-
-
-@keyframes ma-dois {
-  0%, 6.5% { stroke-dashoffset: var(--traco); }
-  14% { stroke-dashoffset: 0; }
-  66% { stroke-dashoffset: 0; }
-  72.5% { stroke-dashoffset: var(--traco); }
-  100% { stroke-dashoffset: var(--traco); }
-}
-
-
-@keyframes ma-oval {
-  0%, 14% { stroke-dashoffset: var(--traco); }
-  30% { stroke-dashoffset: 0; }
-  52% { stroke-dashoffset: 0; }
-  66% { stroke-dashoffset: var(--traco); }
-  100% { stroke-dashoffset: var(--traco); }
-}
-
-
-/* Movimento reduzido: o traco fica desenhado e quieto. A informacao mantem-se,
-   o movimento e que sai. */
-@media (prefers-reduced-motion: reduce) {
-  .ma__risco {
-    animation: none !important;
-    stroke-dashoffset: 0;
-  }
 }
 
 /* ============================================================
