@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Constroi `public/marca/marca-nasce.webp`: a marca a nascer, em WebP animado com
+Constroi `public/marca/marca-nasce-sol.webp`: a marca a nascer, em WebP animado com
 alfa, a partir do MP4 do Higgsfield.
 
 Uso: python3 scripts/marca-nasce.py <video.mp4> [inicio_em_segundos]
@@ -46,7 +46,7 @@ from PIL import Image
 
 RAIZ = Path(__file__).resolve().parent.parent
 ICONE = RAIZ / "public/marca/icone.png"
-DESTINO = RAIZ / "public/marca/marca-nasce.webp"
+DESTINO = RAIZ / "public/marca/marca-nasce-sol.webp"
 
 AZUL = np.array([36, 63, 173], float)
 VERDE = np.array([108, 202, 125], float)

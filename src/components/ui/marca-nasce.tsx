@@ -43,7 +43,7 @@ export function MarcaNasce({
         srcSet={caminho("/marca/icone.png")}
       />
       <img
-        src={caminho("/marca/marca-nasce.webp")}
+        src={caminho("/marca/marca-nasce-sol.webp")}
         alt={`${EMPRESA.nome}, ${EMPRESA.claim}`}
         width={444}
         height={482}
