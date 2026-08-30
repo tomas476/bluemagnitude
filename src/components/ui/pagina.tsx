@@ -5,6 +5,7 @@ import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
 import { TituloTeclado } from "@/components/ui/titulo-teclado";
+import { FitaSolta } from "@/components/ui/fita-solta";
 import { ROTAS } from "@/content/rotas";
 
 type Migalha = { rotulo: string; href?: string };
@@ -17,6 +18,7 @@ export function PaginaInterior({
   migalhas = [],
   tituloTeclado = false,
   gigante = false,
+  fita,
   children,
 }: {
   credito: string;
@@ -27,6 +29,8 @@ export function PaginaInterior({
   tituloTeclado?: boolean;
   /** o titulo em corpo de cartaz, para os indices editoriais */
   gigante?: boolean;
+  /** a linha verde do Sobre a atravessar o cabecalho, atras do titulo */
+  fita?: "sobe" | "desce";
   children: ReactNode;
 }) {
   return (
@@ -36,8 +40,14 @@ export function PaginaInterior({
       <div className="nav__espaco" />
       <main id="conteudo" tabIndex={-1}>
         <CampoLuz>
-          <section className="field-shell section--tight">
-            <div className="shell">
+          {/* ⚠️ relative e o z-index do shell: a fita e absoluta atras do
+              titulo e o conteudo tem de ficar por cima dela */}
+          <section
+            className="field-shell section--tight"
+            style={fita ? { position: "relative" } : undefined}
+          >
+            {fita ? <FitaSolta inclinacao={fita} /> : null}
+            <div className="shell" style={fita ? { position: "relative", zIndex: 1 } : undefined}>
               {migalhas.length > 0 ? (
                 <nav aria-label="Caminho" className="meta">
                   <a href={ROTAS.home}>Início</a>

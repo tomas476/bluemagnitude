@@ -30,6 +30,7 @@ export default function Projetos() {
       credito="Instalações"
       titulo="Projetos"
       gigante
+      fita="sobe"
       lede="Sistemas que já estão a produzir, com o equipamento de cada um."
       migalhas={[{ rotulo: "Projetos" }]}
     >

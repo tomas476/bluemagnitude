@@ -27,6 +27,7 @@ export default function Servicos() {
       credito="Serviços"
       titulo="Serviços"
       gigante
+      fita="desce"
       lede="Instalamos, legalizamos e mantemos. A mesma equipa do princípio ao fim."
       migalhas={[{ rotulo: "Serviços" }]}
     >

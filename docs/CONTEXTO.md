@@ -200,3 +200,10 @@ Pendentes que não dependem de mim:
 3. **Pagina de contactos**: saiu a frase pequena por baixo do titulo (`CONTACTO.lede` fica no `site.ts` sem consumidor, como o `HERO.lede`), saiu o logotipo animado, e o **formulario subiu para debaixo do titulo**. A ordem do DOM e a do telemovel (formulario, depois as linhas de contacto) e em desktop o `order` volta a por as linhas a esquerda. O `<h2>` "Pede o teu orcamento" saiu de dentro do `contacto-form.tsx`, porque com a frase fora ficava colado ao `<h1>` "Pede a tua proposta gratuita" e eram duas frases quase iguais seguidas; ficou so o rotulo "Em tres passos".
 
 **Pendente combinado**: o video novo do heroi. O Tomas da as instrucoes dele e so depois se faz.
+
+## 6j. Ronda 11b (30 de agosto, noite)
+
+**A linha verde do Sobre passou a atravessar o cabecalho dos indices** (`/projetos/` e `/servicos/`), so o traco, sem os cartoes nem os numeros. Componente `ui/fita-solta.tsx`: o mesmo caminho do `fita-arranque.json` e a MESMA animacao (`.arranque__traco` + keyframes `fita-desenha`), com roupa propria (`.fita-solta` no globals.css). Tres decisoes:
+- `preserveAspectRatio="none"` estica de proposito a curva 2200x1227 na faixa larga e baixa do cabecalho, e por isso o traco leva `vector-effect: non-scaling-stroke` com `stroke-width` em px (`clamp(14px, 2.6vw, 30px)`), senao a espessura esticava junto. Opacidade 0.5 para nao roubar leitura ao titulo.
+- A inclinacao e por pagina, via prop `fita` do `PaginaInterior`: `sobe` (rotate -4deg, projetos) e `desce` (rotate 3.5deg, servicos), com `scale(1.18)` de folga para os cantos nao ficarem em branco ao rodar. So entra nas paginas que passam a prop; as outras ficam como estavam.
+- A `section` do cabecalho ganha `position: relative` e o `.shell` `z-index: 1` SO quando ha fita, para o conteudo ficar por cima dela.

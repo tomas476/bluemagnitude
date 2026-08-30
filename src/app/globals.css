@@ -1789,6 +1789,41 @@ details[open] .acordeao__r {
   }
 }
 
+/* ============================================================
+   A FITA SOLTA
+   A linha verde do Sobre, sozinha, a atravessar o cabecalho
+   das paginas de indice. O traco reusa .arranque__traco e as
+   keyframes fita-desenha; aqui e so a roupa.
+   ============================================================ */
+
+.fita-solta {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fita-solta svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* rodada e com folga para os cantos nao ficarem em branco */
+  transform: rotate(-4deg) scale(1.18);
+}
+
+.fita-solta--desce svg {
+  transform: rotate(3.5deg) scale(1.18);
+}
+
+/* a espessura e fixa em ecra porque o SVG esta esticado com
+   preserveAspectRatio: none; sem isto o traco deformava */
+.fita-solta path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: clamp(14px, 2.6vw, 30px);
+  opacity: 0.5;
+}
+
 /* ⚠️ TRES EM FILA, TAMBEM NO TELEMOVEL. Sao tres numeros, e tres cabem: em
    duas colunas ficava um sozinho na segunda linha, encostado a esquerda, a
    parecer que faltava alguma coisa. O corpo desce em ecra estreito para o
