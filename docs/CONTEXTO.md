@@ -207,3 +207,11 @@ Pendentes que não dependem de mim:
 - `preserveAspectRatio="none"` estica de proposito a curva 2200x1227 na faixa larga e baixa do cabecalho, e por isso o traco leva `vector-effect: non-scaling-stroke` com `stroke-width` em px (`clamp(14px, 2.6vw, 30px)`), senao a espessura esticava junto. Opacidade 0.5 para nao roubar leitura ao titulo.
 - A inclinacao e por pagina, via prop `fita` do `PaginaInterior`: `sobe` (rotate -4deg, projetos) e `desce` (rotate 3.5deg, servicos), com `scale(1.18)` de folga para os cantos nao ficarem em branco ao rodar. So entra nas paginas que passam a prop; as outras ficam como estavam.
 - A `section` do cabecalho ganha `position: relative` e o `.shell` `z-index: 1` SO quando ha fita, para o conteudo ficar por cima dela.
+
+## 6k. Ronda 11c (31 de agosto)
+
+1. **Contactos em desktop**: o formulario subiu para a coluna direita DESDE o nivel do titulo. A pagina passou a uma grelha unica de duas colunas e duas linhas: titulo e linhas de contacto empilham a esquerda, o formulario ocupa a direita com `row-span-2`. A ordem do DOM continua a do telemovel (titulo, formulario, linhas).
+2. **Fita solta afinada** depois da revisao do Tomas:
+   - **Mais lenta nas duas paginas e nas duas medidas**: `animation-duration: 14s` so no `.fita-solta .arranque__traco` (o Sobre fica nos 7,6s). As keyframes sao percentagens, escalam sozinhas.
+   - **O corte em baixo desapareceu**: a caixa da fita desce `bottom: -7rem` alem da seccao, e o corte fica atras do primeiro cartao da lista, que e opaco, `position: relative` e vem depois no DOM, por isso pinta por cima. Em telemovel tapa a fotografia do primeiro cartao.
+   - **Projetos em desktop empinou**: esticada num cabecalho de 1440px a curva lia-se quase horizontal; a variante `sobe` leva `rotate(-10deg) scale(1.34)` a partir de 64rem. Em telemovel nada mudou (aprovado como estava), e a dos servicos tambem nao.

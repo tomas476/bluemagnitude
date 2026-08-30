@@ -66,25 +66,25 @@ export default function Contacto() {
                 <a href={ROTAS.home}>Início</a> › Contacto
               </nav>
 
-              {/* So o titulo. A frase pequena saiu (CONTACTO.lede fica no
-                  site.ts sem consumidor) e o formulario subiu para debaixo
-                  dele: quem chega aqui vem para pedir, nao para ler. */}
-              <Reveal className="mt-[var(--s-sm)] block">
-                <p className="credito">{CONTACTO.credito}</p>
-                <h1 className="display mt-[var(--s-xs)] max-w-[18ch]">
-                  {CONTACTO.titulo}
-                </h1>
-              </Reveal>
+              {/* ⚠️ UMA GRELHA SO, DE DUAS COLUNAS E DUAS LINHAS. A ordem do
+                  DOM e a do telemovel (titulo, formulario, linhas); em desktop
+                  o titulo e as linhas empilham na coluna esquerda e o
+                  formulario ocupa a direita DESDE A PRIMEIRA LINHA, alinhado
+                  com o arranque do titulo. A frase pequena saiu (CONTACTO.lede
+                  fica no site.ts sem consumidor). */}
+              <div className="mt-[var(--s-sm)] grid gap-[var(--s-md)] lg:grid-cols-[0.95fr_1.05fr] lg:grid-rows-[auto_1fr] lg:gap-x-[var(--s-lg)] lg:items-start">
+                <Reveal className="block lg:col-start-1 lg:row-start-1">
+                  <p className="credito">{CONTACTO.credito}</p>
+                  <h1 className="display mt-[var(--s-xs)] max-w-[18ch]">
+                    {CONTACTO.titulo}
+                  </h1>
+                </Reveal>
 
-              {/* ⚠️ A ORDEM DO DOM E A DO TELEMOVEL: formulario primeiro,
-                  linhas de contacto depois. Em desktop o `order` volta a
-                  poe-las a esquerda e o formulario a direita. */}
-              <div className="mt-[var(--s-md)] grid gap-[var(--s-lg)] lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-                <Reveal className="plate lg:order-2">
+                <Reveal className="plate lg:col-start-2 lg:row-start-1 lg:row-span-2">
                   <ContactoForm />
                 </Reveal>
 
-                <div className="lg:order-1">
+                <div className="lg:col-start-1 lg:row-start-2 lg:mt-[var(--s-md)]">
                   <ul className="grid gap-[var(--s-sm)]">
                     {LINHAS.map((linha, i) => {
                       const Icone = linha.Icone;
