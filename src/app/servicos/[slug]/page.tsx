@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { AncorasSuaves } from "@/components/ancoras-suaves";
 import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
+import { TextoRealcado } from "@/components/ui/texto-realcado";
 import { CapaFoto } from "@/components/ui/capa-foto";
 import { ListaLuz } from "@/components/ui/lista-luz";
 import { SERVICOS } from "@/content/site";
@@ -63,8 +64,10 @@ export default async function PaginaServico({
         <CampoLuz>
           <section className="field-shell section--tight" aria-label="O serviço">
             <div className="shell">
-              <Reveal as="p" className="corpo" delay={150}>
-                {servico.intro}
+              {/* como nas fichas de projeto: as partes que contam em
+                  destaque, com as marcas ** do site.ts */}
+              <Reveal delay={150}>
+                <TextoRealcado className="corpo" texto={servico.intro} />
               </Reveal>
             </div>
           </section>

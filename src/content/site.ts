@@ -80,7 +80,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "Autoconsumo",
     titulo: "Sistemas de autoconsumo",
     intro:
-      "O autoconsumo com painéis solares fotovoltaicos permite que produzas e consumas parte da tua própria energia. Este método aproveita a energia solar para gerar eletricidade limpa, sustentável e gratuita. Quando dimensionado de acordo com o perfil de consumo, o sistema oferece maior eficiência. Havendo excedente de produção, a energia extra pode ser injetada na rede elétrica ou vendida mediante contrato com um comercializador.",
+      "O autoconsumo com painéis solares fotovoltaicos permite que produzas e consumas parte da **tua própria energia**. Este método aproveita a energia solar para gerar eletricidade **limpa, sustentável e gratuita**. Quando dimensionado de acordo com o perfil de consumo, o sistema oferece maior eficiência. Havendo excedente de produção, a energia extra pode ser **injetada na rede elétrica ou vendida** mediante contrato com um comercializador.",
     imagem: caminho("/projetos/telhado1.jpg"),
     imagemAlt: "Painéis solares montados no telhado de uma moradia.",
     listaTitulo: "O que ganhas",
@@ -108,7 +108,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "Autoconsumo",
     titulo: "Sistemas de autoconsumo com baterias",
     intro:
-      "Os sistemas de autoconsumo com baterias permitem armazenar a energia solar excedente produzida durante o dia para ser utilizada quando a produção solar é baixa ou inexistente. Isso garante maior independência energética e uma redução significativa na fatura elétrica. A Blue Magnitude oferece soluções personalizadas que incluem a instalação de painéis solares, baterias de alta capacidade e sistemas de gestão de energia, otimizando o uso e o armazenamento da eletricidade gerada.",
+      "Os sistemas de autoconsumo com baterias permitem **armazenar a energia solar excedente** produzida durante o dia para ser utilizada quando a produção solar é baixa ou inexistente. Isso garante **maior independência energética** e uma **redução significativa na fatura elétrica**. A Blue Magnitude oferece soluções personalizadas que incluem a instalação de painéis solares, baterias de alta capacidade e sistemas de gestão de energia, otimizando o uso e o armazenamento da eletricidade gerada.",
     imagem: caminho("/projetos/ECS-banner.jpg"),
     imagemAlt: "Bateria de armazenamento de energia instalada numa parede.",
     listaTitulo: "O que ganhas",
@@ -128,7 +128,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "AVAC",
     titulo: "AVAC e climatização",
     intro:
-      "A Blue Magnitude oferece soluções completas de AVAC e climatização para garantir o conforto e a eficiência energética dos teus espaços. Os nossos serviços incluem desenho personalizado, instalação de equipamentos modernos, manutenção preventiva e otimização de sistemas existentes. Com uma equipa qualificada, proporcionamos ambientes agradáveis e eficientes, adaptados às tuas necessidades, seja para residências ou instalações comerciais.",
+      "A Blue Magnitude oferece **soluções completas de AVAC e climatização** para garantir o **conforto e a eficiência energética** dos teus espaços. Os nossos serviços incluem desenho personalizado, instalação de equipamentos modernos, **manutenção preventiva** e otimização de sistemas existentes. Com uma equipa qualificada, proporcionamos ambientes agradáveis e eficientes, adaptados às tuas necessidades, seja para residências ou instalações comerciais.",
     imagem: caminho("/projetos/ar-condicionado.jpg"),
     imagemAlt: "Unidade de ar condicionado instalada numa parede interior.",
     listaTitulo: "Vantagens de instalar um sistema AVAC",
@@ -154,7 +154,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "Manutenção",
     titulo: "Manter os sistemas solares em perfeito estado",
     intro:
-      "Manter os teus sistemas de energia solar e climatização em perfeito estado é essencial para garantir a sua eficiência e durabilidade. Na Blue Magnitude oferecemos serviços completos de manutenção, incluindo inspeção, limpeza, testes de performance e substituição de componentes desgastados. A nossa equipa técnica assegura que os teus sistemas operem com máxima eficiência, prolongando a vida útil e otimizando a produção de energia.",
+      "Manter os teus sistemas de energia solar e climatização em perfeito estado é essencial para garantir a sua **eficiência e durabilidade**. Na Blue Magnitude oferecemos serviços completos de manutenção, incluindo **inspeção, limpeza, testes de performance** e substituição de componentes desgastados. A nossa equipa técnica assegura que os teus sistemas operem com máxima eficiência, **prolongando a vida útil** e otimizando a produção de energia.",
     imagem: caminho("/projetos/solar-panels-2048x1365.jpg"),
     imagemAlt: "Fila de painéis solares limpos ao sol.",
     listaTitulo: "Benefícios",
@@ -174,7 +174,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "Off-grid",
     titulo: "Sistemas off-grid",
     intro:
-      "Para locais remotos ou com acesso limitado à rede elétrica, os sistemas off-grid da Blue Magnitude oferecem total independência energética. Utilizando painéis solares e baterias, estes sistemas garantem uma fonte de energia fiável e contínua, ideal para áreas rurais, montanhas, ilhas e outros locais isolados.",
+      "Para locais remotos ou com acesso limitado à rede elétrica, os sistemas off-grid da Blue Magnitude oferecem **total independência energética**. Utilizando painéis solares e baterias, estes sistemas garantem uma fonte de energia **fiável e contínua**, ideal para áreas rurais, montanhas, ilhas e outros locais isolados.",
     imagem: caminho("/projetos/off-grid4-1.jpg"),
     imagemAlt: "Painéis solares isolados numa zona rural.",
     listaTitulo: "Vantagens",
@@ -225,7 +225,7 @@ export const SERVICOS: ReadonlyArray<Servico> = [
     credito: "Consultoria",
     titulo: "Consultoria de sistemas fotovoltaicos",
     intro:
-      "A transição para as energias renováveis nunca foi tão importante, e a energia solar está na vanguarda desta mudança. A nossa consultoria em sistemas fotovoltaicos guia a tua empresa em cada etapa do processo, garantindo uma transição eficiente, económica e sustentável para a energia solar.",
+      "A transição para as energias renováveis nunca foi tão importante, e a energia solar está na vanguarda desta mudança. A nossa consultoria em sistemas fotovoltaicos guia a tua empresa **em cada etapa do processo**, garantindo uma transição **eficiente, económica e sustentável** para a energia solar.",
     imagem: caminho("/projetos/projetar.jpg"),
     imagemAlt: "Projeto técnico de instalação fotovoltaica sobre uma mesa.",
     listaTitulo: "O que fazemos",

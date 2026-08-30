@@ -6,6 +6,7 @@ import { CampoLuz } from "@/components/ui/campo-luz";
 import { Reveal } from "@/components/reveal";
 import { TituloTeclado } from "@/components/ui/titulo-teclado";
 import { FitaSolta } from "@/components/ui/fita-solta";
+import { SolNasce } from "@/components/ui/sol-nasce";
 import { ROTAS } from "@/content/rotas";
 
 type Migalha = { rotulo: string; href?: string };
@@ -30,7 +31,7 @@ export function PaginaInterior({
   /** o titulo em corpo de cartaz, para os indices editoriais */
   gigante?: boolean;
   /** a linha verde do Sobre a atravessar o cabecalho, atras do titulo */
-  fita?: "sobe" | "desce";
+  fita?: "sobe" | "desce" | "diagonal";
   children: ReactNode;
 }) {
   return (
@@ -47,6 +48,16 @@ export function PaginaInterior({
             style={fita ? { position: "relative" } : undefined}
           >
             {fita ? <FitaSolta inclinacao={fita} /> : null}
+            {/* o sol do logotipo a desenhar-se, num sitio diferente por
+                pagina: nos projetos em cima a direita, nos servicos mais
+                abaixo, para nao ser um carimbo */}
+            {fita ? (
+              <SolNasce
+                className={
+                  fita === "diagonal" ? "sol-nasce--projetos" : "sol-nasce--servicos"
+                }
+              />
+            ) : null}
             <div className="shell" style={fita ? { position: "relative", zIndex: 1 } : undefined}>
               {migalhas.length > 0 ? (
                 <nav aria-label="Caminho" className="meta">

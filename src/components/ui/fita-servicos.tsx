@@ -31,6 +31,10 @@ const RETOMA_MS = 1400;
  * ⚠️ O RATO CONTINUA A ARRASTAR, porque num ecra grande nao ha gesto nativo
  * horizontal: ai o `pointermove` escreve no `scrollLeft`, que e a mesma coisa
  * que o dedo faz, sem transform nenhum pelo meio.
+ *
+ * As SETAS dos lados andam um cartao de cada vez, por `scrollBy` suave, e
+ * calam o automatico como qualquer outro gesto. O anel das tres copias
+ * garante que ha sempre para onde ir nos dois sentidos.
  */
 export function FitaServicos() {
   const caixaRef = React.useRef<HTMLDivElement | null>(null);
@@ -115,6 +119,17 @@ export function FitaServicos() {
     comRato.current = false;
   }
 
+  /** um cartao de cada vez: a largura do item mede-se na hora, que ela muda
+      com o ecra */
+  function saltar(sentido: 1 | -1) {
+    const caixa = caixaRef.current;
+    if (!caixa) return;
+    const item = caixa.querySelector<HTMLElement>(".fita__item");
+    const passo = item ? item.offsetWidth : caixa.clientWidth * 0.8;
+    paradoAte.current = performance.now() + RETOMA_MS * 2;
+    caixa.scrollBy({ left: sentido * passo, behavior: "smooth" });
+  }
+
   const cartoes = (copia: number) =>
     SERVICOS.map((s) => (
       <li key={`${copia}-${s.slug}`} className="fita__item">
@@ -143,7 +158,29 @@ export function FitaServicos() {
       </li>
     ));
 
+  const seta = (sentido: 1 | -1) => (
+    <button
+      type="button"
+      className={`fita__seta ${sentido === 1 ? "fita__seta--dir" : "fita__seta--esq"}`}
+      aria-label={sentido === 1 ? "Serviços seguintes" : "Serviços anteriores"}
+      onClick={() => saltar(sentido)}
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path
+          d={sentido === 1 ? "M6 3l5 5-5 5" : "M10 3L5 8l5 5"}
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+
   return (
+    <div className="fita-conjunto">
+      {seta(-1)}
+      {seta(1)}
     <div
       ref={caixaRef}
       className="fita"
@@ -164,6 +201,7 @@ export function FitaServicos() {
         {cartoes(1)}
         {cartoes(2)}
       </ul>
+    </div>
     </div>
   );
 }
