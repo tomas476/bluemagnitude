@@ -1856,9 +1856,11 @@ details[open] .acordeao__r {
    toda a largura e o sol ficava colado as letras; empurrado para a margem,
    respira. Encolhe um pouco para nao sair do ecra. */
 @media (max-width: 47.99rem) {
+  /* a meio caminho entre onde estava (2,9rem, colado as letras) e a margem
+     negativa que ficou demasiado encostada ao bordo */
   .sol-nasce {
-    right: -1.25rem;
-    width: 7.5rem;
+    right: 0.75rem;
+    width: 7.75rem;
   }
 }
 
