@@ -96,6 +96,17 @@
   text-transform: none;
 }
 
+/* ⚠️ O DOCUMENTO ACABA NO RODAPE. Em iOS o Safari deixava continuar a
+   arrastar para baixo do rodape e aparecia meio ecra de fundo vazio.
+   `overscroll-behavior-y: none` tira o elastico no fim, e o `overflow-x:
+   clip` impede que qualquer coisa larga demais crie barra e altura a mais.
+   Regra da casa: o rodape e o limite, nao ha nada depois dele. */
+html,
+body {
+  overflow-x: clip;
+  overscroll-behavior-y: none;
+}
+
 html {
   scroll-behavior: smooth;
   background-color: var(--color-shell);
@@ -1833,14 +1844,22 @@ details[open] .acordeao__r {
 .sol-nasce {
   position: absolute;
   z-index: 0;
-  /* centrado na zona livre a direita do titulo; em telemovel um pouco
-     mais discreto e acima do primeiro cartao */
   top: 50%;
   right: clamp(1rem, 12vw, 12rem);
   transform: translateY(-50%);
   width: clamp(8rem, 20vw, 15rem);
   pointer-events: none;
   opacity: 0.6;
+}
+
+/* ⚠️ EM TELEMOVEL O SOL ENCOSTA-SE A DIREITA. A 390px o titulo ocupa quase
+   toda a largura e o sol ficava colado as letras; empurrado para a margem,
+   respira. Encolhe um pouco para nao sair do ecra. */
+@media (max-width: 47.99rem) {
+  .sol-nasce {
+    right: -1.25rem;
+    width: 7.5rem;
+  }
 }
 
 .sol-nasce img {
