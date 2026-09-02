@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "build:pages": "BASE_PATH=/bluemagnitude NEXT_PUBLIC_BASE_PATH=/bluemagnitude next build && BASE_PATH=/bluemagnitude node scripts/prefixar.mjs && touch out/.nojekyll"
+    "build:pages": "BASE_PATH=/bluemagnitude NEXT_PUBLIC_BASE_PATH=/bluemagnitude NEXT_PUBLIC_SITE_URL=https://tomas476.github.io/bluemagnitude next build && BASE_PATH=/bluemagnitude node scripts/prefixar.mjs && touch out/.nojekyll"
   },
   "dependencies": {
     "clsx": "^2.1.1",
