@@ -27,10 +27,24 @@ type Props = {
  *
  * A solucao e nao voltar atras: ha DOIS <video> com o mesmo ficheiro, um por
  * cima do outro. Um toca, o outro espera parado no primeiro fotograma, ja
- * descodificado. Quando faltam ~80 ms para o fim, o que esperava arranca e
- * fica a vista no mesmo fotograma em que o outro acabava; o que acabou e
- * rebobinado com o ecra todo para ele, com quatro segundos de folga. Nao ha
+ * descodificado. Quando faltam ~100 ms para o fim manda-se o que espera
+ * arrancar, e SO SE TROCA A VISTA NO PRIMEIRO FOTOGRAMA QUE ELE DESENHAR.
+ * O que acabou e rebobinado escondido, com quatro segundos de folga. Nao ha
  * `seek` nenhum na fronteira, por isso nao ha quebra.
+ *
+ * ⚠️ PORQUE E QUE A VISTA SO TROCA NO PRIMEIRO FOTOGRAMA
+ * O `play()` e assincrono. A primeira versao trocava a opacidade no mesmo
+ * instante em que pedia o play, e num iPhone o video demora dezenas de
+ * milissegundos a arrancar mesmo: via-se o primeiro fotograma congelado e so
+ * depois e que andava. Era exactamente a travagem que se queria tirar. Agora o
+ * que esta em cena continua a tocar ate o outro ter fotograma desenhado.
+ *
+ * ⚠️ O DE RESERVA TAMBEM LEVA `autoPlay`
+ * O iOS ignora `preload="auto"`: um <video> que nunca tocou nao tem um unico
+ * byte de video carregado, e o `play()` da troca teria de ir buscar o ficheiro
+ * inteiro. Por isso o de reserva arranca sozinho, e no primeiro `playing` e
+ * posto em pausa no zero. Fica com o descodificador quente e o ficheiro na
+ * cache, e o `play()` da troca e imediato.
  *
  * O segundo <video> so e montado depois do primeiro estar a tocar, para o
  * ficheiro vir da cache e nao duplicar o download.
@@ -61,6 +75,8 @@ export function VideoBackdrop({
   const [posterActivo, setPosterActivo] = React.useState(poster);
   // qual dos dois esta a vista: 0 e o primeiro, 1 e o de reserva
   const [activo, setActivo] = React.useState(0);
+  // o de reserva ja tocou uma vez e esta estacionado no zero, pronto a entrar
+  const [reservaAquecida, setReservaAquecida] = React.useState(false);
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const reservaRef = React.useRef<HTMLVideoElement | null>(null);
   const tentativas = React.useRef(0);
@@ -106,10 +122,27 @@ export function VideoBackdrop({
       reservaRef.current = elemento;
       if (!elemento) return;
       prepararVideo(elemento);
-      elemento.pause();
     },
     [prepararVideo],
   );
+
+  /* ⚠️ SO A PRIMEIRA VEZ. O de reserva arranca sozinho so para aquecer o
+     descodificador; no primeiro `playing` volta ao zero e fica em pausa, a
+     espera da vez. Da segunda em diante o `playing` dele e o da troca, e ai
+     nao se pode tocar: pausa-lo seria congelar o heroi, que foi exactamente o
+     que aconteceu enquanto isto era so uma pausa a seco. */
+  const aquecerReserva = () => {
+    if (reservaAquecida) return;
+    setReservaAquecida(true);
+    const elemento = reservaRef.current;
+    if (!elemento) return;
+    elemento.pause();
+    try {
+      elemento.currentTime = 0;
+    } catch {
+      /* sem metadados ainda; a proxima passagem poe no sitio */
+    }
+  };
 
   React.useEffect(() => {
     if (!fonte || aTocar || desistiu) return;
@@ -134,6 +167,9 @@ export function VideoBackdrop({
      arrancar sem esperar por descodificacao nenhuma */
   React.useEffect(() => {
     if (!aTocar) return;
+    // enquanto a reserva aquece nao se lhe toca: e ela que se estaciona no
+    // fim do aquecimento. Parar-lha aqui era o que a impedia de carregar.
+    if (activo === 0 && !reservaAquecida) return;
     const escondido = activo === 0 ? reservaRef.current : videoRef.current;
     if (!escondido) return;
     escondido.pause();
@@ -142,75 +178,126 @@ export function VideoBackdrop({
     } catch {
       /* um seek antes dos metadados chegarem atira; na proxima volta ja vai */
     }
-  }, [activo, aTocar]);
+  }, [activo, aTocar, reservaAquecida]);
 
-  /* a vigia da fronteira: ~80 ms antes do fim passa a vez ao outro */
+  /* a vigia da fronteira: manda arrancar cedo, troca no primeiro fotograma */
   React.useEffect(() => {
     if (!aTocar) return;
-    const emCena = activo === 0 ? videoRef.current : reservaRef.current;
-    const seguinte = activo === 0 ? reservaRef.current : videoRef.current;
-    if (!emCena) return;
+    const talvezEmCena = activo === 0 ? videoRef.current : reservaRef.current;
+    const seguinte =
+      activo === 0 ? (reservaAquecida ? reservaRef.current : null) : videoRef.current;
+    if (!talvezEmCena) return;
+    // uma const ja estreitada: dentro das funcoes declaradas o TypeScript nao
+    // arrasta o estreitamento do `if` la de cima
+    const emCena: HTMLVideoElement = talvezEmCena;
 
     let parado = false;
+    let mandado = false;
     let temporizador: number | null = null;
-    let fotograma: number | null = null;
-    const MARGEM = 0.08;
+    let rede: number | null = null;
+    let fotogramaVigia: number | null = null;
+    let fotogramaEntrada: number | null = null;
 
-    function trocar() {
+    // quanto antes do fim se manda o seguinte arrancar
+    const ANTECEDENCIA = 0.1;
+    // se ele nao desenhar nada neste tempo, troca-se a vista na mesma
+    const PACIENCIA = 300;
+
+    type ComFotograma = HTMLVideoElement & {
+      requestVideoFrameCallback?: (cb: () => void) => number;
+      cancelVideoFrameCallback?: (id: number) => void;
+    };
+
+    function cortar() {
       if (parado) return;
       parado = true;
-      if (!seguinte) {
-        // sem reserva montada, o laco simples serve de rede
-        if (emCena) {
-          emCena.currentTime = 0;
-          void emCena.play().catch(() => {});
-        }
-        return;
-      }
-      seguinte.currentTime = 0;
-      void seguinte.play().catch(() => {});
       setActivo((anterior) => (anterior === 0 ? 1 : 0));
     }
 
+    /* sem reserva montada, ou com o play() recusado, faz-se o laco a moda
+       antiga no proprio elemento. Volta a haver o solavanco, mas nunca fica
+       um rectangulo parado no ecra. */
+    function laco() {
+      if (parado) return;
+      parado = true;
+      emCena.currentTime = 0;
+      void emCena.play().catch(() => {});
+    }
+
+    function mandarArrancar() {
+      if (mandado || parado) return;
+      mandado = true;
+      if (!seguinte) return;
+      const promessa = seguinte.play();
+      if (promessa && typeof promessa.catch === "function") {
+        promessa.catch(() => {
+          mandado = false;
+        });
+      }
+      const entrada = seguinte as ComFotograma;
+      if (typeof entrada.requestVideoFrameCallback === "function") {
+        fotogramaEntrada = entrada.requestVideoFrameCallback(() => cortar());
+      }
+      // rede: se o fotograma nunca vier, troca-se a vista a mesma
+      rede = window.setTimeout(cortar, PACIENCIA);
+    }
+
     function vigiar() {
-      if (parado || !emCena) return;
+      if (parado) return;
       const total = emCena.duration;
-      if (Number.isFinite(total) && total > 0 && total - emCena.currentTime <= MARGEM) {
-        trocar();
-        return;
+      if (Number.isFinite(total) && total > 0 && total - emCena.currentTime <= ANTECEDENCIA) {
+        if (!seguinte) {
+          laco();
+          return;
+        }
+        mandarArrancar();
       }
       agendar();
     }
 
     function agendar() {
-      if (parado || !emCena) return;
-      const comFotograma = emCena as HTMLVideoElement & {
-        requestVideoFrameCallback?: (cb: () => void) => number;
-        cancelVideoFrameCallback?: (id: number) => void;
-      };
-      if (typeof comFotograma.requestVideoFrameCallback === "function") {
-        fotograma = comFotograma.requestVideoFrameCallback(vigiar);
+      if (parado) return;
+      const palco = emCena as ComFotograma;
+      if (typeof palco.requestVideoFrameCallback === "function") {
+        fotogramaVigia = palco.requestVideoFrameCallback(vigiar);
       } else {
-        temporizador = window.setTimeout(vigiar, 40);
+        temporizador = window.setTimeout(vigiar, 30);
       }
     }
 
+    /* se o que esta em cena chegar mesmo ao fim antes de o outro desenhar,
+       segura o ultimo fotograma, que com o laco cosido a xfade e quase igual
+       ao primeiro. Ninguem ve, e o corte acontece logo a seguir. */
+    function aoAcabar() {
+      if (!seguinte) {
+        laco();
+        return;
+      }
+      mandarArrancar();
+    }
+
     agendar();
-    // rede de seguranca: se a vigia falhar o instante, o `ended` troca na mesma
-    emCena.addEventListener("ended", trocar);
+    emCena.addEventListener("ended", aoAcabar);
 
     return () => {
       parado = true;
-      emCena.removeEventListener("ended", trocar);
+      emCena.removeEventListener("ended", aoAcabar);
       if (temporizador !== null) window.clearTimeout(temporizador);
-      const comFotograma = emCena as HTMLVideoElement & {
-        cancelVideoFrameCallback?: (id: number) => void;
-      };
-      if (fotograma !== null && typeof comFotograma.cancelVideoFrameCallback === "function") {
-        comFotograma.cancelVideoFrameCallback(fotograma);
+      if (rede !== null) window.clearTimeout(rede);
+      const palco = emCena as ComFotograma;
+      if (fotogramaVigia !== null && typeof palco.cancelVideoFrameCallback === "function") {
+        palco.cancelVideoFrameCallback(fotogramaVigia);
+      }
+      const entrada = seguinte as ComFotograma | null;
+      if (
+        entrada &&
+        fotogramaEntrada !== null &&
+        typeof entrada.cancelVideoFrameCallback === "function"
+      ) {
+        entrada.cancelVideoFrameCallback(fotogramaEntrada);
       }
     };
-  }, [activo, aTocar]);
+  }, [activo, aTocar, reservaAquecida]);
 
   const mostrarVideo = Boolean(fonte) && !desistiu;
 
@@ -266,6 +353,7 @@ export function VideoBackdrop({
           style={{ objectPosition, opacity: activo === 1 ? 1 : 0 }}
           src={fonte ?? undefined}
           poster={posterActivo}
+          autoPlay
           muted
           playsInline
           preload="auto"
@@ -273,6 +361,7 @@ export function VideoBackdrop({
           controls={false}
           aria-hidden="true"
           tabIndex={-1}
+          onPlaying={aquecerReserva}
         />
       ) : null}
 
@@ -304,11 +393,12 @@ export function VideoBackdrop({
         }}
       />
 
-      {/* 3. sombra no topo, para a barra pousar enquanto esta transparente.
-          ⚠️ 10rem DE ALTURA E O QUE A SENTINELA DA NAVBAR MEDE (site-nav.tsx).
-          Se esta altura mudar, a sentinela muda com ela, senao a barra anda
-          transparente por cima de fundo claro e desaparece. */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(11,20,55,.55)] to-transparent" />
+      {/* ⚠️ NAO VOLTA A HAVER SOMBRA NO TOPO. Havia aqui uma faixa de 10rem que
+          escurecia o principio do video para a barra transparente se ler. Lia-se
+          como uma tira suja por cima da imagem, sobretudo no telemovel, e o
+          Tomas pediu para sair: em cima fica so o logotipo e o botao do menu,
+          sem chapa nenhuma. Quem segura a leitura agora e a sombra projectada
+          do proprio logotipo e do botao, em site-nav.tsx. */}
 
       {/* 4. grao de pelicula */}
       <div className="grain" />

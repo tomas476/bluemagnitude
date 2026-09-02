@@ -22,21 +22,35 @@ const NAV_CSS = `
   padding-top: var(--safe-t);
 }
 .nav__espaco { height: 4rem; }
-/* ⚠️ 10rem E NAO 100svh. A sentinela mede ate onde a barra pode andar
-   transparente, e isso acaba onde acaba a sombra do topo do heroi (a camada 3
-   do video-backdrop, a classe h-40, ou seja 10rem). Com 100svh a barra so pousava no
-   fim do heroi inteiro: pelo meio, o logotipo e os links brancos ficavam por
-   cima da lavagem clara do fundo do heroi e a barra desaparecia. No telemovel,
-   onde o heroi e curto, era todo o scroll do heroi com a barra invisivel. */
+/* ⚠️ 10rem E NAO 100svh. A sentinela mede quanto tempo a barra anda
+   transparente por cima do heroi, e sao 10rem, o primeiro palmo de scroll.
+   Com 100svh a barra so pousava no fim do heroi inteiro: pelo meio, o
+   logotipo e os links brancos ficavam por cima da lavagem clara do fundo do
+   heroi e a barra desaparecia. No telemovel, onde o heroi e curto, era todo o
+   scroll do heroi com a barra invisivel. */
 .nav__sentinela {
   position: absolute; top: 0; left: 0; width: 1px; height: 10rem;
   pointer-events: none; visibility: hidden;
 }
 .nav__logo { display: block; height: 2rem; width: auto; }
+/* ⚠️ AS SOMBRAS SEGURAM SOZINHAS A LEITURA. Saiu a faixa escura que havia no
+   topo do heroi (video-backdrop.tsx), por isso o branco assenta directamente
+   no video. Sem estas sombras projectadas, um fotograma de ceu claro come o
+   logotipo e o botao do menu. */
 .nav[data-pousado="false"] .nav__logo {
   filter:
-    drop-shadow(0 1px 2px rgba(11,20,55,.55))
-    drop-shadow(0 0 10px rgba(11,20,55,.35));
+    drop-shadow(0 1px 3px rgba(11,20,55,.7))
+    drop-shadow(0 0 16px rgba(11,20,55,.5));
+}
+
+.nav[data-pousado="false"] .nav__hamburger {
+  filter:
+    drop-shadow(0 1px 3px rgba(11,20,55,.7))
+    drop-shadow(0 0 12px rgba(11,20,55,.45));
+}
+
+.nav[data-pousado="false"] .nav__link {
+  text-shadow: 0 1px 3px rgba(11,20,55,.7), 0 0 14px rgba(11,20,55,.45);
 }
 .nav__links { display: none; }
 @media (min-width: 64rem) {
