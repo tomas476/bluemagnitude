@@ -27,9 +27,19 @@ type Props = {
  * deixa cair fotogramas. As capas das paginas de servico, que sao fotografia
  * parada, continuam com ele.
  *
- * O poster fica por baixo ate o video desenhar o primeiro fotograma, para o
- * iOS nunca mostrar o botao de play do sistema num rectangulo parado. Se o
- * sistema recusar o autoplay, fica o poster e acabou.
+ * ⚠️ UM VIDEO PAUSADO NUNCA FICA A VISTA. O iOS desenha o SEU botao de play
+ * por cima de qualquer <video> que esteja parado, mesmo sem `controls`. Por
+ * isso a opacidade segue o estado real: sobe no `playing` e cai no `pause`.
+ * Enquanto ele nao anda ve-se o poster a respirar, que e o fallback desenhado,
+ * e nao um rectangulo com um controlo do sistema ao meio.
+ *
+ * ⚠️ E VOLTA SEMPRE A ANDAR. O iOS pausa o video sozinho em poupanca de
+ * bateria, ao voltar de outro separador ou depois de uma chamada, e nao o
+ * retoma. Por isso o `pause` tenta logo o play outra vez, e ha ainda o
+ * regresso do separador a visivel e o primeiro toque no ecra. Tres recusas
+ * seguidas e o sistema esta mesmo a dizer que nao: fica o poster e so um
+ * gesto ou um regresso a visivel volta a tentar, para nao ficar um ciclo de
+ * play e pause a queimar bateria.
  *
  * As camadas 1, 2 e 2b sao o blend com o CampoLuz que vem a seguir e nao se
  * tocam sem ler a nota em cada uma.
@@ -52,14 +62,51 @@ export function VideoBackdrop({
     setFonte(estreito ? fontes.estreito : fontes.largo);
   }, [fontes.estreito, fontes.largo, poster, posterEstreito]);
 
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  const recusas = React.useRef(0);
+
   /* muted tem de estar na propriedade E no atributo antes do autoplay, senao
-     o Safari recusa. E a unica coisa que fica alem do proprio elemento. */
+     o Safari recusa. */
   const guardarRef = React.useCallback((elemento: HTMLVideoElement | null) => {
+    videoRef.current = elemento;
     if (!elemento) return;
     elemento.muted = true;
     elemento.defaultMuted = true;
     elemento.setAttribute("muted", "");
   }, []);
+
+  const tentarTocar = React.useCallback((porGesto = false) => {
+    const elemento = videoRef.current;
+    if (!elemento || !elemento.paused) return;
+    // um gesto ou um regresso a visivel limpa a conta: o sistema pode ter
+    // mudado de ideias (saiu da poupanca de bateria, por exemplo)
+    if (porGesto) recusas.current = 0;
+    if (recusas.current >= 3) return;
+    const promessa = elemento.play();
+    if (!promessa || typeof promessa.catch !== "function") return;
+    promessa.catch(() => {
+      recusas.current += 1;
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (!fonte) return;
+
+    const aoVoltar = () => {
+      if (document.visibilityState === "visible") tentarTocar(true);
+    };
+    const aoTocarNoEcra = () => tentarTocar(true);
+
+    document.addEventListener("visibilitychange", aoVoltar);
+    document.addEventListener("touchstart", aoTocarNoEcra, { passive: true });
+    document.addEventListener("click", aoTocarNoEcra);
+
+    return () => {
+      document.removeEventListener("visibilitychange", aoVoltar);
+      document.removeEventListener("touchstart", aoTocarNoEcra);
+      document.removeEventListener("click", aoTocarNoEcra);
+    };
+  }, [fonte, tentarTocar]);
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -92,7 +139,17 @@ export function VideoBackdrop({
           controls={false}
           aria-hidden="true"
           tabIndex={-1}
-          onPlaying={() => setATocar(true)}
+          onPlaying={() => {
+            recusas.current = 0;
+            setATocar(true);
+          }}
+          onPause={() => {
+            // esconde-o ANTES de o iOS ter hipotese de desenhar o botao dele,
+            // e pede logo para continuar
+            setATocar(false);
+            tentarTocar();
+          }}
+          onEnded={() => tentarTocar()}
         />
       ) : null}
 
