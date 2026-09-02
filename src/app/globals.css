@@ -101,10 +101,20 @@
    `overscroll-behavior-y: none` tira o elastico no fim, e o `overflow-x:
    clip` impede que qualquer coisa larga demais crie barra e altura a mais.
    Regra da casa: o rodape e o limite, nao ha nada depois dele. */
-html,
-body {
+html {
   overflow-x: clip;
   overscroll-behavior-y: none;
+}
+
+/* ⚠️ AQUI E `clip`, NUNCA `hidden`. Com `overflow-x: hidden` o corpo passa a
+   ter `overflow-y: auto` calculado (a regra do par: `visible` ao lado de
+   `hidden` vira `auto`) e torna-se um contentor de scroll que nao tem nada
+   para deslizar. Num Mac, o gesto de dois dedos engata nesse contentor para
+   todo o gesto, e como `overscroll-behavior-y: none` proibe a corrente, o
+   scroll morre ali: a roda do rato ainda ia, o trackpad nao ia de todo.
+   `clip` corta na mesma na horizontal e nao cria contentor nenhum. */
+body {
+  overflow-x: clip;
 }
 
 html {
@@ -120,7 +130,6 @@ body {
   font-size: var(--t-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 ::selection {
@@ -1583,9 +1592,16 @@ details[open] .acordeao__r {
   gap: var(--s-sm);
 }
 
+/* ⚠️ O BOTAO NAO CRESCE. Com `flex: 1 1 auto` ele comia todo o espaco que
+   sobrava e em ecra grande ficava uma pilula do tamanho de meio rodape. Aqui
+   e do tamanho do texto, encostado a direita pelo `margin-left: auto`, e o ar
+   entre ele e os discos das redes e o resto da linha. */
 .rodape__contactos {
-  flex: 1 1 auto;
-  min-width: 0;
+  flex: 0 0 auto;
+  margin-left: auto;
+  min-height: 2.25rem;
+  padding-inline: 1.125rem;
+  font-size: var(--t-label);
 }
 
 /* o logotipo a esquerda, os dois discos encostados a direita da mesma linha */
@@ -1627,6 +1643,14 @@ details[open] .acordeao__r {
   /* em ecra estreito o logotipo encolhe para o botao ter espaco a serio */
   .rodape__marca {
     gap: var(--s-xs);
+  }
+
+  /* no telemovel o alvo de toque manda: volta a crescer e a ter altura */
+  .rodape__contactos {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
   }
 
   .rodape__marca img,

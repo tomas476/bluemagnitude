@@ -22,8 +22,14 @@ const NAV_CSS = `
   padding-top: var(--safe-t);
 }
 .nav__espaco { height: 4rem; }
+/* ⚠️ 10rem E NAO 100svh. A sentinela mede ate onde a barra pode andar
+   transparente, e isso acaba onde acaba a sombra do topo do heroi (a camada 3
+   do video-backdrop, a classe h-40, ou seja 10rem). Com 100svh a barra so pousava no
+   fim do heroi inteiro: pelo meio, o logotipo e os links brancos ficavam por
+   cima da lavagem clara do fundo do heroi e a barra desaparecia. No telemovel,
+   onde o heroi e curto, era todo o scroll do heroi com a barra invisivel. */
 .nav__sentinela {
-  position: absolute; top: 0; left: 0; width: 1px; height: 100svh;
+  position: absolute; top: 0; left: 0; width: 1px; height: 10rem;
   pointer-events: none; visibility: hidden;
 }
 .nav__logo { display: block; height: 2rem; width: auto; }
